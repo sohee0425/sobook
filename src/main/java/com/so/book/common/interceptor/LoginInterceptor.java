@@ -38,7 +38,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 			}else {
 				getTargetUrl(request); // 원래 요청된 주소를 세션형태로 저장 "targetUrl"
 				
-				response.sendRedirect("/userinfo/login"); // 로그인주소로 넘어가는 작업
+				response.sendRedirect("/member/login"); // 로그인주소로 넘어가는 작업
 			}
 		}else {	// 로그인을 한 의미 (인증을 한 상태)
 			result = true; // true : 컨트롤러로 실행
