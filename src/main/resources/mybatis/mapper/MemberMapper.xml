@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.so.book.member.MemberMapper">
+
+	<select id="idCheck" parameterType="String" resultType="String">
+	                                                        
+		select
+			mem_id
+		from
+			mem_tbl
+		where
+			mem_id = #{mem_id} 
+	
+	</select>
+	
+	
+	<insert id="join" parameterType="com.so.book.member.MemberVo">
+		insert into
+			mem_tbl(mem_id, mem_name, mem_pw, mem_email, mem_zipcode, mem_addr, mem_deaddr, mem_tel, mem_receivEmail, mem_receivSMS)
+		values
+			(#{mem_id}, #{mem_name}, #{mem_pw}, #{mem_email}, #{mem_zipcode}, #{mem_addr}, #{mem_deaddr}, #{mem_tel}, #{mem_receivEmail}, #{mem_receivSMS})
+	</insert>
+	
+	 
+	<select id="login" parameterType="String" resultType="com.so.book.member.MemberVo">
+		select
+			mem_id, mem_pw, mem_name, mem_email, mem_lastlogin
+		from
+			mem_tbl
+		where
+			mem_id = #{mem_id}
+	</select>
+	
+	
+	<select id="modify" parameterType="String" resultType="com.so.book.member.MemberVo">
+		select
+			mem_name, mem_id, mem_pw, mem_email, mem_zipcode, mem_addr, mem_deaddr,mem_tel, mem_receivEmail, mem_receivSMS, mem_point, mem_joindate, mem_updatedate, mem_lastlogin
+		from
+			mem_tbl
+		where
+			mem_id = #{mem_id}
+		
+	
+	</select>
+	
+	
+	<update id="modify_save" parameterType="com.so.book.member.MemberVo">
+		update
+			mem_tbl
+		set
+			mem_name = #{mem_name}, mem_email = #{mem_email}, mem_zipcode = #{mem_zipcode}, mem_addr = #{mem_addr}, mem_deaddr = #{mem_deaddr}, mem_tel = #{mem_tel}, mem_updatedate = now()
+		where
+			mem_id = #{mem_id}
+		
+	</update>
+	
+	
+	<update id="pwchange" parameterType="Map">
+		update
+			 mem_tbl
+		set 
+			mem_pw = #{mem_pw}
+		where 
+			mem_id = #{mem_id}
+		
+	
+	</update>
+	
+	
+	<select id="idsearch" parameterType="Map" resultType="String">
+		select
+			mem_id
+		from
+			mem_tbl
+		where
+			mem_name = #{mem_name}
+		and
+			mem_email = #{mem_email}
+		
+	</select>
+	
+	
+	<select id="pwtemp" parameterType="Map" resultType="String">
+	
+		select
+			mem_email
+		from
+			mem_tbl
+		where
+			mem_id = #{mem_id}
+		and
+			mem_email = #{mem_email}
+	
+	
+	</select>
+	 
+</mapper>

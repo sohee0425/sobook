@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+	<div class="row">
+		<div class="mb-3">
+			<h3>마이 페이지</h3>
+				<a button type="button" class="" href="/member/modify">회원정보 수정</a>
+			<div class="mt-3">
+				<a button type="button" class="link-secondary" href="/member/pwchange">비밀번호 변경</a>
+			</div>
+		</div>
+		<div class="col-9">
+			내용
+		</div>
+	</div>
+	
+	
+	
+</th:block>
+</html>

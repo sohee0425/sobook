@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+	<div class="row mt-5">
+		<div class="col-6">
+			<h5>아이디 찾기</h5>
+			<div class="mb-3">
+				<label for="mem_name" class="form-label">이름</label>
+				<input type="text" class="form-control" id="mem_name" name="mem_name" placeholder="이름을 입력하세요">
+				</div>
+				<div class="mb-3">
+					<label for="mem_email1" class="form-label">이메일</label>
+					<input type="text" class="form-control" id="mem_email1" name="mem_email1" placeholder="이메일을 입력하세요">
+				</div>
+				<div class="mb-3  text-center">
+					<button type="button" class="btn btn-success" id="idsearch">아이디찾기</button>					
+				</div>
+		</div>
+		<div class="col-6">
+			<h5>임시 비밀번호 발급</h5>
+			<div class="mb-3">
+				<label for="mem_id" class="form-label">아이디</label>
+				<input type="text" class="form-control" id="mem_id" name="mem_id" placeholder="아이디를 입력하세요">
+			</div>
+			<div class="mb-3">
+				<label for="mem_email2" class="form-label">이메일</label>
+				<input type="text" class="form-control" id="mem_email2" name="mem_email2" placeholder="이메일을 입력하세요">
+			</div>
+			<div class="mb-3 text-center">
+				<button type="button" class="btn btn-success" id="pwtemp">임시 비밀번호 발급</button>
+			</div>
+		</div>
+	</div>
+</th:block>
+<th:block layout:fragment="script2">
+<script th:inline="javascript">
+
+	$(document).ready(function() {
+
+		// 아이디찾기 id="idsearch"
+		$("#idsearch").on("click", function() {
+
+			$.ajax({
+				url : '/member/idsearch',
+				type: 'get',
+				data : {mem_name: $("#mem_name").val() , mem_email : $("#mem_email").val()}, // 자바스크립트 Object문법
+				dataType: 'text',
+				success : function(result) {
+					if(result == "success") {
+						alert("아이디를 메일로 발송했습니다.");
+					}else if(result == "fail") {
+						alert("입력정보를 확인 바랍니다.");						
+					}
+
+					$("#mem_name").val(""); // 이름 지우기
+					$("#mem_email").val(""); // 메일 지우기
+				}
+			});
+		});
+
+		// 임시비밀번호 발급  id="pwtemp"
+		$("#pwtemp").on("click", function() {
+			$.ajax({
+				url : '/member/pwtemp',
+				type: 'get',
+				data : {mem_id: $("#mem_id").val() , mem_email : $("#mem_email2").val()}, // 자바스크립트 Object문법
+				dataType: 'text',
+				success : function(result) {
+					if(result == "success") {
+						alert("임시비밀번호를 메일로 발송했습니다.");
+						location.href = "/member/login";
+					}else if(result == "fail") {
+						alert("입력정보를 확인 바랍니다.");
+						$("#mem_id").val(""); // 아이디 지우기
+						$("#mem_email2").val(""); // 메일 지우기
+					}
+				}
+			});
+		});
+
+	});
+
+
+</script>
+
+</th:block>
+</html>
