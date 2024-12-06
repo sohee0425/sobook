@@ -225,7 +225,7 @@ public class MemberController {
 			
 			String result = "";
 			
-			String d_mem_email = memberService.pwtemp(mem_id, mem_email);
+			String d_mem_email = memberService.pwtemp_confirm(mem_id, mem_email);
 			
 			if(d_mem_email != null) {
 				result = "success";

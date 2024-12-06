@@ -23,6 +23,6 @@ public interface MemberMapper {
 	
 	String idsearch(@Param("mem_name") String mem_name, @Param("mem_email") String mem_email);
 	
-	String pwtemp(@Param("mem_id") String mem_id, @Param("mem_email") String mem_email);
+	String pwtemp_confirm(@Param("mem_id") String mem_id, @Param("mem_email") String mem_email);
 	 
 }

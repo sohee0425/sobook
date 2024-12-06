@@ -39,7 +39,7 @@ public class MemberService {
 		return memberMapper.idsearch(mem_name, mem_email);
 	}
 	
-	public String pwtemp(String mem_id, String mem_email) {
-		return memberMapper.pwtemp(mem_id, mem_email);
+	public String pwtemp_confirm(String mem_id, String mem_email) {
+		return memberMapper.pwtemp_confirm(mem_id, mem_email);
 	}
 }
