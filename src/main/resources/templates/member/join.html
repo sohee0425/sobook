@@ -36,21 +36,27 @@
                     </div>
                     
                     <div class="col-sm-4">
-                        <button type="button" class="btn btn-outline-success" id="btnIDCheck">ID Check</button>
+                        <button type="button" class="btn btn-outline-success" id="btnIDCheck">아이디 중복 확인</button>
                     </div>
                     <span class="col-sm-2" id="idCheckMsg" style="color: red;"></span>
                 </div>
+                
                 <div class="form-group row mb-3">
                     <label for="mem_pw" class="col-sm-2 col-form-label">비밀번호</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <input type="password" class="form-control" id="mem_pw" name="mem_pw" placeholder="비밀번호 입력">
                     </div>
-                    <label for="mem_pw_2" class="col-sm-2 col-form-label">비밀번호 확인</label>
-                    <div class="col-sm-4">
-                        <input type="password" class="form-control" id="mem_pw_2" placeholder="비밀번호 확인">
                     </div>
-                </div>
-                
+                    
+                    <div class="form-group row mb-3">
+                    <label for="mem_pw2" class="col-sm-2 col-form-label">비밀번호 확인</label>
+                    
+                    <div class="col-sm-3">
+                    <input type="password" class="form-control" id="mem_pw2" name="mem_pw2" placeholder="비밀번호 입력">
+                    <div id="pw_message"></div>
+                    </div>
+                    
+              </div>
 
                 <div class="form-group row mb-3">
                     <label for="mem_email" class="col-sm-2 col-form-label">이메일</label>
@@ -237,11 +243,12 @@
         // 전역변수
         let id_check = false; // 아이디 중복체크 여부를 확인하는 변수
         let email_auth = false; // 이메일 인증여부를 확인하는 변수
+        let pw_check = false;
         
         // 아이디 중복체크 클릭설정.  id="btnIDCheck"
         $("#btnIDCheck").on("click", function() {
             
-            // id="u_id"
+            // 
             let mem_id = $("#mem_id");
             
             if(mem_id.val() == "") {
@@ -268,6 +275,24 @@
         });
 
 
+        // 비밀번호 일치 확인
+       $(function() {
+           $("#mem_pw, #mem_pw2").on("keyup", function() {
+               let pw1 = $("#mem_pw").val();
+               let pw2 = $("#mem_pw2").val();
+               let message = $("#pw_message");
+
+               // 비밀번호 확인 로직
+               if (pw2 === "") {
+                   message.text(""); // 입력이 비어있을 경우 메시지 초기화
+               } else if (pw1 === pw2) {
+                   message.text("비밀번호가 일치합니다.").removeClass("error").addClass("success");
+               } else {
+                   message.text("비밀번호가 일치하지 않습니다.").removeClass("success").addClass("error");
+               }
+           });
+       });	
+        
         // 메일인증요청. id="btnMailAuthcode"   id="u_email"
         $("#btnMailAuthcode").on("click", function() {
             if($("#mem_email").val() == "") {
@@ -333,7 +358,6 @@
                 alert("메일 인증확인바랍니다.");
                 return;
             }
-
 
 
             // return;

@@ -15,6 +15,7 @@ public class MemberService {
 		return memberMapper.idCheck(mem_id);
 	}
 	
+	
 	public void join(MemberVo vo) {
 		memberMapper.join(vo);
 	}
