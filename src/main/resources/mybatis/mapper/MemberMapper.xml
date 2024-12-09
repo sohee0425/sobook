@@ -90,8 +90,13 @@
 			mem_id = #{mem_id}
 		and
 			mem_email = #{mem_email}
-	
-	
 	</select>
+	
+	<delete id="delete" parameterType="String">
+		delete from
+			mem_tbl
+		where
+			mem_id = #{mem_id}
+	</delete>
 	 
 </mapper>

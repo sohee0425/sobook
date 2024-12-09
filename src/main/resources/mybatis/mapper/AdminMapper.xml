@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.so.book.admin.AdminMapper">
+
+	<select id="admin_ok" resultType="com.so.book.admin.AdminDTO">
+		select
+			adm_id, adm_pw, adm_date
+		from
+			admin_tbl 
+		where
+			adm_id = #{adm_id}
+	</select>
+
+</mapper>

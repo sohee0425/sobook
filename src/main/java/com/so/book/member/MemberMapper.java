@@ -25,4 +25,6 @@ public interface MemberMapper {
 	
 	String pwtemp_confirm(@Param("mem_id") String mem_id, @Param("mem_email") String mem_email);
 	 
+	// 회원 탈퇴
+	void delete(String mem_id);
 }

@@ -24,7 +24,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 		
 		boolean result = false;
 		
-		// 로그인 session.setAttribute("login_auth", userInfo);
 		// 인증된 상태인지 체크하는 작업
 		HttpSession session = request.getSession();
 		MemberVo memberVo = (MemberVo)session.getAttribute("login_auth");

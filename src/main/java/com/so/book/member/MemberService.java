@@ -43,4 +43,8 @@ public class MemberService {
 	public String pwtemp_confirm(String mem_id, String mem_email) {
 		return memberMapper.pwtemp_confirm(mem_id, mem_email);
 	}
+	
+	public void delete(String mem_id) {
+		memberMapper.delete(mem_id);
+	}
 }

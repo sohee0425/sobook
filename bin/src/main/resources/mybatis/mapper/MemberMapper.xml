@@ -80,7 +80,7 @@
 	</select>
 	
 	
-	<select id="pwtemp" parameterType="Map" resultType="String">
+	<select id="pwtemp_confirm" parameterType="Map" resultType="String">
 	
 		select
 			mem_email

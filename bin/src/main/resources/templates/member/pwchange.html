@@ -19,8 +19,8 @@
 			    <input type="password" class="form-control" id="new_pw" name="new_pw">
 			  </div>
 			  <div class="mb-3">
-			    <label for="confirm_pw" class="form-label">비밀번호확인</label>
-			    <input type="password" class="form-control" id="confirm_pw" name="confirm_pw">
+			    <label for="new_pwConfirm" class="form-label">비밀번호확인</label>
+			    <input type="password" class="form-control" id="new_pwConfirm" name="new_pwConfirm">
 			  </div>
 
 			  <button type="submit" class="btn btn-primary">비밀번호 변경하기</button>
@@ -45,10 +45,20 @@
 		// 비밀번호 변경하기(로그인상태) btn_pwchange
 		$("#btn_pwchange").on("click", function() {
 
+			let cur_pw = $("#cur_pw").val(); // 현재 비번
+			let new_pw = $("#new_pw").val(); // 새 비번
+			let new_pwConfirm = $("#new_pwConfirm").val()	// 새 비번끼리 일치하는지 확인
+			
+			// 새 비번끼리 일치하는지 확인
+			if ($("#new_pw") !== $("#new_pwConfirm")) {
+				alert("비밀번호가 일치하지 않습니다.");
+				return;
+			}
+			
 			$.ajax({
 				url : '/member/pwchange',
 				type: 'post',
-				data : {cur_pw: $("#cur_pw").val() , new_pw : $("#new_pw").val()}, // 자바스크립트 Object문법
+				data : {cur_pw: $("#cur_pw") , new_pw : $("#new_pw"), new_pwConfirm : $("#new_pwConfirm")}, // 자바스크립트 Object문법
 				dataType: 'text',
 				success : function(result) {
 					if(result == "success") {
@@ -58,6 +68,7 @@
 					}
 					$("#cur_pw").val(""); // 현재 비번 지우기
 					$("#new_pw").val(""); // 신규비번 지우기
+					$("#new_pwConfirm").val("");
 				}
 			});
 
