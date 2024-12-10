@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+ <th:block layout:fragment="script">
+ <script>
+    let msg = "${msg}";
+    if(msg === "비밀번호를 다시 확인해주세요.") {
+        alert("비밀번호를 다시 확인해주세요");
+    }
+ </script>
+ </th:block>
+ <th:block layout:fragment="css">
+ 
+ 
+ </th:block>
+
+<th:block layout:fragment="content">
+
+</th:block>
+</html>

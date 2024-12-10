@@ -1,5 +1,7 @@
 package com.so.book.member;
 
+import java.net.Authenticator;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -263,69 +265,45 @@ public class MemberController {
 		
 	}
 	
-//	@PostMapping("/delete")
-//	public String deleteOk(String mem_pw, HttpSession session, RedirectAttributes rttr) throws Exception {
-//		
-//		String mem_id = ((MemberVo) session.getAttribute("login_status")).getMem_id();
-//		
-//		MemberVo vo = memberService.login(mem_id);
-//		
-//		String msg = "";
-//		String url = "/member/delete";
-//		
-//		if(vo != null) {
-//	        if (mem_pw == null || mem_pw.trim().isEmpty()) {
-//	            msg = "pwEmpty"; // 비밀번호 입력되지 않은 경우
-//	        } else if (passwordEncoder.matches(mem_pw, vo.getMem_pw())) {
-//	            memberService.delete(mem_id);
-//	            session.invalidate();
-//	            msg = "deleteSuccess";
-//	            url = "/"; // 성공 시 메인으로 리다이렉트
-//	        } else {
-//	            msg = "pwFail"; // 비밀번호 불일치
-//	        }
-//	    } else {
-//	        msg = "userNotFound"; // 사용자 정보 없음
-//	    }
-//		
-//		rttr.addFlashAttribute("msg", msg);
-//		return "redirect:" + url;
-//	}
-	
 	@PostMapping("/delete")
 	public String deleteOk(String mem_pw, HttpSession session, RedirectAttributes rttr) throws Exception {
-	    MemberVo loginStatus = (MemberVo) session.getAttribute("login_status");
-	    if (loginStatus == null) {
-	        rttr.addFlashAttribute("msg", "userNotLoggedIn");
-	        return "redirect:/member/login";
-	    }
-
-	    String mem_id = loginStatus.getMem_id();
-	    MemberVo vo = memberService.login(mem_id);
-
-	    String msg = "error";
-	    String url = "/member/delete";
-
-	    if (vo != null) {
-	        if (mem_pw == null || mem_pw.trim().isEmpty()) {
-	            msg = "pwEmpty"; // 비밀번호 입력되지 않은 경우
-	        } else if (vo.getMem_pw() != null && passwordEncoder.matches(mem_pw, vo.getMem_pw())) {
-	            memberService.delete(mem_id);
-	            session.invalidate();
-	            msg = "deleteSuccess";
-	            url = "/";
-	        } else {
-	            msg = "pwFail"; // 비밀번호 불일치
-	        }
-	    } else {
-	        msg = "userNotFound"; // 사용자 정보 없음
-	        url = "/error"; // 오류 페이지로 리다이렉트
-	    }
-
-	    rttr.addFlashAttribute("msg", msg);
-	    return "redirect:" + url;
+	    
+		String mem_id = ((MemberVo) session.getAttribute("login_auth")).getMem_id();
+		
+		MemberVo vo = memberService.login(mem_id);
+		
+		String msg = "";
+		String url = "/";
+		
+		if(vo != null) {
+			if(passwordEncoder.matches(mem_pw, vo.getMem_pw())) {
+				
+				memberService.delete(mem_id);
+				session.invalidate();
+			}else {
+				msg = "pwFail";
+				url = "/member/delete";
+				
+				rttr.addFlashAttribute("msg", msg);
+			}
+		}
+		return "redirect:" + url;
 	}
 
-	
+	// 회원 수정하기 전 비밀번호 확인
+//	@GetMapping("/checkPwd")
+//	public void checkPwd() {
+//		
+//	}
+//	
+//	@PostMapping("/checkPwd")
+//	public String checkPwdOk(String mem_pw, HttpSession session, RedirectAttributes rttr) throws Exception {
+//		
+//		String mem_id = ((MemberVo) session.getAttribute("login_auth")).getMem_id();
+//		
+//		
+//		return "";
+//	}
+
 	
 }
