@@ -19,25 +19,18 @@
 						<!-- /.card-header -->
 						<!-- form start -->
 						<form>
-						  <div class="card-body">
-							  <div class="form-group">
+						<div class="card-body">
+							<div class="form-group">
 								<label>1차 카테고리</label>
-								<select class="form-control" name="cate_prtcode" id="cate_prtcode">
-								  <option>option 1</option>
-								  <option>option 2</option>
-								  <option>option 3</option>
-								  <option>option 4</option>
-								  <option>option 5</option>
+								<select class="custom-select" name="cate_prtcode" id="btn_firstCategory">
+									<option>1차 카테고리 선택</option>
+									<option th:each= "category:${cate_list}" th:value="${category.cate_code}" th:text="${category.cate_name}"></option>
 								</select>
 								<label>2차 카테고리</label>
-								<select class="form-control" name="cate_code" id="cate_code">
-								  <option>option 1</option>
-								  <option>option 2</option>
-								  <option>option 3</option>
-								  <option>option 4</option>
-								  <option>option 5</option>
+								<select class="custom-select" name="cate_code" id="btn_secondCategory">
+									<option>2차 카테고리 선택</option>
 								</select>
-							  </div>
+							</div>
 							<div class="form-group">
 							<label for="pro_name">상품명</label>
 							  <input type="text" class="form-control" id="pro_name" name="pro_name" placeholder="상품명 입력">
@@ -105,12 +98,49 @@
 					shiftEnterMode : CKEDITOR.ENTER_P,
 					toolbarCanCollapse : true,
 					removePlugins : "elementspath", 
-					 //업로드 탭기능추가 속성. CKEditor에서 파일업로드해서 서버로 전송클릭하면 , 이 주소가 동작된다.
+					//업로드 탭기능추가 속성. CKEditor에서 파일업로드해서 서버로 전송클릭하면 , 이 주소가 동작된다.
 					filebrowserUploadUrl: '/imageupload' 
 			}
-		
+	
 			// id="content" 인 textarea태그에 ckeditor_config 변수가 가지고 있는 설정정보를 적용하겠다.는 의미
 			CKEDITOR.replace("pro_content", ckeditor_config);
 		</script>
 	</th:block>
+
+	<th:block layout:fragment="script2">
+		
+	<script>
+
+		$(document).ready(function(){
+
+			// 1차 카테고리 클릭 이벤트 설정 id="btn_firstCategory"
+			$("#btn_firstCategory").on("change", function() {
+				
+				let firstCategoryCode = $("#btn_firstCategory").val();
+				
+				// 2차 카테고리 목록 가져오는 매핑주소
+				let url = "/admin/category/secondcategory/" + firstCategoryCode;
+
+				$.getJSON(url, function(secondCategoryList) {
+
+					//console.log("2차카테고리정보",secondCategoryList);
+					// 2차 카테고리 select 태그 참조
+				let secondCategoryCode = $("#btn_secondCategory");
+
+				let optionStr = "";
+
+				for(let i=0; i<secondCategoryList.length; i++) {
+					optionStr += "<option value='" + secondCategoryList[i].cate_code + "'>" + secondCategoryList[i].cate_name + "</option>";
+				}
+
+				secondCategoryCode.find("option").remove();
+				secondCategoryCode.append("<option>2차카테고리 선택</option");
+				secondCategoryCode.append(optionStr);
+
+				});
+			});
+		});
+
+	</script>
+</th:block>
 </html>
