@@ -8,47 +8,47 @@
 	</th:block>
 
 	<th:block layout:fragment="content">
-	      <h3 class="text-center mt-5 mb-3">공지사항 등록</h3>
-		  <div class="container mt-5">
-			<div class="row">
-				<div class="col">
-					<div class="card card-primary">
-						<form class="form-horizontal" method="post" id="saveForm" action="/admin/notice/register">
-						<div class="card-header">
-						  <h3 class="card-title">공지사항 등록</h3>
+		<h3 class="text-center mt-5 mb-3">공지사항 등록</h3>
+		<div class="container mt-5">
+		<div class="row">
+			<div class="col">
+				<div class="card card-primary">
+					<form class="form-horizontal" method="post" id="saveForm" action="/admin/notice/register">
+					<div class="card-header">
+						<h3 class="card-title">공지사항 등록</h3>
+					</div>
+					<!-- /.card-header -->
+					<!-- form start -->
+					<!-- <form method="post" accept="/admin/notice/register"> -->
+					<div class="card-body">
+						<div class="form-group">
+						<label for="ntc_title">제목</label>
+						<input type="text" class="form-control" id="ntc_title" name="ntc_title" placeholder="제목 입력">
 						</div>
-						<!-- /.card-header -->
-						<!-- form start -->
-						<!-- <form method="post" accept="/admin/notice/register"> -->
-						<div class="card-body">
-							<div class="form-group">
-							<label for="ntc_title">제목</label>
-							<input type="text" class="form-control" id="ntc_title" name="ntc_title" placeholder="제목 입력">
-							</div>
-							<div class="form-group">
-								<label for="adm_id">작성자</label>
-								<div>
-								<input type="text" class="form-control" id="adm_id" name="adm_id" placeholder="작성자 입력">
-							</div>
-								</div>
-
-								<label for="ntc_content">공지글 내용</label> <!--ckdeitor 사용-->
-									<textarea class="form-control" id="ntc_content" name="ntc_content" placeholder="상세설명 입력"></textarea>
+						<div class="form-group">
+							<label for="adm_id">작성자</label>
+							<div>
+							<input type="text" class="form-control" id="adm_id" name="adm_id" placeholder="작성자 입력">
+						</div>
 							</div>
 
+							<label for="ntc_content">공지글 내용</label> <!--ckdeitor 사용-->
+								<textarea class="form-control" id="ntc_content" name="ntc_content" placeholder="상세설명 입력"></textarea>
+						</div>
 
-							
-						  <!-- /.card-body -->
-		  
-						  <div class="card-footer">
-							<button type="submit" class="btn btn-primary">글 저장</button>
-						  </div>
-						<!-- </form> -->
-					</form>
-					  </div>
-				</div>
+
+						
+						<!-- /.card-body -->
+		
+						<div class="card-footer">
+						<button type="submit" class="btn btn-primary">글 저장</button>
+						</div>
+					<!-- </form> -->
+				</form>
+					</div>
 			</div>
 		</div>
+	</div>
 		<script>
 			// ckeditor 설정
 			var ckeditor_config = {

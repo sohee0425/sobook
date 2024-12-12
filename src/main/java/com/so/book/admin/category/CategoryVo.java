@@ -1,4 +1,4 @@
-package com.so.book.category;
+package com.so.book.admin.category;
 
 import lombok.Getter;
 import lombok.Setter;

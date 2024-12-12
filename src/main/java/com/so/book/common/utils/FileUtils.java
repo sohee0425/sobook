@@ -20,7 +20,7 @@ import net.coobird.thumbnailator.Thumbnails;
 
 // 파일 업로드와 관련된 작업
 
-@Component
+@Component // bean생성
 public class FileUtils {
 
 	// 기본 : 파일 업로드 시 날짜폴더생성하여 업로드한다.

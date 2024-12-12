@@ -6,48 +6,48 @@
 <th:block layout:fragment="content">
 	<div class="card">
 		<div class="card-header">
-		  <h3 class="card-title text-center">공지사항 목록</h3>
-		</div>
-		<!-- /.card-header -->
-		<div class="card-body">
-		  <table class="table table-bordered">
-			<thead>
-			  <tr>
-				<th scope="col">번호</th>
-				<th scope="col">제목</th>
-				<th cope="col">작성자</th>
-				<th cope="col">조회수</th>
-				<th scope="col">작성일</th>
-			  </tr>
-			</thead>
-
-			
-			<tbody>
-			<tr th:each= "NoticeVo:${list}">
-				<td th:text="${NoticeVo.ntc_bno}"></td>
-				<td><a th:href= "|/admin/notice/read?ntc_bno=${NoticeVo.ntc_bno}|" th:text="${NoticeVo.ntc_title}"></a></td>
-				<td th:text="${NoticeVo.adm_id}"></td>
-				<td th:text="${NoticeVo.ntc_viewcount}"></td>
-				<td th:text="${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+		<h3 class="card-title text-center">공지사항 목록</h3>
+	</div>
+	<!-- /.card-header -->
+	<div class="card-body">
+		<table class="table table-bordered">
+		<thead>
+			<tr>
+			<th scope="col">번호</th>
+			<th scope="col">제목</th>
+			<th cope="col">작성자</th>
+			<th cope="col">조회수</th>
+			<th scope="col">작성일</th>
 			</tr>
-			</tbody>
-		  </table>
-		  <!-- <div> 필요할지 아닐지 생각해보고 넣을 예정 (글 작성,..)
-			<button type="button" class="btn btn-primary" onclick="fn_editForm()">글 작성</button>
-			</div>
-		</div> -->
-		<!-- /.card-body -->
-		<div class="card-footer clearfix">
-		  <ul class="pagination pagination-sm m-0 float-right">
-			<li class="page-item"><a class="page-link" href="#">«</a></li>
-			<li class="page-item"><a class="page-link" href="#">1</a></li>
-			<li class="page-item"><a class="page-link" href="#">2</a></li>
-			<li class="page-item"><a class="page-link" href="#">3</a></li>
-			<li class="page-item"><a class="page-link" href="#">»</a></li>
-		  </ul>
-		</div>
+		</thead>
+
 		
-	  </div>
+		<tbody>
+		<tr th:each= "NoticeVo:${list}">
+			<td th:text="${NoticeVo.ntc_bno}"></td>
+			<td><a th:href= "|/admin/notice/read?ntc_bno=${NoticeVo.ntc_bno}|" th:text="${NoticeVo.ntc_title}"></a></td>
+			<td th:text="${NoticeVo.adm_id}"></td>
+			<td th:text="${NoticeVo.ntc_viewcount}"></td>
+			<td th:text="${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+		</tr>
+		</tbody>
+		</table>
+		<!-- <div> 필요할지 아닐지 생각해보고 넣을 예정 (글 작성,..)
+		<button type="button" class="btn btn-primary" onclick="fn_editForm()">글 작성</button>
+		</div>
+	</div> -->
+	<!-- /.card-body -->
+	<div class="card-footer clearfix">
+		<ul class="pagination pagination-sm m-0 float-right">
+		<li class="page-item"><a class="page-link" href="#">«</a></li>
+		<li class="page-item"><a class="page-link" href="#">1</a></li>
+		<li class="page-item"><a class="page-link" href="#">2</a></li>
+		<li class="page-item"><a class="page-link" href="#">3</a></li>
+		<li class="page-item"><a class="page-link" href="#">»</a></li>
+		</ul>
+	</div>
+	
+	</div>
 </th:block>
 
 <th:block th:replace="~{admin/fragments/footer}"></th:block> 

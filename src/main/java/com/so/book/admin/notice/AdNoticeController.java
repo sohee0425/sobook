@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.so.book.common.utils.FileUtils;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AdNoticeController {
 
 	private final AdNoticeService adNoticeService;
+	private final FileUtils fileUtils;
 	
 	// 기본 주소
 	@GetMapping("/main")
