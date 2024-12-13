@@ -58,7 +58,7 @@
 							<div class="input-group col-8">
 							<div class="custom-file">
 								<input type="file" class="custom-file-input" id="pro_img_upload" name="pro_img_upload">
-								<label class="custom-file-label" for="exampleInputFile">이미지 파일 선택</label>
+								<label class="custom-file-label" for="pro_img_upload">이미지 파일 선택</label>
 							</div>
 							<div class="input-group-append">
 								<span class="input-group-text">상품 이미지</span>
@@ -146,8 +146,8 @@
 
 			// 상품이미지 미리보기 pro_img_upload e 매개변수 : 선택한 파일정보
 			$("#pro_img_upload").on("change", function(e) {
-				let file = e.target.files(0); // 파일첨부에서 선택한 한개의 파일을 가리키는 의미
-
+				let file = e.target.files[0]; // 파일첨부에서 선택한 한개의 파일을 가리키는 의미
+				
 				let reader = new FileReader();
 				reader.readAsDataURL(file);
 

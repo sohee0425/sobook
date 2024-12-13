@@ -17,7 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.so.book.admin.category.AdCategoryService;
 import com.so.book.admin.category.CategoryVo;
+import com.so.book.common.constants.Constants;
 import com.so.book.common.utils.FileUtils;
+import com.so.book.common.utils.PageMaker;
+import com.so.book.common.utils.SearchCriteria;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,6 +36,7 @@ public class AdProductController {
 	
 	private final AdProductService adProductService;
 	private final AdCategoryService adCategoryService;
+	// 이미지 관련 작업 기능
 	private final FileUtils fileUtils;
 	
 	@Value("${com.ezen.upload.path}")
@@ -132,11 +136,47 @@ public class AdProductController {
 		return entity;
 	}
 	
+	// 상품목록
+	@GetMapping("/pro_list") // 데이터 보여줘야할 때 model 필요
+	public void pro_list(Model model, SearchCriteria cri) throws Exception {
+		
+		cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
+		
+		//1) 상품목록
+		List<ProductVo> pro_list = adProductService.pro_list(cri);
+		
+		
+		// 날짜 폴더의 \ 를 / 로 변환하는 작업
+		pro_list.forEach(vo -> {
+			vo.setPro_up_folder(vo.getPro_up_folder().replace("\\", "/"));
+		});
+		
+		model.addAttribute("pro_list", pro_list); // 타임리프 사용 가능
+		
+		//2) 페이징
+		PageMaker pageMaker = new PageMaker();
+		
+		pageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGE_SIZE);
+		
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(adProductService.getTotalCount(cri));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+	}
+	
+	// 상품목록 이미지출력하기
+	@GetMapping("/image_display")
+	public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
+		
+		return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
+	}
+	
 	// 상품수정폼
 	
 	// 상품수정(변경 저장)
 	
-	// 상품목록
+	
 	
 	// 상품 삭제
 	
