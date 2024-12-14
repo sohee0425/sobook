@@ -9,4 +9,7 @@ public class Constants {
 	
 	// 관리자 상품 목록 페이지개수 설정
 	public static final int ADMIN_PRODUCT_LIST_PAGE_SIZE = 5;
+
+	// 관리자 공지사항 목록 개수 설정
+	public static final int ADMIN_NOTICE_LIST_PAGE_SIZE = 5;
 }

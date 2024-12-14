@@ -9,13 +9,13 @@
 			(#{ntc_title}, #{ntc_content}, #{adm_id})
 	</insert>
 	
-	<select id="listAll" resultType="com.so.book.admin.notice.NoticeVo">
+	<select id="listAll" resultType="com.so.book.admin.notice.NoticeVo" parameterType="com.so.book.common.utils.SearchCriteria">
 	select
 		ntc_bno, ntc_title, ntc_content, adm_id, ntc_regdate, ntc_updatedate, ntc_viewcount
 	from
 		notice_tbl
-	order by ntc_bno desc
-	limit 10
+		
+		<include refid="search"></include>
 	</select>
 	
 	<select id="read" parameterType="int" resultType="com.so.book.admin.notice.NoticeVo">
@@ -26,5 +26,35 @@
 	where
 		ntc_bno = #{ntc_bno}
 	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select
+			count(*)
+		from
+			notice_tbl
+			
+		<include refid="search"></include>
+			
+	</select>
+	
+	<sql id="search">
+
+	<if test="searchType != null">
+	 <if test="searchType == 't'.toString()">
+		and ntc_title like concat('%', #{keyword}, '%')
+	 </if>
+	  <if test="searchType == 'n'.toString()">
+		and ntc_bno like concat('%', #{keyword}, '%')
+	 </if>
+	  <if test="searchType == 'i'.toString()">
+		and adm_id like concat('%', #{keyword}, '%')
+	 </if>
+	  <if test="searchType == 'ti'.toString()">
+		and ntc_title like concat('%', #{keyword}, '%') 
+		 or 
+		adm_id like concat('%', #{keyword}, '%')
+	 </if>
+	</if>
+</sql>
 	
 </mapper>

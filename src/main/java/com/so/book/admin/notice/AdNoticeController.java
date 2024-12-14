@@ -1,16 +1,29 @@
 package com.so.book.admin.notice;
 
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.lang.ProcessHandle.Info;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.so.book.common.constants.Constants;
 import com.so.book.common.utils.FileUtils;
+import com.so.book.common.utils.PageMaker;
+import com.so.book.common.utils.SearchCriteria;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +34,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AdNoticeController {
 
 	private final AdNoticeService adNoticeService;
-	private final FileUtils fileUtils;
 	
 	// 기본 주소
 	@GetMapping("/main")
@@ -37,8 +49,10 @@ public class AdNoticeController {
 	
 	// 글쓰기 저장 save
 	@PostMapping("/register")
-	public String registerPOST(NoticeVo vo) throws Exception {
+	public String registerPOST(NoticeVo vo, MultipartFile list_img_upload) throws Exception {
 		
+		
+		// 글 정보 DB저장
 		adNoticeService.save(vo);
 		
 		return "redirect:/admin/notice/list";
@@ -46,16 +60,29 @@ public class AdNoticeController {
 	
 	// 글 목록 list
 	@GetMapping("/list")
-	public void listAll(Model model) throws Exception {
+	public void listAll(Model model, SearchCriteria cri) throws Exception {
 		
 //		List<NoticeVo> list = adNoticeService.listAll();
 		
+		// 글 목록
 		model.addAttribute("list", adNoticeService.listAll());
+		
+		
+		// 페이징
+		PageMaker pageMaker = new PageMaker();
+		
+		pageMaker.setDisplayPageNum(Constants.ADMIN_NOTICE_LIST_PAGE_SIZE);
+		
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(adNoticeService.getTotalCount(cri));
+		
+		model.addAttribute("pageMaker", pageMaker);
 	}
+	
 	
 	// 글 조회
 	@GetMapping("/read")
-	public void read(int ntc_bno, Model model) throws Exception {
+	public void read(int ntc_bno, Model model, @ModelAttribute("cri") SearchCriteria cri) throws Exception {
 		
 		NoticeVo noticeVo = adNoticeService.read(ntc_bno);
 		model.addAttribute("NoticeVo", noticeVo);

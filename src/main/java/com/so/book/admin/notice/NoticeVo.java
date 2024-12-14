@@ -18,4 +18,6 @@ public class NoticeVo {
 	private Date ntc_regdate;
 	private Date ntc_updatedate;
 	private int ntc_viewcount;
+	private String ntc_up_folder;
+	private String ntc_img;
 }
