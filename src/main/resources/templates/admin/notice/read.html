@@ -6,40 +6,103 @@
 <th:block layout:fragment="content">
 <div class="row">
 	<div class="col">
-<h1 class="mt-5">공지사항 조회</h1>
+<h3 class="mt-5 text-center">공지사항 조회</h3>
     <form id="form1" method="get" action="/admin/notice/read">
-    	<input type="hidden" name="ntc_bno" th:value="${NoticeVo.ntc_bno}">
-    	<input type="hidden" name="page" th:value="${cri.page}">
-    	<input type="hidden" name="perPageNum" th:value="${cri.perPageNum }">
-    	<input type="hidden" name="searchType" th:value="${cri.searchType }">
-    	<input type="hidden" name="keyword" th:value="${cri.keyword }">
-    </form>
-    <table class="table">
-	  <tbody>
-	    <tr>
-	      <td scope="row" th:text="|게시물 번호 : ${NoticeVo.ntc_bno}|"></td>
-	      <td th:text="|제목: ${NoticeVo.ntc_title}|"></td>
-	      <td th:text="|조회수 : ${NoticeVo.ntc_viewcount}|"></td>
-	    </tr>
-	    <tr>
-	      <td scope="row">내용</td>
-	      <td colspan="2" th:text="${NoticeVo.ntc_content}"></td>
-	    </tr>
-	    <tr>
-	      <td scope="row" colspan="3" 
-	      th:text="|등록일 : ${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')} / 수정일 : ${#dates.format(NoticeVo.ntc_updatedate, 'yyyy-MM-dd HH:mm:ss')}|">       	      
-	      </td>
-	    </tr>
-	  </tbody>
+	<input type="hidden" name="ntc_bno" th:value="${NoticeVo.ntc_bno}">
+	<input type="hidden" name="page" th:value="${cri.page}">
+	<input type="hidden" name="perPageNum" th:value="${cri.perPageNum }">
+	<input type="hidden" name="searchType" th:value="${cri.searchType }">
+	<input type="hidden" name="keyword" th:value="${cri.keyword }">
+	</form>
+<table class="table table-bordered"> 
+	
+	<thead>
+		<tr>
+			<td colspan="2" scope="row" th:text="|게시글 번호 : ${NoticeVo.ntc_bno}|"></td>
+		</tr>
+	</thead>
+	<tbody>
+	
+	<tr>
+		<td th:text="|제목 : ${NoticeVo.ntc_title}|"></td>
+		<td th:text="|조회수 : ${NoticeVo.ntc_viewcount}|"></td>
+	</tr>
+	<tr>
+		<td colspan="2" scope="row">내용</td>
+	</tr>
+	<tr>
+		<td colspan="2" th:text="${NoticeVo.ntc_content}"></td>
+	</tr>
+	<tr>
+		<td scope="row" colspan="3"
+		th:text="|등록일 : ${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')} / 수정일 : ${#dates.format(NoticeVo.ntc_updatedate, 'yyyy-MM-dd HH:mm:ss')}|">       	      
+		</td>
+	</tr>
+	</tbody>
 </table>
 <div>
- <button type="button" class="btn btn-primary" onclick="fn_editForm()">Edit</button>
- <button type="button" class="btn btn-danger" onclick="fn_delete_ok()">Delete</button>
- <button type="button" class="btn btn-success" onclick="fn_go_list()">list</button>
+<button type="button" class="btn btn-primary" onclick="fn_editForm()">Edit</button>
+<button type="button" class="btn btn-danger" onclick="fn_delete_ok()">Delete</button>
+<button type="button" class="btn btn-success" onclick="fn_go_list()">list</button>
+</div>
+</div>
+</div>
 
-</div>
-</div>
-</div>
+<!-- <div class="card card-primary">
+	<div class="card-header">
+	<h3 class="card-title">공지사항 조회</h3>
+	</div>
+	<div class="card-body">
+	<strong>제목</strong>
+	<p th:text="${NoticeVo.ntc_title}"></p>
+	<hr>
+
+	<strong>작성자</strong>
+	<p th:text="${NoticeVo.adm_id}"></p>
+	<hr>
+
+	<strong>내용</strong>
+	<p th:text="${NoticeVo.ntc_content}">
+	</p>
+
+	<hr>
+
+
+	<p th:text="|등록일 : ${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')} / 수정일 : ${#dates.format(NoticeVo.ntc_updatedate, 'yyyy-MM-dd HH:mm:ss')}|"></p>
+	</div>
+</div> -->
+
+    <!-- <div class="row">
+        <div class="col">
+            <section>
+                <table class="table-bordered">
+                    <colgroup>
+                        <col style="width:10%;" /><col style="width:23%;" /><col style="width:10%;" /><col style="width:23%;" />
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th scope="row">글 번호</th>
+                            <td th:text="${NoticeVo.ntc_bno}"></td>
     
+                            <th scope="row">등록일</th>
+                            <td th:text="${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">제목</th>
+                            <td th:text="${NoticeVo.ntc_title}"></td>
+    
+                            <th scope="row">조회</th>
+                            <td colspan="3" th:text=${NoticeVo.ntc_viewcount}></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">내용</th>
+                            <td colspan="3" th:text="${NoticeVo.ntc_content}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            </section>
+        </div>
+    </div> -->
 </th:block>
 

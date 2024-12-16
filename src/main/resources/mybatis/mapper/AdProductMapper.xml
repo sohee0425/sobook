@@ -53,4 +53,15 @@
 	</if>
 </sql>
 
+	<delete id="pro_sel_delete">
+		delete from
+				product_tbl
+			where
+				pro_code in
+		<foreach collection="pro_code_arr" item="item" open="(" separator="," close=")">
+			#{item}
+			
+		</foreach>
+	</delete>
+	
 </mapper>

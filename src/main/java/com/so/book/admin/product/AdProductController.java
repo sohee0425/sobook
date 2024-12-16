@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.so.book.admin.category.AdCategoryService;
@@ -176,7 +178,20 @@ public class AdProductController {
 	
 	// 상품수정(변경 저장)
 	
-	
+	// 선택 상품 삭제 form태그
+	@PostMapping("/pro_sel_delete")
+	public String pro_sel_delete(int[] check, String[] pro_up_folder, String[] pro_img) throws Exception {
+		
+		
+		adProductService.pro_sel_delete(check);
+		
+		// 선택상품이미지 삭제
+		for(int i=0; i < check.length; i++) {
+			fileUtils.delete(uploadPath, pro_up_folder[i], pro_img[i], "image");
+		}
+		
+		return "redirect:/admin/product/pro_list";
+	}
 	
 	// 상품 삭제
 	

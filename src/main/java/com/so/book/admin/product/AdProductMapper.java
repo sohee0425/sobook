@@ -12,4 +12,6 @@ public interface AdProductMapper {
 	List<ProductVo> pro_list(SearchCriteria cri);
 	
 	int getTotalCount(SearchCriteria cri);
+	
+	void pro_sel_delete(int[] pro_code_arr);
 }

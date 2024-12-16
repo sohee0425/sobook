@@ -27,6 +27,13 @@ public class AdNoticeService {
 	}
 	
 	public NoticeVo read(int ntc_bno) throws Exception {
+		
+		adNoticeMapper.viewCount(ntc_bno);
 		return adNoticeMapper.read(ntc_bno);
+	}
+	
+	void edit(NoticeVo vo) throws Exception {
+		
+		adNoticeMapper.edit(vo);
 	}
 }

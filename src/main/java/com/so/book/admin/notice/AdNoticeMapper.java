@@ -13,4 +13,8 @@ public interface AdNoticeMapper {
 	int getTotalCount(SearchCriteria cri);
 	
 	NoticeVo read(int ntc_bno) throws Exception;
+	
+	void viewCount(int ntc_bno) throws Exception;
+	
+	void edit(NoticeVo vo) throws Exception;
 }

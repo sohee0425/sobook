@@ -17,10 +17,10 @@
 					<div class="card-header">
 						<h3 class="card-title">상품 목록</h3>
 					</div>
-					<!-- /.card-header -->
 					<!-- list start-->
-					<div class="card-body">
+					<div class="card-body row">
 						<!--search-->
+					<div class="col-8">
 						<form action="/admin/product/pro_list" method="get">
 							<div class="form-group row">
 								<div class="col-2">
@@ -33,19 +33,25 @@
 									</select>
 								</div>
 								<div class="col-4">
-									<input type="text" name="keyword" class="form-control"
-										placeholder="Enter ...">
+									<input type="text" name="keyword" class="form-control" placeholder="Enter ...">
 								</div>
 								<div class="col-2">
 									<button type="submit" class="btn btn-block btn-outline-info">Serach</button>
 								</div>
 							</div>
 						</form>
-
+					</div>
+					<div class="col-4">
+						<button type="button" class="btn btn-block w-50 btn-outline-danger" id="btn_sel_delete">선택삭제</button>
+					</div>
+					
+					<form name="frm_pro_list" id="frm_pro_list" action="/admin/product/pro_sel_delete" method="post">
 						<table class="table table-bordered">
 							<thead>
 								<tr>
-									<th style="width: 5%"><input type="checkbox"></th>
+									<th style="width: 5%">
+										<input type="checkbox" id="checkAll">
+									</th>
 									<th style="width: 5%">No.</th>
 									<th style="width: 30%">상품 정보</th>
 									<th style="width: 10%">판매가</th>
@@ -56,7 +62,11 @@
 							</thead>
 							<tbody>
 								<tr th:each="productVo:${pro_list}">
-									<td><input type="checkbox"></td>
+									<td>
+									<input type="checkbox" name="check" th:value="${productVo.pro_code}">
+									<input type="hidden" name="pro_up_folder" th:value="${productVo.pro_up_folder}">
+									<input type="hidden" name="pro_img" th:value="|s_${productVo.pro_img}|">
+									</td>
 									<td th:text="${productVo.pro_code}"></td>
 									<td>[[${productVo.pro_name}]]<br> <img
 										style="width: 100px; height: 100px;"
@@ -74,6 +84,7 @@
 								</tr>
 							</tbody>
 						</table>
+					</form>
 					</div>
 
 					<div class="card-footer clearfix">
@@ -129,69 +140,119 @@
 <th:block layout:fragment="script2">
 
 	<script>
-		$(document)
-				.ready(
-						function() {
+		$(document).ready(function() {
 
-							// 1차 카테고리 클릭 이벤트 설정 id="btn_firstCategory"
-							$("#btn_firstCategory")
-									.on(
-											"change",
-											function() {
+			// 1차 카테고리 클릭 이벤트 설정 id="btn_firstCategory"
+			$("#btn_firstCategory").on("change",function() {
 
-												let firstCategoryCode = $(
-														"#btn_firstCategory")
-														.val();
+				let firstCategoryCode = $("#btn_firstCategory").val();
 
-												// 2차 카테고리 목록 가져오는 매핑주소
-												let url = "/admin/category/secondcategory/"
-														+ firstCategoryCode;
+				// 2차 카테고리 목록 가져오는 매핑주소
+				let url = "/admin/category/secondcategory/"+ firstCategoryCode;
+				$.getJSON(url, function(secondCategoryList) {
 
-												$
-														.getJSON(
-																url,
-																function(
-																		secondCategoryList) {
+				//console.log("2차카테고리정보",secondCategoryList);
+				// 2차 카테고리 select 태그 참조
+				let secondCategoryCode = $("#btn_secondCategory");
 
-																	//console.log("2차카테고리정보",secondCategoryList);
-																	// 2차 카테고리 select 태그 참조
-																	let secondCategoryCode = $("#btn_secondCategory");
+				let optionStr = "";
 
-																	let optionStr = "";
+				for (let i = 0; i < secondCategoryList.length; i++) {optionStr += "<option value='" + secondCategoryList[i].cate_code + "'>"+ secondCategoryList[i].cate_name+ "</option>";
+				}
+					secondCategoryCode.find("option").remove();
+					secondCategoryCode.append("<option>2차카테고리 선택</option");
+					secondCategoryCode.append(optionStr);
 
-																	for (let i = 0; i < secondCategoryList.length; i++) {
-																		optionStr += "<option value='" + secondCategoryList[i].cate_code + "'>"
-																				+ secondCategoryList[i].cate_name
-																				+ "</option>";
-																	}
+					});
+				});
 
-																	secondCategoryCode
-																			.find(
-																					"option")
-																			.remove();
-																	secondCategoryCode
-																			.append("<option>2차카테고리 선택</option");
-																	secondCategoryCode
-																			.append(optionStr);
+			// 상품이미지 미리보기 pro_img_upload e 매개변수 : 선택한 파일정보
+			$("#pro_img_upload").on("change",function(e) {
+				let file = e.target.files(0); // 파일첨부에서 선택한 한개의 파일을 가리키는 의미
 
-																});
-											});
+				let reader = new FileReader();
+				reader.readAsDataURL(file);
 
-							// 상품이미지 미리보기 pro_img_upload e 매개변수 : 선택한 파일정보
-							$("#pro_img_upload").on(
-									"change",
-									function(e) {
-										let file = e.target.files(0); // 파일첨부에서 선택한 한개의 파일을 가리키는 의미
+				reader.onload = function(e) {
+					$("#img_preview").attr("src",e.target.result);
+				}
 
-										let reader = new FileReader();
-										reader.readAsDataURL(file);
+			});
 
-										reader.onload = function(e) {
-											$("#img_preview").attr("src",
-													e.target.result);
-										}
-									});
-						});
+			// 제목행 checkbox 클릭 checkAll
+			let isCheck = true;
+			$("#checkAll").on("click", function() {
+				// console.log("제목행 체크박스");
+				// name은 복수가능, id는 복수 불가능 > 복수 가능하도록 name="check"로 설정함
+				// this.checked : 제목행의 체크박스 상태
+				// 데이터행의 모든 체크박스를 제목행의 체크상태로 적용
+				$("input[name='check']").prop("checked", this.checked);
+				isCheck = this.checked;
+			});
+
+			// 데이터행 checkbox 클릭
+			$("input[name='check']").on("click", function() {
+
+				$("checkAll").prop("checked", this.checked);
+
+				// 데이터행 checkbox가 모두 선택되어 있는 경우 제목행 체크박스 선택
+				// 하나라도 선택되어 있지 않는 경우 제목행 체크박스 선택해제
+				$("input[name='check']").each(function() {
+					if(!$(this).is(":checked")) { // 데이터 행 체크가 안되어 있는 경우 제목행 체크상태 해제
+						$("#checkAll").prop("checked", false);
+					}
+				});
+			});
+
+			// // ajax 사용 선택삭제 id="btn_sel_delete"
+			// $("#btn_sel_delete").on("click", function() {
+
+			// 	if(!confirm("선택하신 상품을 삭제하겠습니까?")) return;
+			// 	// console.log("선택삭제");
+			// 	if($("input[name='check']:checked").length == 0) {
+			// 		alert("삭제할 상품을 선택하세요");
+			// 		return;
+			// 	}
+
+			// 	// 자바스크립트 배열문법
+			// 	let pro_code_arr = [];
+
+			// 	// 체크된 상품코드 확인
+			// 	$("input[name='check']:checked").each(function() {
+			// 		pro_code_arr.push($(this).val());
+			// 	});
+
+			// 	// console.log("선택상품코드", pro_code_arr);
+
+			// 	// 스프링 주소 호출
+			// 	$.ajax({
+			// 		url: '/admin/product/pro_sel_delete',
+			// 		type : 'post',
+			// 		data : {pro_code_arr : pro_code_arr},
+			// 		dataType : 'text',
+			// 		success : function(result) {
+			// 			if(result == 'success') {
+			// 				alert("체크된 상품이 삭제되었습니다.");
+			// 				location.href = "/admin/product/pro_list";
+			// 			}
+			// 		}
+			// 	});
+
+			// });
+
+			$("#btn_sel_delete").on("click", function() {
+
+				if(!confirm("선택하신 상품을 삭제하겠습니까?")) return;
+
+				if($("input[name='check']:checked").length == 0) {
+					alert("삭제할 상품을 선택하세요.");
+					return;
+				}
+				$("#frm_pro_list").submit();
+			});
+
+
+		}); // ready event end
 	</script>
 </th:block>
 </html>

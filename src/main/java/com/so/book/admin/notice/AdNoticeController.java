@@ -89,6 +89,15 @@ public class AdNoticeController {
 //		model.addAttribute("noticeVo", adNoticeService.read(ntc_bno));
 	}
 	
+	// 글 수정
+	@PostMapping("/edit")
+	public String edit(NoticeVo vo) throws Exception {
+		
+		adNoticeService.edit(vo);
+		
+		return "redirect:/admin/notice/list";
+	}
+	
 	
 	
 	
