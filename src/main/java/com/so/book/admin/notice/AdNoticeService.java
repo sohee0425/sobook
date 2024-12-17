@@ -32,7 +32,7 @@ public class AdNoticeService {
 		return adNoticeMapper.read(ntc_bno);
 	}
 	
-	void edit(NoticeVo vo){
+	public void edit(NoticeVo vo){
 		
 		adNoticeMapper.edit(vo);
 	}

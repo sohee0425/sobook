@@ -21,7 +21,7 @@
 					<!-- list start-->
 					<div class="card-body">
 						<!--search-->
-						<form action="/admin/notice/list" method="get">
+						<form action="/admin/notice/list" method="get" id="form1">
 							<div class="form-group row">
 								<div class="col-2">
 									<select name="searchType" class="form-control">
@@ -41,7 +41,7 @@
 							</div>
 						</form>
 
-						<!-- <form name="frm_nt_list" id="frm_nt_list" action="/admin/"></form> -->
+						<form name="frm_nt_list" id="frm_nt_list" action="/admin/notice/nt_sel_delete" method="post" class="col">
 						<table class="table table-bordered">
 							<thead>
 								<tr>
@@ -68,7 +68,7 @@
 									<td
 										th:text="${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 									<td>
-										<button type="button" class="btn btn-block btn-outline-info" th:data-ntc_bno="${NoticeVo.ntc_bno}" name="btn_ntc_edit">EDIT</button>
+										<button type="button" class="btn btn-block btn-outline-info" th:data-pro_code="${NoticeVo.ntc_bno}" name="btn_ntc_edit">EDIT</button>
 										<button type="button" class="btn btn-block btn-outline-info" th:data-ntc_bno="${NoticeVo.ntc_bno}">DELETE</button>
 									</td>
 								</tr>
@@ -167,6 +167,7 @@
 			criteriaForm.attr("action", "/admin/notice/edit");
 			criteriaForm.submit();
 		});
+		
 	});
 </script>
 

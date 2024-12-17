@@ -94,6 +94,7 @@ public class AdNoticeController {
 	@PostMapping("/edit")
 	public String edit(NoticeVo vo, SearchCriteria cri, RedirectAttributes rttr) throws Exception {
 		
+		
 		adNoticeService.edit(vo);
 		
 		rttr.addAttribute("page", cri.getPage());

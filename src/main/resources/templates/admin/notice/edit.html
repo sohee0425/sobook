@@ -21,6 +21,8 @@
 					<form class="form-horizontal" method="post" action="/admin/notice/edit">
 					<div class="card-body">
 						<div class="form-group">
+						<input type="hidden" name="ntc_bno" th:value="${NoticeVo.ntc_bno}">
+						
 						<label for="ntc_title">제목</label>
 						<input type="text" class="form-control" id="ntc_title" name="ntc_title" th:value="${NoticeVo.ntc_title}">
 						</div>
@@ -64,5 +66,12 @@
 			CKEDITOR.replace("ntc_content", ckeditor_config);
 		</script>
 	</th:block>
+<th:block layout:fragment="script2">
+<script>
+
+	$(document).ready(function(){
+		
+	});
+</script>
 </th:block>
 </html>
