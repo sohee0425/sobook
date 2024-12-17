@@ -90,6 +90,10 @@ public class AdNoticeController {
 //		model.addAttribute("noticeVo", adNoticeService.read(ntc_bno));
 	}
 	
+	@GetMapping("/edit")
+	public void edit() {
+		
+	}
 	// 글 수정
 	@PostMapping("/edit")
 	public String edit(NoticeVo vo, SearchCriteria cri, RedirectAttributes rttr) throws Exception {
