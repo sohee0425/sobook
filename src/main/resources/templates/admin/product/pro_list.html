@@ -45,7 +45,7 @@
 						<button type="button" class="btn btn-block w-50 btn-outline-danger" id="btn_sel_delete">선택삭제</button>
 					</div>
 					
-					<form name="frm_pro_list" id="frm_pro_list" action="/admin/product/pro_sel_delete" method="post">
+					<form name="frm_pro_list" id="frm_pro_list" action="/admin/product/pro_sel_delete" method="post" class="col">
 						<table class="table table-bordered">
 							<thead>
 								<tr>
@@ -78,12 +78,21 @@
 									<td
 										th:text="${#dates.format(productVo.pro_date, 'yyyy-MM-dd HH:mm:ss')}"></td>
 									<td>
-										<button type="button" class="btn btn-block btn-outline-info">EDIT</button>
-										<button type="button" class="btn btn-block btn-outline-info">DELETE</button>
+										<button type="button" class="btn btn-block btn-outline-info" th:data-pro_code="${productVo.pro_code}" name="btn_pro_edit">EDIT</button>
+										<button type="button" class="btn btn-block btn-outline-info" th:data-pro_code="${productVo.pro_code}" name="btn_pro_del">DELETE</button>
 									</td>
 								</tr>
 							</tbody>
 						</table>
+					</form>
+					<!-- 페이징 및 검색 파라미터 정보 -->
+					<form id="criteriaForm" action="" method="get">
+						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
+						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
+						<input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}">
+						<input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}">
+
+						<input type="hidden" name="pro_code" id="pro_code">
 					</form>
 					</div>
 
@@ -193,7 +202,7 @@
 			// 데이터행 checkbox 클릭
 			$("input[name='check']").on("click", function() {
 
-				$("checkAll").prop("checked", this.checked);
+				$("#checkAll").prop("checked", this.checked);
 
 				// 데이터행 checkbox가 모두 선택되어 있는 경우 제목행 체크박스 선택
 				// 하나라도 선택되어 있지 않는 경우 제목행 체크박스 선택해제
@@ -203,42 +212,6 @@
 					}
 				});
 			});
-
-			// // ajax 사용 선택삭제 id="btn_sel_delete"
-			// $("#btn_sel_delete").on("click", function() {
-
-			// 	if(!confirm("선택하신 상품을 삭제하겠습니까?")) return;
-			// 	// console.log("선택삭제");
-			// 	if($("input[name='check']:checked").length == 0) {
-			// 		alert("삭제할 상품을 선택하세요");
-			// 		return;
-			// 	}
-
-			// 	// 자바스크립트 배열문법
-			// 	let pro_code_arr = [];
-
-			// 	// 체크된 상품코드 확인
-			// 	$("input[name='check']:checked").each(function() {
-			// 		pro_code_arr.push($(this).val());
-			// 	});
-
-			// 	// console.log("선택상품코드", pro_code_arr);
-
-			// 	// 스프링 주소 호출
-			// 	$.ajax({
-			// 		url: '/admin/product/pro_sel_delete',
-			// 		type : 'post',
-			// 		data : {pro_code_arr : pro_code_arr},
-			// 		dataType : 'text',
-			// 		success : function(result) {
-			// 			if(result == 'success') {
-			// 				alert("체크된 상품이 삭제되었습니다.");
-			// 				location.href = "/admin/product/pro_list";
-			// 			}
-			// 		}
-			// 	});
-
-			// });
 
 			$("#btn_sel_delete").on("click", function() {
 
@@ -251,6 +224,19 @@
 				$("#frm_pro_list").submit();
 			});
 
+			// id=criteriaForm
+			let criteriaForm = $("#criteriaForm");
+
+			// edit  name="btn_pro_edit"
+			$("button[name='btn_pro_edit']").on("click", function() {
+			// console.log("수정버튼클릭");
+				let pro_code = $(this).data("pro_code");
+
+				$("#pro_code").val(pro_code);
+
+				criteriaForm.attr("action", "/admin/product/pro_edit");
+				criteriaForm.submit();
+			});
 
 		}); // ready event end
 	</script>

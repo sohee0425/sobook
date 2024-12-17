@@ -33,8 +33,7 @@
 									</select>
 								</div>
 								<div class="col-4">
-									<input type="text" name="keyword" class="form-control"
-										placeholder="Enter ...">
+									<input type="text" name="keyword" class="form-control" placeholder="검색어 입력">
 								</div>
 								<div class="col-2">
 									<button type="submit" class="btn btn-block btn-outline-info">Serach</button>
@@ -42,10 +41,13 @@
 							</div>
 						</form>
 
+						<!-- <form name="frm_nt_list" id="frm_nt_list" action="/admin/"></form> -->
 						<table class="table table-bordered">
 							<thead>
 								<tr>
-									<th style="width: 10%"><input type="checkbox"></th>
+									<th style="width: 10%">
+										<input type="checkbox" id="checkAll">
+									</th>
 									<th style="width: 10%">No.</th>
 									<th style="width: 30%">글 제목</th>
 									<th style="width: 10%">작성자</th>
@@ -55,7 +57,9 @@
 							</thead>
 							<tbody>
 								<tr th:each="NoticeVo:${list}" th:object="${NoticeVo}">
-									<td><input type="checkbox"></td>
+									<td>
+										<input type="checkbox" name="check">
+									</td>
 									<td th:text="${NoticeVo.ntc_bno}"></td>
 									<td><a th:href="|/admin/notice/read${pageMaker.makeSearch(pageMaker.cri.page)}&ntc_bno=${NoticeVo.ntc_bno}|"
 									th:text="${NoticeVo.ntc_title}"></a></td>
@@ -64,12 +68,21 @@
 									<td
 										th:text="${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 									<td>
-										<button type="button" class="btn btn-block btn-outline-info">EDIT</button>
-										<button type="button" class="btn btn-block btn-outline-info">DELETE</button>
+										<button type="button" class="btn btn-block btn-outline-info" th:data-ntc_bno="${NoticeVo.ntc_bno}" name="btn_ntc_edit">EDIT</button>
+										<button type="button" class="btn btn-block btn-outline-info" th:data-ntc_bno="${NoticeVo.ntc_bno}">DELETE</button>
 									</td>
 								</tr>
 							</tbody>
 						</table>
+						<!-- 페이징 및 검색 파라미터 정보 -->
+					<form id="criteriaForm" action="" method="post">
+						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
+						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
+						<input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}">
+						<input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}">
+
+						<input type="hidden" name="ntc_bno" id="ntc_bno">
+					</form>
 					</div>
 
 					<div class="card-footer clearfix">
@@ -78,7 +91,7 @@
 								<!--이전표시 여부-->
 								<th:block th:if="${pageMaker.prev}">
 									<li class="page-item"><a class="page-link"
-										th:href="|/admin/product/pro_list${pageMaker.makeSearch(pageMaker.startPage - 1) }|">Previous</a></li>
+										th:href="|/admin/notice/list${pageMaker.makeSearch(pageMaker.startPage - 1) }|">Previous</a></li>
 								</th:block>
 
 								<th:block
@@ -86,7 +99,7 @@
 									<li class="page-item"
 										th:classappend="${pageMaker.cri.page == num? 'active' : ''}">
 										<a class="page-link"
-										th:href="|/admin/product/pro_list${pageMaker.makeSearch(num)}|"
+										th:href="|/admin/notice/list${pageMaker.makeSearch(num)}|"
 										th:text="${num}"></a>
 									</li>
 								</th:block>
@@ -114,7 +127,7 @@
 			toolbarCanCollapse : true,
 			removePlugins : "elementspath",
 			//업로드 탭기능추가 속성. CKEditor에서 파일업로드해서 서버로 전송클릭하면 , 이 주소가 동작된다.
-			filebrowserUploadUrl : '/admin/product/imageupload'
+			filebrowserUploadUrl : '/admin/notice/imageupload'
 		}
 
 		// id="content" 인 textarea태그에 ckeditor_config 변수가 가지고 있는 설정정보를 적용하겠다.는 의미
@@ -122,7 +135,42 @@
 	</script>
 </th:block>
 
+<th:block layout:fragment="script2">
+
+<script>
+	$(document).ready(function() {
+
+	// 체크박스 클릭
+	let isCheck = true;
 	
+		$("#checkAll").on("click", function() {
+			$("input[name = 'check']").prop("checked", this.checked);
+			isCheck = this. checked;
+		});
+
+		$("input[name = 'check']").on("click", function() {
+			$("#checkAll").prop("checked", this.checked);
+
+			$("input[name='check']").each(function() {
+				if(!$(this).is(":checked")) {
+					$("#checkAll").prop("checked", false);
+				}
+			});
+		});
+
+		let criteriaForm = $("#criteriaForm");
+		// 수정버튼 클릭 btn_ntc_edit
+		$("button[name='btn_ntc_edit']").on("click", function() {
+			let ntc_bno = $(this).data("ntc_bno");
+			$("#ntc_bno").val(ntc_bno);
+
+			criteriaForm.attr("action", "/admin/notice/edit");
+			criteriaForm.submit();
+		});
+	});
+</script>
+
+</th:block>
 
 
 <th:block th:replace="~{admin/fragments/footer}"></th:block> 

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/layouts/ad_layout}">
+	
+	<th:block layout:fragment="script">
+		<script src="/ckeditor/ckeditor.js"></script>
+	</th:block>
+
+	<th:block layout:fragment="content">
+		<h3 class="text-center mt-5 mb-3">상품 수정</h3>
+		<div class="container mt-5">
+			<div class="row">
+				<div class="col">
+					<div class="card card-primary">
+						<div class="card-header">
+						<h3 class="card-title">상품 수정</h3>
+						</div>
+						<!-- /.card-header -->
+						<!-- form start -->
+						<form action="/admin/product/pro_edit" method="post" enctype="multipart/form-data">
+						<div class="card-body">
+							<div class="form-group">
+								<label>1차 카테고리</label>
+								<select class="custom-select" name="cate_prtcode" id="btn_firstCategory">
+									<option>1차 카테고리 선택</option>
+									<option th:each= "category:${cate_list}" th:value="${category.cate_code}" th:text="${category.cate_name}" th:selected= "${category.cate_code == categoryVo.cate_prtcode}"></option>
+								</select>
+								<label>2차 카테고리</label>
+								<select class="custom-select" name="cate_code" id="btn_secondCategory">
+									<option>2차 카테고리 선택</option>
+									<option th:each= "subCategory:${secondCategoryVo}" th:value="${subCategory.cate_code}" th:text="${subCategory.cate_name}" th:selected= "${subCategory.cate_code == productVo.cate_code}"></option>
+								</select>
+						</div>
+						<div class="form-group">
+						<label for="pro_name">상품명</label>
+							<input type="text" class="form-control" id="pro_name" name="pro_name" th:value="${productVo.pro_name}">
+							<input type="hidden" name="pro_code" th:value="${productVo.pro_code}">
+
+							<!-- 페이징과 검색 파라미터 정보 SearchCriteria 클래스의 필드 -->
+							<input type="hidden" name="page" th:value="${cri.page}">
+							<input type="hidden" name="perPageNum" th:value="${cri.perPageNum}">
+							<input type="hidden" name="searchType" th:value="${cri.searchType}">
+							<input type="hidden" name="keyword" th:value="${cri.keyword}">
+						</div>
+
+						<div class="form-group">
+							<label for="pro_price">가격</label>
+								<input type="number" class="form-control" id="pro_price" name="pro_price"  th:value="${productVo.pro_price}">
+							</div>
+						<div class="form-group">
+						<label for="pro_discount">할인율</label>
+							<input type="text" class="form-control" id="pro_discount" name="pro_discount" th:value="${productVo.pro_discount}">
+						</div>
+						<div class="form-group">
+						<label for="pro_publisher">상품 제조사</label>
+							<input type="text" class="form-control" id="pro_publisher" name="pro_publisher" th:value="${productVo.pro_publisher}">
+						</div>
+						<div class="form-group">
+							<label for="pro_content">상품 상세 설명</label> <!--ckdeitor 사용-->
+								<textarea class="form-control" id="pro_content" name="pro_content" th:text="${productVo.pro_content}"></textarea>
+						</div>
+
+
+						<div class="form-group row">
+							<label for="pro_img">상품 이미지</label>
+							<div class="input-group col-8">
+							<div class="custom-file">
+								<input type="file" class="custom-file-input" id="pro_img_upload" name="pro_img_upload">
+								<label class="custom-file-label" for="pro_img_upload">이미지 파일 선택</label>
+								<!-- 이미지 변경 시 기존 이미지 삭제를 위한 이미지 정보-->
+								<input type="hidden" name="pro_up_folder" th:value="${productVo.pro_up_folder}">
+								<input type="hidden" name="pro_img" th:value="${productVo.pro_img}">
+							</div>
+							<div class="input-group-append">
+								<span class="input-group-text">상품 이미지</span>
+							</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>미리보기 이미지</label>
+							<img id="img_preview" style="width: 200px; height: 200px;" th:src="|/admin/product/image_display?dateFolderName=${productVo.pro_up_folder}&fileName=${productVo.pro_img}|">
+						</div>
+						
+						<div class="form-group">
+							<label for="pro_amount">상품 수량</label>
+								<input type="number" class="form-control" id="pro_amount" name="pro_amount" th:value="${productVo.pro_amount}">
+						</div>
+						<div class="form-group">
+							<label for="pro_buy">상품판매 여부</label>
+								<div class="form-check">
+								<input class="form-check-input" type="radio" name="pro_buy" id="pro_buy1" value="Y" th:checked= "${productVo.pro_buy == 'Y'}">
+								<label class="form-check-label mr-5" for="pro_buy1">판매</label>
+								<input class="form-check-input" type="radio" name="pro_buy" id="pro_buy2" value="N" th:checked= "${productVo.pro_buy == 'N'}">
+								<label class="form-check-label" for="pro_buy2">미판매</label>
+								</div>
+						</div>
+
+						<!-- /.card-body -->
+		
+						<div class="card-footer">
+						<button type="submit" class="btn btn-primary">Modify</button>
+						</div>
+						</div>
+					</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			// ckeditor 설정
+			var ckeditor_config = {
+					resize_enabled : false,
+					enterMode : CKEDITOR.ENTER_BR,
+					shiftEnterMode : CKEDITOR.ENTER_P,
+					toolbarCanCollapse : true,
+					removePlugins : "elementspath", 
+					//업로드 탭기능추가 속성. CKEditor에서 파일업로드해서 서버로 전송클릭하면 , 이 주소가 동작된다.
+					filebrowserUploadUrl: '/admin/product/imageupload' 
+			}
+	
+			// id="content" 인 textarea태그에 ckeditor_config 변수가 가지고 있는 설정정보를 적용하겠다.는 의미
+			CKEDITOR.replace("pro_content", ckeditor_config);
+		</script>
+	</th:block>
+
+	<th:block layout:fragment="script2">
+		
+	<script>
+
+		$(document).ready(function(){
+
+			// 1차 카테고리 클릭 이벤트 설정 id="btn_firstCategory"
+			$("#btn_firstCategory").on("change", function() {
+				
+				let firstCategoryCode = $("#btn_firstCategory").val();
+				
+				// 2차 카테고리 목록 가져오는 매핑주소
+				let url = "/admin/category/secondcategory/" + firstCategoryCode;
+
+				$.getJSON(url, function(secondCategoryList) {
+
+					//console.log("2차카테고리정보",secondCategoryList);
+					// 2차 카테고리 select 태그 참조
+				let secondCategoryCode = $("#btn_secondCategory");
+
+				let optionStr = "";
+
+				for(let i=0; i<secondCategoryList.length; i++) {
+					optionStr += "<option value='" + secondCategoryList[i].cate_code + "'>" + secondCategoryList[i].cate_name + "</option>";
+				}
+
+				secondCategoryCode.find("option").remove();
+				secondCategoryCode.append("<option>2차카테고리 선택</option");
+				secondCategoryCode.append(optionStr);
+
+				});
+			});
+
+			// 상품이미지 미리보기 pro_img_upload e 매개변수 : 선택한 파일정보
+			$("#pro_img_upload").on("change", function(e) {
+				let file = e.target.files[0]; // 파일첨부에서 선택한 한개의 파일을 가리키는 의미
+				
+				let reader = new FileReader();
+				reader.readAsDataURL(file);
+
+				reader.onload = function(e) {
+					$("#img_preview").attr("src", e.target.result);
+				}
+			});
+		});
+
+	</script>
+</th:block>
+</html>

@@ -11,11 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.so.book.admin.category.AdCategoryService;
 import com.so.book.admin.category.CategoryVo;
@@ -167,7 +169,7 @@ public class AdProductController {
 		
 	}
 	
-	// 상품목록 이미지출력하기
+	// 상품목록 이미지출력하기 : 클라이언트에서 보낸 파라미터명 스프링의 컨트롤러에서 받는 파라미터명이 일치해야 한다.
 	@GetMapping("/image_display")
 	public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
 		
@@ -175,8 +177,65 @@ public class AdProductController {
 	}
 	
 	// 상품수정폼
+	// @ModelAttribute("cri") : 파라미터의 값을 타임리프페이지에서 사용하기위한 목적
+	@GetMapping("/pro_edit")
+	public void pro_edit(@ModelAttribute("cri") SearchCriteria cri, Integer pro_code, Model model) throws Exception {
+		
+		// 1차 카테고리 목록
+		model.addAttribute("cate_list", adCategoryService.getFirstCategoryList());
+		
+		// 상품정보 불러오기 (2차 카테고리)
+		ProductVo productVo = adProductService.pro_edit_form(pro_code);
+		// 날짜폴더 \ 변환 작업
+		productVo.setPro_up_folder(productVo.getPro_up_folder().replace("\\", "//"));
+		model.addAttribute("productVo", productVo);
+		
+		// 상품테이블에 존재하는 2차카테고리 코드
+		int secondCategory = productVo.getCate_code();
+		
+		// 2차 부모인 1차 정보 가져오기 : 실제 상품 해당하는 1차카테고리 정보
+		CategoryVo categoryVo = adCategoryService.getFirstCategoryBySecondCategory(secondCategory);
+		model.addAttribute("categoryVo", categoryVo);
+		
+		// 1차카테고리 코드
+		int firstCategory = categoryVo.getCate_prtcode();
+		
+		//1차 부모 2차카테고리 목록
+		model.addAttribute("secondCategoryVo", adCategoryService.getSecondCategoryList(firstCategory)) ;
+		
+	}
 	
 	// 상품수정(변경 저장)
+	@PostMapping("pro_edit")
+	public String pro_deit(ProductVo vo, SearchCriteria cri, MultipartFile pro_img_upload, RedirectAttributes rttr) throws Exception {
+		
+		// 1 상품이미지 변경여부 확인
+		if(! pro_img_upload.isEmpty()) {
+			// 기존이미지 삭제
+			fileUtils.delete(uploadPath, vo.getPro_up_folder(), vo.getPro_img(), "image");
+		
+		
+			// 변경이미지 업로드
+			String dateFolder = fileUtils.getDateFolder(); // 업로드 날짜폴더이름
+			String saveFileName = fileUtils.uploadFile(uploadPath, dateFolder, pro_img_upload);
+			
+			vo.setPro_up_folder(dateFolder);
+			vo.setPro_img(saveFileName);
+			
+		}
+		
+		// DB 저장
+		adProductService.pro_edit_save(vo);
+		
+		
+		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("perPageNum", cri.getPerPageNum());
+		rttr.addAttribute("searchType", cri.getSearchType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
+		return "redirect:/admin/product/pro_list";
+	}
+	
 	
 	// 선택 상품 삭제 form태그
 	@PostMapping("/pro_sel_delete")

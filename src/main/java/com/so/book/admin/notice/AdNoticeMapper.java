@@ -6,15 +6,15 @@ import com.so.book.common.utils.SearchCriteria;
 
 public interface AdNoticeMapper {
 
-	public void save(NoticeVo vo) throws Exception;
+	public void save(NoticeVo vo);
 	
-	List<NoticeVo> listAll() throws Exception;
+	List<NoticeVo> listAll(SearchCriteria cri);
 	
 	int getTotalCount(SearchCriteria cri);
 	
-	NoticeVo read(int ntc_bno) throws Exception;
+	NoticeVo read(int ntc_bno);
 	
-	void viewCount(int ntc_bno) throws Exception;
+	void viewCount(int ntc_bno);
 	
-	void edit(NoticeVo vo) throws Exception;
+	void edit(NoticeVo vo);
 }

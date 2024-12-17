@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.so.book.common.constants.Constants;
 import com.so.book.common.utils.FileUtils;
@@ -65,7 +66,7 @@ public class AdNoticeController {
 //		List<NoticeVo> list = adNoticeService.listAll();
 		
 		// 글 목록
-		model.addAttribute("list", adNoticeService.listAll());
+		model.addAttribute("list", adNoticeService.listAll(cri));
 		
 		
 		// 페이징
@@ -91,12 +92,19 @@ public class AdNoticeController {
 	
 	// 글 수정
 	@PostMapping("/edit")
-	public String edit(NoticeVo vo) throws Exception {
+	public String edit(NoticeVo vo, SearchCriteria cri, RedirectAttributes rttr) throws Exception {
 		
 		adNoticeService.edit(vo);
 		
+		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("perPageNum", cri.getPerPageNum());
+		rttr.addAttribute("searchType", cri.getSearchType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
 		return "redirect:/admin/notice/list";
 	}
+	
+	
 	
 	
 	

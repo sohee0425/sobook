@@ -14,25 +14,25 @@ public class AdNoticeService {
 
 	private final AdNoticeMapper adNoticeMapper;
 	
-	public void save(NoticeVo vo) throws Exception {
+	public void save(NoticeVo vo) {
 		adNoticeMapper.save(vo);
 	}
 	
-	List<NoticeVo> listAll() throws Exception {
-		return adNoticeMapper.listAll();
+	List<NoticeVo> listAll(SearchCriteria cri) {
+		return adNoticeMapper.listAll(cri);
 	}
 	
 	public int getTotalCount(SearchCriteria cri) {
 		return adNoticeMapper.getTotalCount(cri);
 	}
 	
-	public NoticeVo read(int ntc_bno) throws Exception {
+	public NoticeVo read(int ntc_bno){
 		
 		adNoticeMapper.viewCount(ntc_bno);
 		return adNoticeMapper.read(ntc_bno);
 	}
 	
-	void edit(NoticeVo vo) throws Exception {
+	void edit(NoticeVo vo){
 		
 		adNoticeMapper.edit(vo);
 	}

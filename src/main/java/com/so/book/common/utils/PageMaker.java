@@ -16,8 +16,9 @@ public class PageMaker {
 	
 	private int displayPageNum = 10;	// 각 블럭에 보여줄 페이지 번호개수 1 2 3 4 5 6 7 8 9 10
 	
-	private Criteria cri;	// page, perPageNum이 들어있다
-
+//	private Criteria cri;	// page, perPageNum이 들어있다
+	private SearchCriteria cri;
+	
 	public int getTotalCount() {
 		return totalCount;
 	}
@@ -83,11 +84,19 @@ public class PageMaker {
 		this.displayPageNum = displayPageNum;
 	}
 
-	public Criteria getCri() {
+//	public Criteria getCri() {
+//		return cri;
+//	}
+//
+//	public void setCri(Criteria cri) {
+//		this.cri = cri;
+//	}
+	
+	public SearchCriteria getCri() {
 		return cri;
 	}
-
-	public void setCri(Criteria cri) {
+	
+	public void setCri(SearchCriteria cri) {
 		this.cri = cri;
 	}
 	
