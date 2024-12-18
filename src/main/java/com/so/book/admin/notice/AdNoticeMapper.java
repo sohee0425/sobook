@@ -16,5 +16,5 @@ public interface AdNoticeMapper {
 	
 	void viewCount(int ntc_bno);
 	
-	void edit(NoticeVo vo);
+	void edit_save(NoticeVo vo);
 }

@@ -87,7 +87,6 @@ public class AdNoticeController {
 		
 		NoticeVo noticeVo = adNoticeService.read(ntc_bno);
 		model.addAttribute("NoticeVo", noticeVo);
-//		model.addAttribute("noticeVo", adNoticeService.read(ntc_bno));
 	}
 	
 	@GetMapping("/edit")

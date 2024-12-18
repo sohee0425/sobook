@@ -87,11 +87,13 @@
 					</form>
 					<!-- 페이징 및 검색 파라미터 정보 -->
 					<form id="criteriaForm" action="" method="get">
+						<!--페이징, 검색 파라미터-->
 						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
 						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
 						<input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}">
 						<input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}">
 
+						<!--수정상품코드-->
 						<input type="hidden" name="pro_code" id="pro_code">
 					</form>
 					</div>
@@ -235,6 +237,19 @@
 				$("#pro_code").val(pro_code);
 
 				criteriaForm.attr("action", "/admin/product/pro_edit");
+				criteriaForm.submit();
+			});
+
+			// 삭제 btn_pro_del
+			$("button[name='btn_pro_del']").on("click", function() {
+
+				if(!confirm("삭제하시겠습니까?")) return;
+
+				let pro_code = $(this).data("pro_code");
+
+				$("#pro_code").val(pro_code);
+
+				criteriaForm.attr("action", "/admin/product/pro_delete");
 				criteriaForm.submit();
 			});
 

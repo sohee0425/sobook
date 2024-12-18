@@ -34,6 +34,6 @@ public class AdNoticeService {
 	
 	public void edit(NoticeVo vo){
 		
-		adNoticeMapper.edit(vo);
+		adNoticeMapper.edit_save(vo);
 	}
 }

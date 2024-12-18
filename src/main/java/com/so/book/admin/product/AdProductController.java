@@ -236,6 +236,20 @@ public class AdProductController {
 		return "redirect:/admin/product/pro_list";
 	}
 	
+	@GetMapping("pro_delete")
+	public String pro_delete(SearchCriteria cri, Integer pro_code, RedirectAttributes rttr) throws Exception {
+		
+		// 상품 삭제 작업
+		adProductService.pro_delete(pro_code);
+		
+		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("perPageNum", cri.getPerPageNum());
+		rttr.addAttribute("searchType", cri.getSearchType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
+		return "redirect:/admin/product/pro_list";
+	}
+	
 	
 	// 선택 상품 삭제 form태그
 	@PostMapping("/pro_sel_delete")

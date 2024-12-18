@@ -38,4 +38,8 @@ public class AdProductService {
 	public void pro_edit_save(ProductVo vo) {
 		adProductMapper.pro_edit_save(vo);
 	}
+	
+	public void pro_delete(Integer pro_code) {
+		adProductMapper.pro_delete(pro_code);
+	}
 }

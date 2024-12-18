@@ -84,5 +84,13 @@
 			pro_code = #{pro_code}
 	</update>
 	
+	<delete id="pro_delete" parameterType="Integer">
+		delete from
+			product_tbl
+		where
+			pro_code = #{pro_code}
+	
+	</delete>
+	
 	
 </mapper>

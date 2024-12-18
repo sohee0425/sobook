@@ -68,19 +68,19 @@
 									<td
 										th:text="${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 									<td>
-										<button type="button" class="btn btn-block btn-outline-info" th:data-pro_code="${NoticeVo.ntc_bno}" name="btn_ntc_edit">EDIT</button>
+										<button type="button" class="btn btn-block btn-outline-info" th:data-ntc_bno="${NoticeVo.ntc_bno}" name="btn_ntc_edit">EDIT</button>
 										<button type="button" class="btn btn-block btn-outline-info" th:data-ntc_bno="${NoticeVo.ntc_bno}">DELETE</button>
 									</td>
 								</tr>
 							</tbody>
 						</table>
+						</form>
 						<!-- 페이징 및 검색 파라미터 정보 -->
-					<form id="criteriaForm" action="" method="post">
+					<form id="criteriaForm" action="" method="get">
 						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
 						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
 						<input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}">
 						<input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}">
-
 						<input type="hidden" name="ntc_bno" id="ntc_bno">
 					</form>
 					</div>
@@ -162,6 +162,7 @@
 		// 수정버튼 클릭 btn_ntc_edit
 		$("button[name='btn_ntc_edit']").on("click", function() {
 			let ntc_bno = $(this).data("ntc_bno");
+
 			$("#ntc_bno").val(ntc_bno);
 
 			criteriaForm.attr("action", "/admin/notice/edit");
