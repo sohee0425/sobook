@@ -3,6 +3,7 @@ package com.so.book.admin.notice;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.so.book.common.utils.SearchCriteria;
 
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdNoticeService {
 
 	private final AdNoticeMapper adNoticeMapper;
@@ -32,8 +34,11 @@ public class AdNoticeService {
 		return adNoticeMapper.read(ntc_bno);
 	}
 	
-	public void edit(NoticeVo vo){
-		
+	public NoticeVo edit(int ntc_bno) {
+		return adNoticeMapper.edit(ntc_bno);
+	}
+	
+	public void edit_save(NoticeVo vo){
 		adNoticeMapper.edit_save(vo);
 	}
 }

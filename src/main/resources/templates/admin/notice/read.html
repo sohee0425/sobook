@@ -41,68 +41,29 @@
 	</tbody>
 </table>
 <div>
-<button type="button" class="btn btn-primary" onclick="fn_editForm()">Edit</button>
+<button type="button" class="btn btn-primary" th:data-ntc_bno="${NoticeVo.ntc_bno}" name="btn_nt_edit">Edit</button>
 <button type="button" class="btn btn-danger" onclick="fn_delete_ok()">Delete</button>
 <button type="button" class="btn btn-success" onclick="fn_go_list()">list</button>
 </div>
 </div>
 </div>
 
-<!-- <div class="card card-primary">
-	<div class="card-header">
-	<h3 class="card-title">공지사항 조회</h3>
-	</div>
-	<div class="card-body">
-	<strong>제목</strong>
-	<p th:text="${NoticeVo.ntc_title}"></p>
-	<hr>
+</th:block> 
 
-	<strong>작성자</strong>
-	<p th:text="${NoticeVo.adm_id}"></p>
-	<hr>
+<th:block layout:fragment="script2">
+<script>
+	$(document).ready(function(){
+		$("button[name='btn_nt_edit']").on("click", function() {
+			// console.log("수정버튼클릭");
+				let ntc_bno = $(this).data("ntc_bno");
 
-	<strong>내용</strong>
-	<p th:text="${NoticeVo.ntc_content}">
-	</p>
+				$("#ntc_bno").val(ntc_bno);
 
-	<hr>
+				criteriaForm.attr("action", "/admin/notice/edit");
+				criteriaForm.submit();
+			});
+	});
 
+</script>
 
-	<p th:text="|등록일 : ${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')} / 수정일 : ${#dates.format(NoticeVo.ntc_updatedate, 'yyyy-MM-dd HH:mm:ss')}|"></p>
-	</div>
-</div> -->
-
-    <!-- <div class="row">
-        <div class="col">
-            <section>
-                <table class="table-bordered">
-                    <colgroup>
-                        <col style="width:10%;" /><col style="width:23%;" /><col style="width:10%;" /><col style="width:23%;" />
-                    </colgroup>
-                    <tbody>
-                        <tr>
-                            <th scope="row">글 번호</th>
-                            <td th:text="${NoticeVo.ntc_bno}"></td>
-    
-                            <th scope="row">등록일</th>
-                            <td th:text="${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">제목</th>
-                            <td th:text="${NoticeVo.ntc_title}"></td>
-    
-                            <th scope="row">조회</th>
-                            <td colspan="3" th:text=${NoticeVo.ntc_viewcount}></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">내용</th>
-                            <td colspan="3" th:text="${NoticeVo.ntc_content}"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-            </section>
-        </div>
-    </div> -->
 </th:block>
-

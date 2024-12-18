@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -25,6 +26,7 @@ import com.so.book.common.utils.SearchCriteria;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -89,16 +91,22 @@ public class AdNoticeController {
 		model.addAttribute("NoticeVo", noticeVo);
 	}
 	
+	// 글 수정 불러오기
 	@GetMapping("/edit")
-	public void edit() {
-		
+	public String edit(Model model, @RequestParam("ntc_bno") int ntc_bno, SearchCriteria cri) throws Exception {
+		NoticeVo noticeVo = adNoticeService.edit(ntc_bno);
+		model.addAttribute("noticeVo", noticeVo);
+		model.addAttribute("cri", cri);
+		return "/admin/notice/edit";
 	}
-	// 글 수정
+	
+	// 글 수정 저장
 	@PostMapping("/edit")
 	public String edit(NoticeVo vo, SearchCriteria cri, RedirectAttributes rttr) throws Exception {
 		
-		
-		adNoticeService.edit(vo);
+//		System.out.println("수정데이터"+vo);
+//		  System.out.println("ntc_bno 값: " + vo.getNtc_bno());
+		adNoticeService.edit_save(vo);
 		
 		rttr.addAttribute("page", cri.getPage());
 		rttr.addAttribute("perPageNum", cri.getPerPageNum());

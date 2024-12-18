@@ -70,12 +70,24 @@
 	</if>
 </sql>
 
+	<select id="edit" resultType="com.so.book.admin.notice.NoticeVo">
+		select
+			ntc_title , ntc_content , adm_id , ntc_regdate , ntc_updatedate , ntc_viewcount 
+		from notice_tbl
+		where ntc_bno = #{ntc_bno}
+			
+			
+	</select>
+
 	<update id="edit_save" parameterType="com.so.book.admin.notice.NoticeVo">
 		update
 			notice_tbl
 		set
-			ntc_title = #{ntc_title}, ntc_content = #{ntc_content}, adm_id = #{adm_id}, ntc_updatedate=now()
+			ntc_title = #{ntc_title},
+			ntc_content = #{ntc_content},
+			ntc_updatedate = now()
 		where
 			ntc_bno = #{ntc_bno}
 	</update>
+	
 </mapper>
