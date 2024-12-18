@@ -162,7 +162,7 @@
 		// 수정버튼 클릭 btn_ntc_edit
 		$("button[name='btn_ntc_edit']").on("click", function() {
 			let ntc_bno = $(this).data("ntc_bno");
-
+			// alert(ntc_bno);
 			$("#ntc_bno").val(ntc_bno);
 
 			criteriaForm.attr("action", "/admin/notice/edit");

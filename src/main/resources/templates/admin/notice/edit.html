@@ -24,9 +24,9 @@
 						<div class="form-group">
 							
 						<label for="ntc_title">제목</label>
-						<input type="text" class="form-control" name="ntc_title" id="ntc_title" th:value="${noticeVo.ntc_title}">
+						<input type="text" class="form-control" name="ntc_title" id="ntc_title" th:value="${NoticeVo.ntc_title}">
 						
-						<input type="hidden" name="ntc_bno" th:value="${noticeVo.ntc_bno}">
+						<input type="hidden" name="ntc_bno" th:value="${NoticeVo.ntc_bno}">
 
 						<input type="hidden" name="page" th:value="${cri.page}">
 						<input type="hidden" name="perPageNum"  th:value="${cri.perPageNum}">
@@ -36,21 +36,21 @@
 						<div class="form-group">
 							<label for="adm_id">작성자</label>
 							<div>
-							<input type="text" class="form-control" id="adm_id" name="adm_id" th:value="${noticeVo.adm_id}" readonly>
+							<input type="text" class="form-control" id="adm_id" name="adm_id" th:value="${NoticeVo.adm_id}" readonly>
 							</div>
 						</div>
 						
 						
 						<div class="form-group">
 							<label for="ntc_content">내용</label> <!--ckdeitor 사용-->
-								<textarea class="form-control" id="ntc_content" name="ntc_content" th:text="${noticeVo.ntc_content}"></textarea>
+								<textarea class="form-control" id="ntc_content" name="ntc_content" th:text="${NoticeVo.ntc_content}"></textarea>
 						</div>
 						
 						<!-- /.card-body -->
 		
 						<div class="card-footer">
-						<!-- <button type="submit" class="btn btn-primary" >글 수정</button> -->
-						 <button type="button" onclick="fn_editForm()">글 수정</button>
+						<button type="submit" class="btn btn-primary" >글 수정</button>
+						 <!-- <button type="button" onclick="fn_editForm()">글 수정</button> -->
 						</div>
 					</div>
 					</form>
@@ -59,10 +59,7 @@
 		</div>
 	</div>
 		<script>
-			function fn_editForm() {
-    		alert($("ntc_bno").val()); 
-    		
-    	}
+			
 			// ckeditor 설정
 			var ckeditor_config = {
 					resize_enabled : false,

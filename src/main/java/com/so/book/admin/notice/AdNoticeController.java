@@ -95,7 +95,7 @@ public class AdNoticeController {
 	@GetMapping("/edit")
 	public String edit(Model model, @RequestParam("ntc_bno") int ntc_bno, SearchCriteria cri) throws Exception {
 		NoticeVo noticeVo = adNoticeService.edit(ntc_bno);
-		model.addAttribute("noticeVo", noticeVo);
+		model.addAttribute("NoticeVo", noticeVo);
 		model.addAttribute("cri", cri);
 		return "/admin/notice/edit";
 	}
