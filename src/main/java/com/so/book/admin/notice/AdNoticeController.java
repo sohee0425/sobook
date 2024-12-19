@@ -117,8 +117,26 @@ public class AdNoticeController {
 	}
 	
 	
+	// 글 삭제
+	@GetMapping("/delete")
+	public String delete(SearchCriteria cri, int ntc_bno, RedirectAttributes rttr) throws Exception {
+		adNoticeService.delete(ntc_bno);
+		
+		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("perPageNum", cri.getPerPageNum());
+		rttr.addAttribute("searchType", cri.getSearchType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
+		return "redirect:/admin/notice/list";
+	}
 	
-	
-	
+	// 선택 삭제
+	@PostMapping("/nt_sel_delete")
+	public String nt_sel_delete(int[] check) throws Exception {
+		
+		adNoticeService.nt_sel_delete(check);
+		
+		return "redirect:/admin/notice/list";
+	}
 	
 }

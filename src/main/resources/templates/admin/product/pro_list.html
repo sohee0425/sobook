@@ -32,11 +32,59 @@
 										<option value="np">상품명 or 제조사</option>
 									</select>
 								</div>
-								<div class="col-4">
+								<div class="col-7">
 									<input type="text" name="keyword" class="form-control" placeholder="Enter ...">
 								</div>
 								<div class="col-2">
 									<button type="submit" class="btn btn-block btn-outline-info">Serach</button>
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col-2">카테고리</div>
+								<div class="col-5">
+									<div class="form-group">
+										<select class="form-control" name="cate_prt_code" id="btn_firstCategory">
+										<option>1차 분류</option>						  
+										<option th:each= "category:${cate_list}" th:value="${category.cate_code}" th:text="${category.cate_name}"></option>							  
+										</select>							
+									</div>
+								</div>
+								<div class="col-5">
+									<div class="form-group">
+										<select class="form-control" name="cate_code" id="btn_secondCategory">
+											<option>2차 분류</option>	
+										</select>
+									</div>
+								</div>
+							</div>
+			
+							<div class="row">
+								<div class="col-2">날짜</div>
+								<div class="col-2">
+									<div class="form-group">
+										<select class="form-control">
+											<option>등록일</option>
+											<option>수정일</option>	
+										</select>							
+									</div>
+								</div>
+								<div class="col-3">
+									<input type="date">
+									<input type="date">
+								</div>
+								<div class="col-5">
+									<button type="button" class="btn btn-sm btn-outline-info">오늘</button>
+									<button type="button" class="btn btn-sm btn-outline-info">3일간</button>
+									<button type="button" class="btn btn-sm btn-outline-info">일주일</button>
+									<button type="button" class="btn btn-sm btn-outline-info">1개월</button>
+									<button type="button" class="btn btn-sm btn-outline-info">3개월</button>
+									<button type="button" class="btn btn-sm btn-outline-info">전체</button>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col text-center">
+									<button type="submit" class="btn btn-primary">검색</button>
+									<button type="button" class="btn btn-outline-primary">초기화</button>
 								</div>
 							</div>
 						</form>
@@ -171,7 +219,7 @@
 				for (let i = 0; i < secondCategoryList.length; i++) {optionStr += "<option value='" + secondCategoryList[i].cate_code + "'>"+ secondCategoryList[i].cate_name+ "</option>";
 				}
 					secondCategoryCode.find("option").remove();
-					secondCategoryCode.append("<option>2차카테고리 선택</option");
+					secondCategoryCode.append("<option>2차 분류</option");
 					secondCategoryCode.append(optionStr);
 
 					});

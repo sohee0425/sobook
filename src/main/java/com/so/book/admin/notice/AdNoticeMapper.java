@@ -19,4 +19,8 @@ public interface AdNoticeMapper {
 	NoticeVo edit(int ntc_bno);
 	
 	void edit_save(NoticeVo vo);
+	
+	void delete(int ntc_bno);
+	
+	void nt_sel_delete(int[] ntc_bno_arr);
 }

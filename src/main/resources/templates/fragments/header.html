@@ -5,7 +5,7 @@
   <div class="container">
   <header class="border-bottom lh-1 py-3">
     <div class="row flex-nowrap justify-content-between align-items-center">
-    </div> 
+    <!-- </div>  -->
     <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom "> 
       <a href="/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
         <span class="fs-4">SO BOOK</span>
@@ -23,14 +23,15 @@
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/logout">로그아웃</a>
       </nav>
     </th:block>
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">공지사항</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/notice/list">공지사항</a>
         <a class="link-secondary" href="#" aria-label="Search" >
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"></circle><path d="M21 21l-5.2-5.2"></path></svg>
         </a>
     </div> 
+    </div>
   </header>
 
-  <div class="nav-scroller py-1 mt mb-3 border-bottom">
+  <!-- <div class="nav-scroller py-1 mt mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-between">
       <a class="nav-item nav-link link-body-emphasis" href="#">ALL</a>
       <a class="nav-item nav-link link-body-emphasis" href="#">베스트 셀러</a>
@@ -40,9 +41,75 @@
       <a class="nav-item nav-link link-body-emphasis" href="#">유아</a>
      
     </nav>
-  </div>
+  </div>  -->
+  <ul class="nav d-flex align-items-center py-1 mt mb-3 border-bottom nav justify-content-center" id="category_menu">
+    <li class="nav-item first_category" th:each="menu : ${cate_list}">
+      <a class="nav-link link-body-emphasis" href="#" th:data-cate_code="${menu.cate_code}" th:text="${menu.cate_name}"></a>
+    </li>
+    
+  </ul>
+  <ul class="nav justify-content-center" id="subCategory_menu">
+
+  </ul>
+  
+  <script>
+    $(document).ready(function() {
+  
+      //1차 카테고리 마우스오버
+      $("ul#category_menu li.first_category").on("mouseover", function() {
+        // console.log("1차카테고리 선택");
+        let current = $(this);
+        let first_category = current.find("a.nav-link").data("cate_code"); // 클릭한 카테고리 코드참조
+  
+        console.log("선택한 1차코드", first_category);
+  
+        $.ajax({
+          url: '/admin/category/secondcategory/' + first_category,
+          type: 'get',
+          // data: {first_category : first_category}, 위에 first_category가 있어서 없앰
+          dataType: 'json',
+          success : function(subCategoryList) {
+            // console.log(subCategoryList);
+  
+            $("ul#subCategory_menu").empty();
+  
+            for(let i=0; i<subCategoryList.length; i++) {
+            let subCategoryStr = `<li class="nav-item">`;
+                subCategoryStr += `<a class="nav-link active" aria-current="page" href="#" data-cate_code="${subCategoryList[i].cate_code}">${subCategoryList[i].cate_name}</a>`;
+                subCategoryStr += `</li>`;
+            
+              $("ul#subCategory_menu").append(subCategoryStr);
+            }
+
+            $("ul#subCategory_menu").show();
+          }
+        });
+      });
+  
+      $("ul#category_menu").on("click", function() {
+            // 하위 카테고리 숨기기
+            $("ul#subCategory_menu").hide();
+        });
+
+      // 2차카테고리 클릭
+      $("ul#subCategory_menu").on("click", "li.nav-item a.nav-link", function() {
+        
+        let cate_name = $(this).html();
+        let cate_code = $(this).data("cate_code");
+        // 상품리스트 주소로 이동(2차 카테고리 이름, 코드와 함께 이동)
+        location.href = `/product/pro_list?cate_name=${cate_name}&cate_code=${cate_code}`;
+      });
+      $("ul#subCategory_menu").hide();
+  
+    }); // ready end
+  </script>
+
 </div>
 </header>
 
+</th:block>
+
+<th:block layout:fragment="css">
+  
 </th:block>
 </html>

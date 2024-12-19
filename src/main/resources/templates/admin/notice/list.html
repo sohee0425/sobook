@@ -19,8 +19,9 @@
 					</div>
 					<!-- /.card-header -->
 					<!-- list start-->
-					<div class="card-body">
+					<div class="card-body row">
 						<!--search-->
+					<div class="col-8">
 						<form action="/admin/notice/list" method="get" >
 							<div class="form-group row">
 								<div class="col-2">
@@ -40,8 +41,12 @@
 								</div>
 							</div>
 						</form>
+					</div>
+						<div class="col-4">
+							<button type="button" class="btn btn-block w-50 btn-outline-danger" id="btn_nt_sel_delete">선택삭제</button>
+						</div>
 
-						<form name="frm_nt_list" id="frm_nt_list" action="/admin/notice/nt_sel_delete" method="post" class="col">
+					<form name="frm_nt_list" id="frm_nt_list" action="/admin/notice/nt_sel_delete" method="post" class="col">
 						<table class="table table-bordered">
 							<thead>
 								<tr>
@@ -58,7 +63,7 @@
 							<tbody>
 								<tr th:each="NoticeVo:${list}" th:object="${NoticeVo}">
 									<td>
-										<input type="checkbox" name="check">
+										<input type="checkbox" name="check" th:value="${NoticeVo.ntc_bno}">
 									</td>
 									<td th:text="${NoticeVo.ntc_bno}"></td>
 									<td><a th:href="|/admin/notice/read${pageMaker.makeSearch(pageMaker.cri.page)}&ntc_bno=${NoticeVo.ntc_bno}|"
@@ -69,12 +74,12 @@
 										th:text="${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 									<td>
 										<button type="button" class="btn btn-block btn-outline-info" th:data-ntc_bno="${NoticeVo.ntc_bno}" name="btn_ntc_edit">EDIT</button>
-										<button type="button" class="btn btn-block btn-outline-info" th:data-ntc_bno="${NoticeVo.ntc_bno}">DELETE</button>
+										<button type="button" class="btn btn-block btn-outline-info" th:data-ntc_bno="${NoticeVo.ntc_bno}" name="btn_nt_delete">DELETE</button>
 									</td>
 								</tr>
 							</tbody>
 						</table>
-						</form>
+					</form>
 						<!-- 페이징 및 검색 파라미터 정보 -->
 					<form id="criteriaForm" action="" method="get">
 						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
@@ -158,6 +163,17 @@
 			});
 		});
 
+		$("#btn_nt_sel_delete").on("click", function() {
+
+			if(!confirm("선택하신 공지를 삭제하겠습니까?")) return;
+
+			if($("input[name='check']:checked").length == 0) {
+				alert("삭제할 공지를 선택하세요.");
+				return;
+			}
+			$("#frm_nt_list").submit();
+		});
+
 		let criteriaForm = $("#criteriaForm");
 		// 수정버튼 클릭 btn_ntc_edit
 		$("button[name='btn_ntc_edit']").on("click", function() {
@@ -168,6 +184,19 @@
 			criteriaForm.attr("action", "/admin/notice/edit");
 			criteriaForm.submit();
 		});
+
+		// 삭제 btn_pro_del
+		$("button[name='btn_nt_delete']").on("click", function() {
+
+			if(!confirm("삭제하시겠습니까?")) return;
+
+			let ntc_bno = $(this).data("ntc_bno");
+
+			$("#ntc_bno").val(ntc_bno);
+
+			criteriaForm.attr("action", "/admin/notice/delete");
+			criteriaForm.submit();
+			});
 		
 	});
 </script>

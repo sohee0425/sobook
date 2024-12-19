@@ -20,7 +20,7 @@ public class AdNoticeService {
 		adNoticeMapper.save(vo);
 	}
 	
-	List<NoticeVo> listAll(SearchCriteria cri) {
+	public List<NoticeVo> listAll(SearchCriteria cri) {
 		return adNoticeMapper.listAll(cri);
 	}
 	
@@ -40,5 +40,13 @@ public class AdNoticeService {
 	
 	public void edit_save(NoticeVo vo){
 		adNoticeMapper.edit_save(vo);
+	}
+	
+	public void delete(int ntc_bno) {
+		adNoticeMapper.delete(ntc_bno);
+	}
+	
+	void nt_sel_delete(int[] ntc_bno_arr) {
+		adNoticeMapper.nt_sel_delete(ntc_bno_arr);
 	}
 }

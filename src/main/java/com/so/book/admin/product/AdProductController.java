@@ -167,6 +167,9 @@ public class AdProductController {
 		
 		model.addAttribute("pageMaker", pageMaker);
 		
+		// 1차 카테고리 목록
+		model.addAttribute("cate_list", adCategoryService.getFirstCategoryList());
+		
 	}
 	
 	// 상품목록 이미지출력하기 : 클라이언트에서 보낸 파라미터명 스프링의 컨트롤러에서 받는 파라미터명이 일치해야 한다.

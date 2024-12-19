@@ -18,6 +18,8 @@
 		ntc_bno > 0
 		
 		<include refid="search"></include>
+		
+		limit #{pageStart}, #{perPageNum}
 	</select>
 	
 	<select id="read" parameterType="int" resultType="com.so.book.admin.notice.NoticeVo">
@@ -90,4 +92,20 @@
 			ntc_bno = #{ntc_bno}
 	</update>
 	
+	<delete id="delete" parameterType="int">
+		delete from
+			notice_tbl
+		where
+			ntc_bno = #{ntc_bno}
+	</delete>
+	
+	<delete id="nt_sel_delete">
+		delete from
+			notice_tbl
+		where
+			ntc_bno in
+		<foreach collection="ntc_bno_arr" item="item" open="(" separator="," close=")">	
+		 #{item}
+		 </foreach>
+	</delete>
 </mapper>
