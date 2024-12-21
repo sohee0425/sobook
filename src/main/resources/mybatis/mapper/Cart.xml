@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.so.book.cart.CartMapper">
+
+	<insert id="cart_add" parameterType="com.so.book.cart.CartVo">
+		insert into
+			cart_tbl(pro_code, mem_id, cart_amount)
+		values
+			(#{pro_code}, #{mem_id}, #{cart_amount})
+		on duplicate key
+			update cart_amount = cart_amount + 3
+	</insert>
+
+</mapper>
