@@ -77,9 +77,22 @@
           data: {pro_code: [[${productVo.pro_code}]], cart_amount : $("#cart_amount").val()},
           dataType: 'text',
           success: function(result) {
-
+            if(result == "success") {
+              alert("장바구니에 추가되었습니다.");
+              if(confirm("장바구니로 이동하시겠습니까?")) {
+                location.href = "/cart/cart_list";
+              }
+            }
           }
         });
+      });
+
+      // 구매 클릭 btn_buy_add
+      $("#btn_buy_add").on("click", function() {
+        let cart_amount = $("#cart_amount").val();
+        let url = `/order/order_info?pro_code=[[${productVo.pro_code}]]&cart_amount=${cart_amount}`;
+
+        location.href = url;
       });
     });
 

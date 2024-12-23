@@ -8,7 +8,7 @@
 		values
 			(#{pro_code}, #{mem_id}, #{cart_amount})
 		on duplicate key
-			update cart_amount = cart_amount + 3
+			update cart_amount = cart_amount + #{cart_amount}
 	</insert>
 
 </mapper>
