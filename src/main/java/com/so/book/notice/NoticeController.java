@@ -20,15 +20,15 @@ public class NoticeController {
 	private final NoticeService noticeService;
 	private final AdNoticeService adNoticeService;
 	
-	@GetMapping("/list")
-	public void list(Model model, SearchCriteria cri, String ntc_title, int ntc_bno) throws Exception {
+	@GetMapping("/notice_list")
+	public void list(Model model, SearchCriteria cri, String ntc_title) throws Exception {
 		// 글 목록
 		model.addAttribute("list", adNoticeService.listAll(cri));
 		
 		// 페이징
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(noticeService.getTotalNotice(ntc_bno));
+//		pageMaker.setTotalCount(noticeService.getTotalNotice(ntc_bno));
 		
 		model.addAttribute("pageMaker", pageMaker);
 	}

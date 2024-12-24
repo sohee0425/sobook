@@ -22,7 +22,7 @@
 					<div class="card-body row">
 						<!--search-->
 					<div class="col-8">
-						<form action="/admin/notice/list" method="get" >
+						<form action="/admin/notice/notice_list" method="get" >
 							<div class="form-group row">
 								<div class="col-2">
 									<select name="searchType" class="form-control">
@@ -66,7 +66,7 @@
 										<input type="checkbox" name="check" th:value="${NoticeVo.ntc_bno}">
 									</td>
 									<td th:text="${NoticeVo.ntc_bno}"></td>
-									<td><a th:href="|/admin/notice/read${pageMaker.makeSearch(pageMaker.cri.page)}&ntc_bno=${NoticeVo.ntc_bno}|"
+									<td><a th:href="|/admin/notice/notice_read${pageMaker.makeSearch(pageMaker.cri.page)}&ntc_bno=${NoticeVo.ntc_bno}|"
 									th:text="${NoticeVo.ntc_title}"></a></td>
 									<td th:text="${NoticeVo.adm_id}"></td>
 									<td th:text="${NoticeVo.ntc_viewcount}"></td>

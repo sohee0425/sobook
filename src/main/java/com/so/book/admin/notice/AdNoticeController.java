@@ -39,19 +39,19 @@ public class AdNoticeController {
 	private final AdNoticeService adNoticeService;
 	
 	// 기본 주소
-	@GetMapping("/main")
+	@GetMapping("/notice_main")
 	public void main() {
 		// list를 메인으로 할까? 고민
 	}
 	
 	// 글쓰기 폼
-	@GetMapping("/register")
+	@GetMapping("/notice_register")
 	public void registerGET() throws Exception {
 		
 	}
 	
 	// 글쓰기 저장 save
-	@PostMapping("/register")
+	@PostMapping("/notice_register")
 	public String registerPOST(NoticeVo vo, MultipartFile list_img_upload) throws Exception {
 		
 		
@@ -62,7 +62,7 @@ public class AdNoticeController {
 	}
 	
 	// 글 목록 list
-	@GetMapping("/list")
+	@GetMapping("/notice_list")
 	public void listAll(Model model, SearchCriteria cri) throws Exception {
 		
 //		List<NoticeVo> list = adNoticeService.listAll();
@@ -84,7 +84,7 @@ public class AdNoticeController {
 	
 	
 	// 글 조회
-	@GetMapping("/read")
+	@GetMapping("/notice_read")
 	public void read(int ntc_bno, Model model, @ModelAttribute("cri") SearchCriteria cri) throws Exception {
 		
 		NoticeVo noticeVo = adNoticeService.read(ntc_bno);
@@ -92,7 +92,7 @@ public class AdNoticeController {
 	}
 	
 	// 글 수정 불러오기
-	@GetMapping("/edit")
+	@GetMapping("/notice_edit")
 	public String edit(Model model, @RequestParam("ntc_bno") int ntc_bno, SearchCriteria cri) throws Exception {
 		NoticeVo noticeVo = adNoticeService.edit(ntc_bno);
 		model.addAttribute("NoticeVo", noticeVo);
@@ -101,7 +101,7 @@ public class AdNoticeController {
 	}
 	
 	// 글 수정 저장
-	@PostMapping("/edit")
+	@PostMapping("/notice_edit")
 	public String edit(NoticeVo vo, SearchCriteria cri, RedirectAttributes rttr) throws Exception {
 		
 //		System.out.println("수정데이터"+vo);
@@ -118,7 +118,7 @@ public class AdNoticeController {
 	
 	
 	// 글 삭제
-	@GetMapping("/delete")
+	@GetMapping("/notice_delete")
 	public String delete(SearchCriteria cri, int ntc_bno, RedirectAttributes rttr) throws Exception {
 		adNoticeService.delete(ntc_bno);
 		
