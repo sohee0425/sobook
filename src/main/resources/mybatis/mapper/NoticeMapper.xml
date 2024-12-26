@@ -9,7 +9,14 @@
 			notice_tbl
 		where
 			ntc_bno > 0
-		
-			
+	</select>
+	
+	<select id="notice_read" parameterType="int" resultType="com.so.book.admin.notice.NoticeVo">
+	select
+		ntc_bno, ntc_title, ntc_content, adm_id, ntc_regdate, ntc_updatedate, ntc_viewcount
+	from
+		notice_tbl
+	where
+		ntc_bno = #{ntc_bno}
 	</select>
 </mapper>

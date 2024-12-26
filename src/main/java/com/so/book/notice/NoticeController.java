@@ -3,9 +3,11 @@ package com.so.book.notice;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.so.book.admin.notice.AdNoticeService;
+import com.so.book.admin.notice.NoticeVo;
 import com.so.book.common.constants.Constants;
 import com.so.book.common.utils.PageMaker;
 import com.so.book.common.utils.SearchCriteria;
@@ -28,8 +30,15 @@ public class NoticeController {
 		// 페이징
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-//		pageMaker.setTotalCount(noticeService.getTotalNotice(ntc_bno));
+		pageMaker.setTotalCount(noticeService.getTotalNotice(cri));
 		
 		model.addAttribute("pageMaker", pageMaker);
+	}
+	
+	@GetMapping("/notice_read")
+	public void notice_read(int ntc_bno, Model model, @ModelAttribute("cri") SearchCriteria cri) throws Exception {
+		
+		NoticeVo noticeVo = noticeService.notice_read(ntc_bno);
+		model.addAttribute("NoticeVo", noticeVo);
 	}
 }

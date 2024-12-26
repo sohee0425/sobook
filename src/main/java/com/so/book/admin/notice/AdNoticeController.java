@@ -97,7 +97,7 @@ public class AdNoticeController {
 		NoticeVo noticeVo = adNoticeService.edit(ntc_bno);
 		model.addAttribute("NoticeVo", noticeVo);
 		model.addAttribute("cri", cri);
-		return "/admin/notice/edit";
+		return "/admin/notice/notice_edit";
 	}
 	
 	// 글 수정 저장
@@ -113,7 +113,7 @@ public class AdNoticeController {
 		rttr.addAttribute("searchType", cri.getSearchType());
 		rttr.addAttribute("keyword", cri.getKeyword());
 		
-		return "redirect:/admin/notice/list";
+		return "redirect:/admin/notice/notice_list";
 	}
 	
 	
@@ -127,7 +127,7 @@ public class AdNoticeController {
 		rttr.addAttribute("searchType", cri.getSearchType());
 		rttr.addAttribute("keyword", cri.getKeyword());
 		
-		return "redirect:/admin/notice/list";
+		return "redirect:/admin/notice/notice_list";
 	}
 	
 	// 선택 삭제
@@ -136,7 +136,7 @@ public class AdNoticeController {
 		
 		adNoticeService.nt_sel_delete(check);
 		
-		return "redirect:/admin/notice/list";
+		return "redirect:/admin/notice/notice_list";
 	}
 	
 }

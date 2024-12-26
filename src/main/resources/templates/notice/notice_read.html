@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout}">
+    
+<th:block layout:fragment="content"> 
+<h3 class="text-center mt-5 mb-3">공지사항 조회</h3>
+	<div class="container mt-5">
+	<div class="row">
+		<div class="col">
+			<div class="card card-primary">
+				<form action="/notice/notice_list" method="get" class="form-horizontal">
+				<div class="card-body">
+					<div class="form-group">
+					<label for="ntc_title">제목</label>
+					<label type="text" class="form-control" id="ntc_title" name="ntc_title" th:text="${NoticeVo.ntc_title}"></label>
+					</div>
+					<div class="form-group">
+						<label for="adm_id" class="mt-3">작성자</label>
+						<div>
+						<label type="text" class="form-control" id="adm_id" name="adm_id"  th:text="${NoticeVo.adm_id}"></label>
+						</div>
+					</div>
+					
+					
+					<div class="form-group">
+						<label for="ntc_content" class="mt-3">내용</label>
+						<label class="form-control" id="ntc_content" name="ntc_content"  th:text="${NoticeVo.ntc_content}"></label>
+					</div>
+
+					<label class="form-control text-right mt-3" th:text="|등록일 : ${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')} / 수정일 : ${#dates.format(NoticeVo.ntc_updatedate, 'yyyy-MM-dd HH:mm:ss')}|"></label>
+
+	
+					<div class="card-footer">
+					<button type="button" class="btn btn-primary"  onclick="fn_go_list()">글 목록</button>
+					
+					</div>
+				</div>
+			</form>
+			</div>
+		</div>
+	</div>
+</div>
+    </th:block>
+
+    <th:block layout:fragment="script2">
+        <script th:inline="javascript">
+        
+                let frm = document.getElementById("form1"); 
+                
+                function fn_go_list() {
+                    location.href = "/notice/notice_list";
+        
+                }
+            
+            </script>
+        </th:block>
+</html>
