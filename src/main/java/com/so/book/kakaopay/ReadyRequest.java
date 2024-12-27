@@ -24,4 +24,9 @@ public class ReadyRequest {
 	private String approval_url;
 	private String cancel_url;
 	private String fail_url;
+	
+	public ReadyRequest(String cid, String partner_order_id) {
+		this.cid = cid;
+		this.partner_order_id = partner_order_id;
+	}
 }
