@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 public class CartVo {
 	
+	private Integer cart_code;
 	private Integer pro_code;
 	private Integer cart_amount;
 	private String mem_id;

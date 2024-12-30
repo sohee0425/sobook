@@ -10,4 +10,6 @@ public interface CartMapper {
 	List<Map<String, Object>> getCartDetailsByUserId(String mem_id);
 	
 	int getCartTotalPriceByUserId(String mem_id);
+	
+	void cart_empty(String mem_id);
 }

@@ -39,4 +39,10 @@
 	
 	</select>
 	
+	<delete id="cart_empty" parameterType="String">
+		delete from
+			cart_tbl
+		where
+			mem_id = #{mem_id}
+	</delete>
 </mapper>

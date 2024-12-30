@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Log4j2
+@Slf4j
 public class KakaopayService {
 	
 	@Value("${readUrl}")
@@ -92,7 +92,9 @@ public class KakaopayService {
 		ResponseEntity<ApproveResponse> response = new RestTemplate().postForEntity(approveUrl, entityMap, ApproveResponse.class);
 		
 		log.info("결제승인요청응답 : " + response);
-		return "";
+		
+				
+		return response.toString();
 	}
 	
 	public HttpHeaders getHttpHeaders() {

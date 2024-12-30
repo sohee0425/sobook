@@ -17,6 +17,6 @@ public class OrderVo {
 	private String ord_addr_detail;
 	private String ord_tel;
 	private String ord_email;
-	private String ord_price;
+	private int ord_price;
 	private String ord_regdate;
 }

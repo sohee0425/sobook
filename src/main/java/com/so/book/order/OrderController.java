@@ -60,6 +60,28 @@ public class OrderController {
 		
 	}
 	
+	int order_total_price;
+	
+	// 주문 결과 내역
+	@GetMapping("/order_result")
+	public void order_result(Integer ord_code, Model model) throws Exception {
+		
+		order_total_price = 0;
+		
+		// 주문결과내역(주문번호)
+		List<Map<String, Object>> order_info = orderService.getOrderInfoByOrd_code(ord_code);
+		
+		// 날짜폴더 \ > / 변환
+		order_info.forEach(o_Info -> {
+			o_Info.put("pro_up_folder", o_Info.get("pro_up_folder").toString().replace("\\", "/"));
+			order_total_price += ((int) o_Info.get("dt_amount") * (int) o_Info.get("dt_price"));
+		});
+		
+		model.addAttribute("order_info", order_info);
+		model.addAttribute("order_total_price", order_total_price);
+		
+	}
+	
 	@GetMapping("/image_display")
 	public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
 		
