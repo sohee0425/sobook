@@ -1,5 +1,7 @@
 package com.so.book.order;
 
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,5 +20,5 @@ public class OrderVo {
 	private String ord_tel;
 	private String ord_email;
 	private int ord_price;
-	private String ord_regdate;
+	private Date ord_regdate;
 }

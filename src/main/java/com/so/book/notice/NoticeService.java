@@ -19,6 +19,7 @@ public class NoticeService {
 	}
 	
 	public NoticeVo notice_read(int ntc_bno) {
+		noticeMapepr.viewAdd(ntc_bno);
 		return noticeMapepr.notice_read(ntc_bno);
 	}
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.so.book.order.OrderMapper">
 
-	<insert id="order_insert" parameterType="com.so.book.order.OrderVo">
+	<insert id="order_insert" parameterType="com.so.book.order.OrderVo" useGeneratedKeys="true" keyProperty="ord_code">
 		insert into
 			order_tbl
 				(mem_id, ord_name, ord_zipcode, ord_addr, ord_addr_detail, ord_tel, ord_email, ord_price)

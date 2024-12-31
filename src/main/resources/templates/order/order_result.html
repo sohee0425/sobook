@@ -13,19 +13,19 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col" style="width: 5%;">주문번호</th>
-            <th scope="col" style="width: 25%;">상품이미지</th>
-            <th scope="col" style="width: 15%;">상품이름</th>
-            <th scope="col" style="width: 10%;">가격</th>
+            <th scope="col" style="width: 10%;">주문번호</th>
+            <th scope="col" style="width: 15%;">상품이미지</th>
+            <th scope="col" style="width: 10%;">상품이름</th>
+            <th scope="col" style="width: 15%;">가격</th>
             <th scope="col" style="width: 5%;">수량</th>
-            <th scope="col" style="width: 10%;">합계</th>
-            <th scope="col" style="width: 15%;">주문상태</th>
+            <th scope="col" style="width: 15%;">합계</th>
+            <th scope="col" style="width: 10%;">주문상태</th>
             <th scope="col" style="width: 15%;">배송상태</th>
           </tr>
         </thead>
         <tbody>
           <tr th:each= "item : ${order_info}">
-            <td th:text="${item.ord_code}"></td>
+            <td style="text-align: center;" th:text="${item.ord_code}"></td>
             <td>
               <img style="width: 100px;height: 100px;" th:src="${'/order/image_display?dateFolderName=' + item.pro_up_folder + '&fileName=s_' + item.pro_img}">
             </td>
@@ -39,7 +39,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="6" th:text="'총금액' + ${#numbers.formatInteger(order_total_price, 3, 'COMMA') + '원'}"></td>
+            <td style="text-align: right;" colspan="8" th:text="'총 금액 : ' + ${#numbers.formatInteger(order_total_price, 3, 'COMMA') + '원'}"></td>
           </tr>
         </tfoot>
       </table>

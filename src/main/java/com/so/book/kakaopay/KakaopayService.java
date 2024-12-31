@@ -61,8 +61,10 @@ public class KakaopayService {
 		
 		HttpEntity<ReadyRequest> entityMap = new HttpEntity<>(readyRequest, headers);
 		
+		// 결제준비요청
 		ResponseEntity<ReadyResponse> response = new RestTemplate().postForEntity(readUrl, entityMap, ReadyResponse.class);
 		
+		// 응답데이터
 		ReadyResponse readyResponse = response.getBody();
 		
 		this.tid = readyResponse.getTid();

@@ -1,5 +1,7 @@
 package com.so.book.kakaopay;
 
+import java.util.Date;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,22 +29,24 @@ public class KakaopayController {
 	
 	private OrderVo order_info;
 	private String mem_id;
-	private int oder_total_price;
+	private int order_total_price;
 	
 	@PostMapping("/kakaopay")
-	public ResponseEntity<ReadyResponse> kakaopay(OrderVo vo, int order_total_price, HttpSession session) {
+	public ResponseEntity<ReadyResponse> kakaopay(OrderVo vo, String item_name, int quantity, HttpSession session) {
 		
-		String mem_id = ((MemberVo) session.getAttribute("login_auth")).getMem_id();
+		mem_id = ((MemberVo) session.getAttribute("login_auth")).getMem_id();
 		vo.setMem_id(mem_id);
 		
 		log.info("주문정보: " + vo);
 		
 		this.order_info = vo;
-		this.oder_total_price = order_total_price;
+		this.order_total_price = vo.getOrd_price();
 		
 		ResponseEntity<ReadyResponse> entity = null;
 		
-		ReadyResponse readyResponse = kakaopayService.ready(String.valueOf(order_total_price), mem_id, "상품A", 10, 50000, 0);
+		String partner_order_id = "sobook[" + mem_id + "] - " + new Date().toString();
+		
+		ReadyResponse readyResponse = kakaopayService.ready(partner_order_id, mem_id, item_name, quantity, order_total_price, 0);
 		
 		log.info("결제준비요청 응답결과" + readyResponse.toString());
 		
@@ -63,13 +67,13 @@ public class KakaopayController {
 		
 		// 결제 승인 요청의 성공 응답 파라미터로 aid 확인
 		if(response.contains("aid")) {
-			orderService.order_process(this.order_info, mem_id, "카카오페이", oder_total_price);
+			orderService.order_process(this.order_info, mem_id, "카카오페이");
 		}
 		
 		rttr.addAttribute("ord_code", order_info.getOrd_code());
 		
 		
-		return "/order/order_result";
+		return "redirect:/order/order_result";
 	}
 	
 	// 결제취소

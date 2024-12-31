@@ -8,4 +8,6 @@ public interface NoticeMapepr {
 	public int getTotalNotice(SearchCriteria cri);
 	
 	NoticeVo notice_read(int ntc_bno);
+	
+	void viewAdd(int ntc_bno);
 }

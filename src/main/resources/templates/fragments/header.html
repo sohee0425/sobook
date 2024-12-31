@@ -19,7 +19,7 @@
       <th:block th:if= "${session.login_auth != null}">
         <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/mypage">마이페이지</a>
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">장바구니</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/cart/cart_list">장바구니</a>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/logout">로그아웃</a>
       </nav>
     </th:block>
@@ -42,7 +42,9 @@
      
     </nav>
   </div>  -->
-  <ul class="nav d-flex align-items-center py-1 mt mb-3 border-bottom nav justify-content-center" id="category_menu">
+
+ 
+   <ul class="nav d-flex align-items-center py-1 mt mb-3 border-bottom nav justify-content-center" id="category_menu">
     <li class="nav-item first_category" th:each="menu : ${cate_list}">
       <a class="nav-link link-body-emphasis" href="#" th:data-cate_code="${menu.cate_code}" th:text="${menu.cate_name}"></a>
     </li>
@@ -56,7 +58,7 @@
     $(document).ready(function() {
   
       //1차 카테고리 마우스오버
-      $("ul#category_menu li.first_category").on("mouseover", function() {
+      $("ul#category_menu li.first_category").on("click", function() {
         // console.log("1차카테고리 선택");
         let current = $(this);
         let first_category = current.find("a.nav-link").data("cate_code"); // 클릭한 카테고리 코드참조
@@ -97,6 +99,8 @@
         let cate_name = $(this).html();
         let cate_code = $(this).data("cate_code");
         // 상품리스트 주소로 이동(2차 카테고리 이름, 코드와 함께 이동)
+        // $("#selectedSubCategory").text(cate_name);
+
         location.href = `/product/pro_list?cate_name=${cate_name}&cate_code=${cate_code}`;
       });
       $("ul#subCategory_menu").hide();

@@ -19,4 +19,13 @@
 	where
 		ntc_bno = #{ntc_bno}
 	</select>
+	
+	<update id="viewAdd" parameterType="int">
+		update
+			notice_tbl
+		set
+			ntc_viewcount = ntc_viewcount + 1
+		where 
+			ntc_bno = #{ntc_bno}
+	</update>
 </mapper>

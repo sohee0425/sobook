@@ -24,7 +24,7 @@ public class OrderService {
 	
 	// 주문하기 기능 (주문테이블, 주문상세테이블, 결제테이블, 장바구니테이블)
 	@Transactional
-	public void order_process(OrderVo vo, String mem_id, String p_method, int order_total_price) {
+	public void order_process(OrderVo vo, String mem_id, String p_method) {
 		
 		log.info("주문번호:" + vo.getOrd_code()); // null
 		
@@ -41,12 +41,12 @@ public class OrderService {
 		p_vo.setOrd_code(vo.getOrd_code());
 		p_vo.setMem_id(mem_id);
 		
-		p_vo.setPayment_method(p_method);
-		p_vo.setPayment_price(order_total_price);
+		p_vo.setPayment_method(p_method); // "카카오페이"
+		p_vo.setPayment_price(vo.getOrd_price()); // 총구매금액
 		
 		if(p_method.equals("카카오페이")) {
 			p_vo.setPayment_status("입금완료");
-		}else if(p_method.equals("무통장입금")) {
+		}else if(p_method.contains("무통장입금")) {
 			p_vo.setPayment_status("입금대기");
 		}
 		

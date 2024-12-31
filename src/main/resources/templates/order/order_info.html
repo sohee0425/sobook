@@ -43,6 +43,7 @@
   </div>
 
   <!-- 주문자 배송지 정보 회원가입 폼 참고해서 만들기-->
+<form id="orderForm" method="post" action="/order/order_save">
   <div class="row">
         <div class="col">
             <div class="card card-info">
@@ -57,6 +58,12 @@
                         <input type="hidden" id="ord_zipcode_2" th:value="${memberVo.mem_zipcode}">
                         <input type="hidden" id="ord_addr_2" th:value="${memberVo.mem_addr}">
                         <input type="hidden" id="ord_addr_detail_2" th:value="${memberVo.mem_deaddr}">
+
+                        <!--전체 주문 금액-->
+                        <input type="hidden" name="ord_price" th:value="${order_total_price}">
+                        <!--결제방식-->
+                        <input type="hidden" id="p_method" name="p_method">
+
                         <input type="text" class="form-control" id="ord_name_1" th:value="${memberVo.mem_name}">
                     </div>
                 </div>
@@ -158,20 +165,21 @@
         <div class="form-group row mb-3">
           <label for="mem_id" class="col-sm-2 col-form-label">결제방식 선택</label>
           <div class="col">
-            <input type="radio" id="payment_method_1" name="payment_method" value="kakaopay">카카오 페이
-            <input type="radio" id="payment_method_2" name="payment_method" value="nobank">무통장 입금
+            <input type="radio" id="payment_method_1" name="payment_method" value="kakaopay" >카카오 페이
+            <input type="radio" id="payment_method_2" name="payment_method" value="account_transfer">무통장 입금
           </div>
         </div>
-        <div class="form-group row mb-3" id="nobank_info" style="display: none;">
+        <div class="form-group row mb-3" id="account_transfer" style="display: none;">
           <label class="col-sm-2 col-form-label">무통장 입금</label>
           <div class="col">
-            <select>
+            <select name="account_transfer">
               <option value="">은행 선택</option>
               <option value="KEB하나은행">KEB하나은행(123-123-123)</option>
               <option value="신한은행">신한은행(110-110-110)</option>
               <option value="국민은행">국민은행(123-456-789)</option>
               <option value="우리은행">우리은행(321-654-987)</option>
             </select>
+            예금주 : <input type="text" name="sender">
           </div>
         </div>
         <div class="form-group row mt-3">
@@ -182,7 +190,7 @@
   </div>
 
 </div>
-
+</form>
 
 
 <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정  필요 -->
@@ -310,10 +318,10 @@
       $("input[name='payment_method']").on("click", function() {
         let pay_method = $("input[name='payment_method']:checked").val();
 
-        if(pay_method == "nobank") {
-          $("div#nobank_info").show();
+        if(pay_method == "account_transfer") {
+          $("div#account_transfer").show();
         }else if(pay_method == "kakaopay") {
-          $("div#nobank_info").hide();
+          $("div#account_transfer").hide();
         }
       });
 
@@ -322,13 +330,17 @@
 
         let pay_method = $("input[name='payment_method']:checked").val();
 
-        if(pay_method == "nobank") {
+        if(pay_method == "account_transfer") { // 무통장입금 선택
+
+          $("#p_method").val("무통장입금");
+
+          $("#orderForm").submit();
 
         }else if(pay_method == "kakaopay") {
           $.ajax({
             url:'/kakao/kakaopay',
             type : 'post',
-            data: {order_total_price : [[${order_total_price}]],ord_name : $("#ord_name_2").val(), ord_zipcode : $("#sample2_postcode").val(), ord_addr : $("#sample2_address").val(), ord_addr_detail : $("#sample2_detailAddress").val(), ord_tel : $("#ord_tel_2").val(), ord_email : $("#ord_email_2").val(), ord_price: $("#order_total_price").val() },
+            data: { item_name : [[${item_name}]],  quantity : [[${quantity}]] ,ord_price : [[${order_total_price}]],ord_name : $("#ord_name_2").val(), ord_zipcode : $("#sample2_postcode").val(), ord_addr : $("#sample2_address").val(), ord_addr_detail : $("#sample2_detailAddress").val(), ord_tel : $("#ord_tel_2").val(), ord_email : $("#ord_email_2").val(), ord_price: [[${order_total_price}]] },
             success : function(response) {
             	location.href = response.next_redirect_pc_url;
             }

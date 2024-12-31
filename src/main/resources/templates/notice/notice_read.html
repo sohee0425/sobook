@@ -4,7 +4,7 @@
     layout:decorate="~{layouts/layout}">
     
 <th:block layout:fragment="content"> 
-<h3 class="text-center mt-5 mb-3">공지사항 조회</h3>
+<h3 class="text-center mb-3">공지사항 조회</h3>
 	<div class="container mt-5">
 	<div class="row">
 		<div class="col">
@@ -28,12 +28,11 @@
 						<label class="form-control" id="ntc_content" name="ntc_content"  th:text="${NoticeVo.ntc_content}"></label>
 					</div>
 
-					<label class="form-control text-right mt-3" th:text="|등록일 : ${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')} / 수정일 : ${#dates.format(NoticeVo.ntc_updatedate, 'yyyy-MM-dd HH:mm:ss')}|"></label>
+					<label class="form-control text-right mt-3" style="text-align: right;" th:text="|등록일 : ${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')} / 수정일 : ${#dates.format(NoticeVo.ntc_updatedate, 'yyyy-MM-dd HH:mm:ss')}|"></label>
 
 	
-					<div class="card-footer">
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
 					<button type="button" class="btn btn-primary"  onclick="fn_go_list()">글 목록</button>
-					
 					</div>
 				</div>
 			</form>

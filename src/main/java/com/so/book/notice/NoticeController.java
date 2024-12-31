@@ -37,6 +37,7 @@ public class NoticeController {
 	
 	@GetMapping("/notice_read")
 	public void notice_read(int ntc_bno, Model model, @ModelAttribute("cri") SearchCriteria cri) throws Exception {
+//		System.out.println("viewAdd 호출됨: ntc_bno = " + ntc_bno);
 		
 		NoticeVo noticeVo = noticeService.notice_read(ntc_bno);
 		model.addAttribute("NoticeVo", noticeVo);
