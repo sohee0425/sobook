@@ -9,8 +9,9 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 @Configuration
 public class MultipartConfig {
 
-	@Bean
-	public MultipartResolver multipartResolver() {
-		return new StandardServletMultipartResolver();
-	}
+	// 스프링부트 3.0 파일업로드 시 영향을 받지않음.
+//	@Bean
+//	public MultipartResolver multipartResolver() {
+//		return new StandardServletMultipartResolver();
+//	}
 }

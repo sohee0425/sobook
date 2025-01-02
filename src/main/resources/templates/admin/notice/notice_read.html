@@ -37,6 +37,9 @@
 					
 	
 					<div class="card-footer">
+
+					<input type="hidden" id="ntc_bno" name="ntc_bno" th:value="${NoticeVo.ntc_bno}">
+
 					<button type="button" class="btn btn-primary"  onclick="fn_go_list()">글 목록</button>
 					<button type="button" class="btn btn-success"  onclick="fn_go_edit()">글 수정</button>
 					<button type="button" class="btn btn-danger"  onclick="fn_go_delete()">글 삭제</button>
@@ -59,6 +62,33 @@
                     location.href = "/admin/notice/notice_list";
         
                 }
+
+				function fn_go_edit() {
+					const ntc_bno = document.getElementById("ntc_bno").value;
+
+					if (!ntc_bno || isNaN(ntc_bno)) {
+						alert("유효한 공지사항 번호가 없습니다.");
+						return;
+					}
+
+					location.href = "/admin/notice/notice_edit?ntc_bno=" + encodeURIComponent(ntc_bno);
+				}
+
+
+				function fn_go_delete() {
+					const ntc_bno = document.getElementById("ntc_bno").value; // 숨겨진 input에서 값을 가져오기
+
+					if (!ntc_bno || isNaN(ntc_bno)) { // 값이 비어있거나 숫자가 아닐 경우 처리
+						alert("유효한 공지사항 번호가 없습니다.");
+						return;
+					}
+
+					if (confirm("정말로 삭제하시겠습니까?")) {
+						// GET 방식으로 삭제 요청
+						location.href = "/admin/notice/notice_delete?ntc_bno=" + encodeURIComponent(ntc_bno);
+					}
+				}
+
 </script>
 
 </th:block>

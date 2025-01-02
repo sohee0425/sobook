@@ -37,14 +37,15 @@ public class OrderController {
 	@Value("${com.ezen.upload.path}")
 	private String uploadPath;
 	
+	// 1) 장바구니에서 주문 클릭 2) 상품목록, 상품상세에서 바로구매 클릭시
 	@GetMapping("/order_info")
-	public void order_info(CartVo vo, HttpSession session, Model model) throws Exception {
+	public void order_info(CartVo vo, String type, HttpSession session, Model model) throws Exception {
 		
 		// 장바구니 추가
 		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
 		vo.setMem_id(mem_id);
 		
-		cartService.cart_add(vo);
+		if(type.equals("buy")) cartService.cart_add(vo);
 		
 		// 장바구니 내역 출력
 		List<Map<String, Object>> cartDetails = cartService.getCartDetailsByUserId(mem_id);
@@ -58,7 +59,7 @@ public class OrderController {
 		if(cartDetails.size() == 1) {
 			item_name = (String) cartDetails.get(0).get("pro_name");
 		}else {
-			item_name = (String) cartDetails.get(0).get("pro_name") + " 외" + cartDetails.size();
+			item_name = (String) cartDetails.get(0).get("pro_name") + " 외 " + cartDetails.size();
 		}
 		
 		model.addAttribute("item_name", item_name);

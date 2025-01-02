@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.so.book.notice.NoticeMapepr">
+<mapper namespace="com.so.book.notice.NoticeMapper">
 
 	<select id="getTotalNotice" resultType="int">
 		select
@@ -9,6 +9,8 @@
 			notice_tbl
 		where
 			ntc_bno > 0
+		<include refid="search"></include>
+		
 	</select>
 	
 	<select id="notice_read" parameterType="int" resultType="com.so.book.admin.notice.NoticeVo">
@@ -28,4 +30,24 @@
 		where 
 			ntc_bno = #{ntc_bno}
 	</update>
+	
+	<sql id="search">
+
+	<if test="searchType != null">
+	 <if test="searchType == 't'.toString()">
+		and ntc_title like concat('%', #{keyword}, '%')
+	 </if>
+	  <if test="searchType == 'n'.toString()">
+		and ntc_bno like concat('%', #{keyword}, '%')
+	 </if>
+	  <if test="searchType == 'i'.toString()">
+		and adm_id like concat('%', #{keyword}, '%')
+	 </if>
+	  <if test="searchType == 'ti'.toString()">
+		and ntc_title like concat('%', #{keyword}, '%') 
+		 or 
+		adm_id like concat('%', #{keyword}, '%')
+	 </if>
+	</if>
+</sql>
 </mapper>

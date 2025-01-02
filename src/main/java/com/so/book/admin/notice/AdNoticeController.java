@@ -58,7 +58,7 @@ public class AdNoticeController {
 		// 글 정보 DB저장
 		adNoticeService.save(vo);
 		
-		return "redirect:/admin/notice/list";
+		return "redirect:/admin/notice/notice_list";
 	}
 	
 	// 글 목록 list
@@ -66,6 +66,8 @@ public class AdNoticeController {
 	public void listAll(Model model, SearchCriteria cri) throws Exception {
 		
 //		List<NoticeVo> list = adNoticeService.listAll();
+		
+		cri.setPerPageNum(Constants.ADMIN_NOTICE_LIST_PAGE_SIZE);
 		
 		// 글 목록
 		model.addAttribute("list", adNoticeService.listAll(cri));

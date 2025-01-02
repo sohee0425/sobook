@@ -24,4 +24,16 @@ public class CartService {
 	public int getCartTotalPriceByUserId(String mem_id) {
 		return cartMapper.getCartTotalPriceByUserId(mem_id);
 	}
+	
+	public List<Map<String, Object>> cart_list(String mem_id) {
+		return cartMapper.cart_list(mem_id);
+	}
+	
+	public void cart_empty(String mem_id) {
+		cartMapper.cart_empty(mem_id);
+	}
+	
+	public void cart_change(CartVo vo) {
+		cartMapper.cart_change(vo);
+	}
 }

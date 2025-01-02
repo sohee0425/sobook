@@ -4,10 +4,35 @@
     layout:decorate="~{layouts/layout}">
     
     <th:block layout:fragment="content">
-          <h3 class="mb-5 text-center">공지사항</h3>          
+      <div class="card-header">
+          <h3 class="mb-5 text-center">공지사항</h3>       
+        </div>  
+        <!--search-->
+					<div class="col-8">
+						<form action="/notice/notice_list" method="get" >
+							<div class="form-group row">
+								<div class="col-5 mb-3">
+									<select name="searchType" class="form-control">
+										<option selected>검색종류 선택</option>
+										<option value="t">제목</option>
+										<option value="n">글번호</option>
+										<option value="i">작성자</option>
+										<option value="ti">제목 or 작성자</option>
+									</select>
+								</div>
+								<div class="col-4">
+									<input type="text" name="keyword" class="form-control" placeholder="검색어 입력">
+								</div>
+								<div class="col-2">
+									<button type="submit" class="btn btn-block btn-outline-info">Serach</button>
+								</div>
+							</div>
+						</form>
+					</div> 
             <div class="row">
               <div class="col-12">
                 <div class="card">
+                  
                   <form action="/notice/notice_list" method="get">
                   <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
@@ -24,7 +49,7 @@
                           <td th:text="${NoticeVo.ntc_bno}"></td>
                           <td th:text="${NoticeVo.adm_id}"></td>
                           <td><a th:href= "|/notice/notice_read?ntc_bno=${NoticeVo.ntc_bno}|" th:text="${NoticeVo.ntc_title}"></a></td>
-                          <td th:text="${NoticeVo.ntc_bno}"><span class="tag tag-success"></span></td>
+                          <td th:text="${NoticeVo.ntc_viewcount}"><span class="tag tag-success"></span></td>
                         </tr>
                       </tbody>
                     </table>
@@ -66,7 +91,7 @@
 								<!-- 다음표시여부 -->
 								<th:block th:if="${pageMaker.next}">
 									<li class="page-item"><a class="page-link"
-										th:href="|/list${pageMaker.makeSearch(pageMaker.endPage + 1) }|">Next</a></li>
+										th:href="|/notice/notice_list${pageMaker.makeSearch(pageMaker.endPage + 1) }|">Next</a></li>
 								</th:block>
 							</ul>
 						</nav>

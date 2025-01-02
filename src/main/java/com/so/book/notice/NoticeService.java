@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NoticeService {
 
-	private final NoticeMapepr noticeMapepr;
+	private final NoticeMapper noticeMapepr;
 	
 	
 	public int getTotalNotice(SearchCriteria cri) {

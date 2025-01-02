@@ -45,4 +45,29 @@
 		where
 			mem_id = #{mem_id}
 	</delete>
+	
+	<select id="cart_list" resultType="HashMap" parameterType="String">
+		select 
+			c.pro_code, c.mem_id, p.pro_name, p.pro_up_folder, p.pro_img, p.pro_price, c.cart_amount * p.pro_price as unitprice
+		from 
+			cart_tbl c 
+		inner join 
+			product_tbl p
+		on 
+			c.pro_code = p.pro_code
+		where 
+			c.mem_id = #{mem_id}
+	</select>
+	
+	<update id="cart_change" parameterType="com.so.book.cart.CartVo">
+		update
+			 cart_tbl
+		set 
+			cart_amount = #{cart_amount}
+		where 
+			pro_code = #{pro_code}
+		and 
+			mem_id = #{mem_id}
+			
+	</update>
 </mapper>

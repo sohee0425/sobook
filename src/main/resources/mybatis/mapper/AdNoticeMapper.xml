@@ -70,7 +70,7 @@
 		adm_id like concat('%', #{keyword}, '%')
 	 </if>
 	</if>
-</sql>
+	</sql>
 
 	<select id="edit" resultType="com.so.book.admin.notice.NoticeVo">
 		select

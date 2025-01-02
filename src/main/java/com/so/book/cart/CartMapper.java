@@ -12,4 +12,8 @@ public interface CartMapper {
 	int getCartTotalPriceByUserId(String mem_id);
 	
 	void cart_empty(String mem_id);
+	
+	List<Map<String, Object>> cart_list(String mem_id);
+	
+	void cart_change(CartVo vo);
 }

@@ -3,7 +3,7 @@ package com.so.book.notice;
 import com.so.book.admin.notice.NoticeVo;
 import com.so.book.common.utils.SearchCriteria;
 
-public interface NoticeMapepr {
+public interface NoticeMapper {
 
 	public int getTotalNotice(SearchCriteria cri);
 	
