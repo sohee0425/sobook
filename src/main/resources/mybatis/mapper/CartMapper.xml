@@ -70,4 +70,19 @@
 			mem_id = #{mem_id}
 			
 	</update>
+	
+	<delete id="cart_sel_delete">
+		
+		delete from
+			cart_tbl
+		where
+			pro_code in
+		
+		<foreach collection="pro_num_arr" item="item" open="(" separator="," close=")">
+			#{item}
+		
+		</foreach>
+		and
+			mem_id = #{mem_id}
+	</delete>
 </mapper>

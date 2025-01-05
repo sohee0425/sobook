@@ -89,4 +89,20 @@ public class CartController {
 		return "redirect:/cart/cart_list";
 		
 	}
+	
+	@PostMapping("/cart_sel_delete")
+	public String cart_sel_delete(int[] check, HttpSession session) throws Exception {
+		
+		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
+		
+		cartService.cart_sel_delete(check, mem_id);
+		
+		return "redirect:/cart/cart_list";
+	}
+	
+	@GetMapping("/image_display")
+	public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
+		
+		return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
+	}
 }
