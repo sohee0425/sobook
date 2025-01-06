@@ -45,7 +45,7 @@
             <td colspan="6"  th:if="${cart_total_price !=null}" th:text="'총금액' + ${#numbers.formatInteger(cart_total_price, 3, 'COMMA') + '원'}"></td>
           </tr>
           <tr>
-            <td colspan="6"  th:unless= "${cart_total_price != null}" th:text="'장바구니가 비웠습니다.'"></td>
+            <td colspan="6"  th:unless= "${cart_total_price != null}" th:text="'장바구니가 비었습니다.'"></td>
           </tr>
         </tfoot>
       </table>
@@ -92,7 +92,7 @@
     $("button#btn_sel_delete").on("click", function() {
       if(!confirm("삭제하시겠습니까?")) return;
 
-      let cartForm = $("cartForm");
+      let cartForm = $("#cartForm");
       cartForm.submit();
     });
 

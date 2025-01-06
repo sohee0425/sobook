@@ -78,7 +78,7 @@
 		where
 			pro_code in
 		
-		<foreach collection="pro_num_arr" item="item" open="(" separator="," close=")">
+		<foreach collection="pro_code_arr" item="item" open="(" separator="," close=")">
 			#{item}
 		
 		</foreach>

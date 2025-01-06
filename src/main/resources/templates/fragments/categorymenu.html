@@ -44,7 +44,7 @@
     // 2차카테고리 클릭
     $("ul#subCategory_menu").on("monuseleave", "li.nav-item a.nav-link", function() {
       console.log("2차 카테고리 클릭");
-      let cate_name = encodeURIComponent$(this).html();
+      let cate_name = encodeURIComponent($(this).html());
       let cate_code = $(this).data("cate_code");
       // 상품리스트 주소로 이동(2차 카테고리 이름, 코드와 함께 이동)
       location.href = `/product/pro_list?cate_name=${cate_name}&cate_code=${cate_code}`;
