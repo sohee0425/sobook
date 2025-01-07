@@ -46,7 +46,7 @@
  
    <ul class="nav d-flex align-items-center py-1 mt mb-3 border-bottom nav justify-content-center" id="category_menu">
     <li class="nav-item first_category" th:each="menu : ${cate_list}">
-      <a class="nav-link link-body-emphasis" href="#" th:data-cate_code="${menu.cate_code}" th:text="${menu.cate_name}"></a>
+      <a class="nav-link link-body-emphasis"aria-current="page" href="#" th:data-cate_code="${menu.cate_code}" th:text="${menu.cate_name}"></a>
     </li>
     
   </ul>
@@ -83,27 +83,28 @@
               $("ul#subCategory_menu").append(subCategoryStr);
             }
 
-            $("ul#subCategory_menu").show();
+            // $("ul#subCategory_menu").show();
           }
         });
       });
   
-      $("ul#category_menu").on("click", function() {
-            // 하위 카테고리 숨기기
-            $("ul#subCategory_menu").hide();
-        });
+      // $("ul#category_menu").on("click", function() {
+      //       // 하위 카테고리 숨기기
+      //       $("ul#subCategory_menu").hide();
+      //   });
 
       // 2차카테고리 클릭
       $("ul#subCategory_menu").on("click", "li.nav-item a.nav-link", function() {
         
-        let cate_name = $(this).html();
+        // let cate_name = $(this).html();
+        let cate_name = encodeURIComponent($(this).html());
         let cate_code = $(this).data("cate_code");
         // 상품리스트 주소로 이동(2차 카테고리 이름, 코드와 함께 이동)
         // $("#selectedSubCategory").text(cate_name);
 
         location.href = `/product/pro_list?cate_name=${cate_name}&cate_code=${cate_code}`;
       });
-      $("ul#subCategory_menu").hide();
+      // $("ul#subCategory_menu").hide();
   
     }); // ready end
   </script>
