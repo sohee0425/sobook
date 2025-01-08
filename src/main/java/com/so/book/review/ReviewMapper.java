@@ -12,4 +12,12 @@ public interface ReviewMapper {
 	
 	// 페이징 정보 구성 상품후기 개수
 	int getCountReviewByPro_code(Integer pro_code);
+	
+	void review_save(ReviewVo vo);
+	
+	ReviewVo review_info(Long rev_code);
+	
+	void review_modify(ReviewVo vo);
+	
+	void review_delete(Long rev_code);
 }

@@ -4,13 +4,20 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="content">
-	<div class="row">
-    <div class="col text-center mb-3 mt-3">
-      <h3>장바구니</h3>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-3">
+        <a class="link-offset-2  link-underline-warning" href="/member/mypage">
+          <th:block th:replace= "~{member/mypage_menu :: menu}"></th:block>
+      </div>
+
+
+	<div class="col-9">
+    <div class="text-center mb-3 mt-3">
+      <h3 class="mt-3 mb-4 text-center">장바구니</h3>
     </div>
-  </div>
-  <div class="row">        
-    <div class="col">
+
+  <div class="table-responsive">
       <form id="cartForm" method="post" action="/cart/cart_sel_delete">
       <table class="table">
         <thead>
@@ -51,7 +58,7 @@
       </table>
     </form>
     </div>
-  </div>
+  
   <div class="row">
     <div class="col-6">
       <button type="button" class="btn btn-dark" id="btn_sel_delete">선택 삭제</button>
@@ -61,7 +68,8 @@
       <button type="button" class="btn btn-dark" id="btn_order_info">주문하기</button>
     </div>
   </div>
-
+  </div>
+</div>
 <script th:inline="javascript">
 
   $(document).ready(function() {

@@ -2,20 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
-<th:block layout:fragment="content">
-	<div class="row">
-		<div class="col-3">
-			<a class="link-offset-2  link-underline-warning" href="/member/mypage">
-			<th:block th:replace= "~{member/mypage_menu :: menu}"></th:block>
-		</div>
-
-	</div>
-	<!-- <div class="row-2">
-		<h3>마이 페이지</h3>-->
-
-		<!-- <div class="mb-3"> -->
-
-			<!--<div class="mt-3">
+<th:bolck th:fragment= "menu">
+	<div class="row-2">
+		<h3 style="color: black;">마이 페이지</h3>
+			<div class="mt-3">
 				<a button type="button" class="link-secondary" href="/member/modify">회원정보 수정</a>
 			</div>
 			<div class="mt-3">
@@ -35,25 +25,7 @@
 			</div>
 			<div class="mt-3">
 				<a button type="button" class="link-secondary" href="/member/delete">회원탈퇴</a>
-			</div> -->
-		<!-- </div> -->
-		<!-- <div class="row">
-			<div class="col-lg-3 col-6">
-			  
-			  <div class="small-box bg-info">
-				<div class="inner">
-				  <h3>150</h3>
-  
-				  <p>New Orders</p>
-				</div>
-				<div class="icon">
-				  <i class="ion ion-bag"></i>
-				</div>
-				<a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-			  </div>
 			</div>
-			
-		  </div> -->
 	</div>
-</th:block>
+</th:bolck>
 </html>

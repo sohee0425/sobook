@@ -1,5 +1,7 @@
 package com.so.book.product;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,8 +39,13 @@ public class ProductController {
 		// 1차 카테고리목록
 		model.addAttribute("cate_list", adCategoryService.getFirstCategoryList());
 		
+		List<ProductVo> pro_list = productService.getProductListBysecondCategory(cri, cate_code);
+		
+		pro_list.forEach(pro -> pro.setPro_up_folder(pro.getPro_up_folder().replace("\\", "/")));
+		
 		// 2차 카테고리 상품목록 연결
-		model.addAttribute("pro_list", productService.getProductListBysecondCategory(cri, cate_code));
+		model.addAttribute("pro_list", pro_list);		
+		
 		
 		// 페이징 작업
 		PageMaker pageMaker = new PageMaker();

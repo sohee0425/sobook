@@ -134,6 +134,10 @@ public class MemberController {
 		return "redirect:/member/mypage";
 	}
 	
+	@GetMapping("/order_list")
+	public void order_list() throws Exception {
+		
+	}
 	// 마이페이지
 	@GetMapping("/mypage")
 	public void mypage() throws Exception {

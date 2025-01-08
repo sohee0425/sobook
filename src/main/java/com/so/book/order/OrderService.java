@@ -3,10 +3,12 @@ package com.so.book.order;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.so.book.cart.CartMapper;
+import com.so.book.common.utils.SearchCriteria;
 import com.so.book.payment.PaymentMapper;
 import com.so.book.payment.PaymentVo;
 
@@ -28,15 +30,15 @@ public class OrderService {
 		
 		log.info("주문번호:" + vo.getOrd_code()); // null
 		
-		// 주문테이블
+		// 1주문테이블
 		orderMapper.order_insert(vo);
 		
 		log.info("주문번호:" + vo.getOrd_code()); // 주문번호 출력
 		
-		// 주문상세테이블 : 장바구니 테이블의 정보 이용하여 작업
+		// 2주문상세테이블 : 장바구니 테이블의 정보 이용하여 작업
 		orderMapper.order_detail_insert(vo.getOrd_code(), mem_id);
 		
-		// 결제테이블
+		// 3결제테이블
 		PaymentVo p_vo = new PaymentVo();
 		p_vo.setOrd_code(vo.getOrd_code());
 		p_vo.setMem_id(mem_id);
@@ -52,12 +54,27 @@ public class OrderService {
 		
 		paymentMapper.payment_insert(p_vo);
 		
-		// 장바구니 테이블
+		// 4장바구니 테이블
 		cartMapper.cart_empty(mem_id);
+		
+		//5 배송테이블
 	}
 	
 	// 실시간결제에 따른 주문내역
 	public List<Map<String, Object>> getOrderInfoByOrd_code(Integer ord_code) {
 		return orderMapper.getOrderInfoByOrd_code(ord_code);
 	}
+	
+	public List<Map<String, Object>> getOrderInfoByUser_id(String mem_id, SearchCriteria cri) {
+		return orderMapper.getOrderInfoByUser_id(mem_id, cri);
+	}
+	
+	public int getOrderCountByUser_id(String mem_id) {
+		return orderMapper.getOrderCountByUser_id(mem_id);
+	}
+	
+	public String getCategoryNameByPro_code(Integer pro_code) {
+		return orderMapper.getCategoryNameByPro_code(pro_code);
+	}
+	
 }

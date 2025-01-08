@@ -4,6 +4,21 @@
 	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="css">
+  <style>
+    /* 별평점 기본효과 스타일 */
+    p#star_rev_score a.rev_score {
+      font-size: 22px;
+      text-decoration: none;
+      color: lightgray;
+    }
+
+    /* 별평점에 클릭했을 경우 선택자 */
+    p#star_rev_score a.rev_score.on {
+      color: goldenrod;
+    }
+
+  </style>
+
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 
 </th:block>
@@ -206,7 +221,7 @@
 
       // 상품후기
       let pro_code = [[${productVo.pro_code}]];
-      let reviewPaging = 1; // 댓글 첫번째 페이지
+      let reviewPage = 1; // 댓글 첫번째 페이지
 
       // 댓글 데이터 불러올 주소
       let url = "/review/rev_list/" + pro_code + "/" + reviewpage;
@@ -232,6 +247,63 @@
           fn_displayEwViewPaging(data.pageMaker, $("div#reviewPaging"));
         });
       }
+
+      // 댓글목록출력함수 : 핸들바 템플릿 사용
+      function fn_displayReViewData(reviewData, target, template) {
+        let templateObj = Handlebars.compile(template.html()); 
+        let reviewHtml = templateObj(reviewData);
+
+        target.empty(); // 기존 댓글 목록 제거
+        target.append(reviewHtml); // 댓글목록 출력됨
+
+        // update 버튼 숨기기.
+        $("table#reviewTable button[name=update]").hide();
+      }
+
+
+      // 페이징출력함수 - 핸들바 템플릿 사용안함.
+      function fn_displayReViewPaging(pageData, target) {	
+
+        console.log(pageData);
+
+        let pageStr = '<nav aria-label="Page navigation example">';
+          pageStr += '<ul class="pagination">';
+        
+        
+        if(pageData.prev) {
+          pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.startPage -1)  + '">Previous</a></li>';
+        }
+
+        for(let i=pageData.startPage; i <= pageData.endPage; i++) {
+          let curPageClass = (pageData.cri.page == i) ? 'active' : '';
+          pageStr += '<li class="page-item ' + curPageClass + '"><a class="page-link" href="' + i + '">' + i + '</a></li>';
+        }
+
+
+        if(pageData.next) {
+          pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.endPage + 1) + '">Next</a></li>';
+        }
+
+        pageStr += '</ul>';
+        pageStr += '</nav>';
+
+        console.log(pageStr);
+
+        target.empty();
+        target.append(pageStr);
+      }
+
+      // 페이지 번호 클릭 설정 reviewPaging
+      $("div#reviewPaging").on("click", "li a", function(e) {
+        e.preventDefault(); // a태그의 링크기능 제거
+        reviewPage = $(this).attr("href"); // 페이지 번호 읽기
+
+        console.log("선택한 페이지 ", replyPage);
+
+        url = "/review/rev_list/" + pro_code + "/" + reviewPage;
+
+        getPage(url);
+      });
 
     }); // ready 끝
 

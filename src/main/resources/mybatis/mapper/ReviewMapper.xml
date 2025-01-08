@@ -23,4 +23,37 @@
 		where
 			pro_code = #{pro_code}
 	</select>
+	
+	<insert id="review_save" parameterType="com.so.book.review.ReviewVo">
+		insert into
+			review_tbl(mem_id, pro_code, rev_content, rev_score)
+		values
+			(#{mem_id}, #{pro_code}, #{rev_content}, #{rev_score})
+	</insert>
+	
+	<select id="review_info" resultType="com.so.book.review.ReviewVo" parameterType="Long">
+		select
+			rev_code, mem_id, pro_code, rev_content, rev_score, rev_date
+		from 
+			review_tbl
+		where 
+			rev_code = #{rev_code}
+	</select>
+	
+	<update id="review_modify" parameterType="com.so.book.review.ReviewVo">
+		update 
+			review_tbl
+		set 
+			rev_content = #{rev_content},  rev_score = #{rev_score}, rev_date = now()
+		where
+			rev_code = #{rev_code} 
+			
+	</update>
+	
+	<delete id="review_delete" parameterType="Long">
+		delete from
+			review_tbl
+		where
+			rev_code = #{rev_code}
+	</delete>
 </mapper>

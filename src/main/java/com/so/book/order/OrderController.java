@@ -15,6 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.so.book.cart.CartService;
 import com.so.book.cart.CartVo;
 import com.so.book.common.utils.FileUtils;
+import com.so.book.common.utils.PageMaker;
+import com.so.book.common.utils.SearchCriteria;
 import com.so.book.member.MemberService;
 import com.so.book.member.MemberVo;
 
@@ -36,6 +38,20 @@ public class OrderController {
 	
 	@Value("${com.ezen.upload.path}")
 	private String uploadPath;
+	
+	// 사용자 주문목록에서 이미지 또는 상품명 클릭시 상품상세로 진행할 때 필요한 서브카테고리 준비 작업
+	@GetMapping("/pro_perinfo")
+	public String pro_perinfo(Integer pro_code, RedirectAttributes rttr) throws Exception {
+		
+		String subCategoryName = orderService.getCategoryNameByPro_code(pro_code);
+		
+		rttr.addAttribute("cate_name", subCategoryName);
+		rttr.addAttribute("pro_code", pro_code);
+		
+		return "redirect:/product/pro_info";
+		
+		
+	}
 	
 	// 1) 장바구니에서 주문 클릭 2) 상품목록, 상품상세에서 바로구매 클릭시
 	@GetMapping("/order_info")
@@ -112,6 +128,30 @@ public class OrderController {
 		
 		model.addAttribute("order_info", order_info);
 		model.addAttribute("order_total_price", order_total_price);
+		
+	}
+	
+	@GetMapping("/order_list")
+	public void order_list(SearchCriteria cri, HttpSession session, Model model) throws Exception {
+		
+		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
+		
+		cri.setPerPageNum(2);
+		
+		List<Map<String, Object>> order_list = orderService.getOrderInfoByUser_id(mem_id, cri);
+		
+		order_list.forEach(o_Info -> {
+			o_Info.put("pro_up_folder", o_Info.get("pro_up_folder").toString().replace("\\", "/"));			
+		});
+		
+		model.addAttribute("order_list", order_list);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(orderService.getOrderCountByUser_id(mem_id));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
 		
 	}
 	

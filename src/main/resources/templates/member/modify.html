@@ -3,106 +3,112 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
 
- <th:block layout:fragment="script">
- 
- </th:block>
- <th:block layout:fragment="css">
- 
- 
- </th:block>
+<th:block layout:fragment="script">
+
+</th:block>
+<th:block layout:fragment="css">
+
+
+</th:block>
 
 <th:block layout:fragment="content">
-<h1 class="mt-3 mb-4 text-center">회원 정보 수정</h1>
+<div class="container">
     <div class="row">
-        <div class="col">
-            <div class="card card-info">
-                <!-- <div class="card-header">
-                <h3 class="card-title"></h3>
-            </div>
-                 -->
-                
-            <form class="form-horizontal" id="modifyForm" action="/member/modify" method="post">
-            <div class="card-body">
-                <div class="form-group row mb-3">
-                    <label for="mem_name" class="col-sm-2 col-form-label">이름</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="mem_name" name="mem_name" th:value="${memberVo.mem_name}">
-                    </div>
-                </div>
-
-                <div class="form-group row mb-3">
-                    <label for="mem_id" class="col-sm-2 col-form-label">아이디</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="mem_id" name="mem_id" th:value="${memberVo.mem_id}" readonly>
-                    </div>
-                </div>
-
-                <div class="form-group row mb-3">
-                    <label for="mem_pw" class="col-sm-3 col-form-label">비밀번호</label>
-                    <a button type="reset" class="btn btn-success float-right col-sm-2" href="/member/pwchange">비밀번호 변경</a>
-                </div>
-                
-                <div class="form-group row mb-3">
-                    <label for="mem_email" class="col-sm-2 col-form-label">이메일</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="mem_email" name="mem_email" th:value="${memberVo.mem_email}">
-                    </div>                   
-                </div>
-                
-                <div class="form-group row mb-3">
-                    <label for="mem_tel" class="col-sm-2 col-form-label">연락처</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="mem_tel" name="mem_tel" th:value="${memberVo.mem_tel}">
-                    </div>
-                </div>
-
-                <div class="form-group row mb-3">
-                    <label for="mem_zipcode" class="col-sm-2 col-form-label">우편번호</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="sample2_postcode" name="mem_zipcode" th:value="${memberVo.mem_zipcode}">
-                    </div>
-                    <div class="col-sm-4">
-                        <button type="button" class="btn btn-outline-primary" onclick="sample2_execDaumPostcode()">우편번호</button>
-                    </div>
-                </div>
-                <div class="form-group row mb-3">
-                    <label for="mem_addr" class="col-sm-2 col-form-label">주소</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="sample2_address" name="mem_addr" th:value="${memberVo.mem_addr}">
-                    </div>
-                </div>
-                <div class="form-group row mb-3">
-                    <label for="mem_deaddr" class="col-sm-2 col-form-label">상세주소</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="sample2_detailAddress" name="mem_deaddr" th:value="${memberVo.mem_deaddr}">
-                        <input type="hidden" id="sample2_extraAddress" placeholder="참고항목">
-                    </div>
-                </div>
-                
-                <div class="form-group row mb-3">
-                <label for="mem_joindate" class="col-sm-2 col-form-label">가입일</label>
-                    <div class="col-sm-4">
-                        <span th:text="${#dates.format(memberVo.mem_joindate, 'yyyy-MM-dd HH:mm:ss')}"></span>
-                    </div>
-                </div>
-
-                <div class="form-group row mb-3">
-                    <label for="mem_updatedate" class="col-sm-2 col-form-label">회원정보 수정일</label>
-                        <div class="col-sm-4">
-                            <span th:text="${#dates.format(memberVo.mem_updatedate, 'yyyy-MM-dd HH:mm:ss')}"></span>
-                        </div>
-                    </div>
-            </div>
-            
-            <div class="card-footer text-center">
-            <button type="button" class="btn btn-success" id="btnModify">수정하기</button>
-            <a button type="reset" class="btn btn-success float-right" href="/member/mypage">취소</a>
-            </div>
+        <div class="col-3">
+            <a class="link-offset-2 link-underline-warning" href="/member/mypage">
+                <th:block th:replace="~{member/mypage_menu :: menu}"></th:block>
+            </a>
         </div>
-            </form>
+
+        <div class="col-9">
+            <h3 class="mt-3 mb-4 text-center">회원 정보 수정</h3>
+            <div class="row">
+                <div class="col">
+                    <div class="card card-info">
+                        <form class="form-horizontal" id="modifyForm" action="/member/modify" method="post">
+                            <div class="card-body">
+                                <div class="form-group row mb-3">
+                                    <label for="mem_name" class="col-sm-2 col-form-label">이름</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="mem_name" name="mem_name" th:value="${memberVo.mem_name}">
+                                    </div>
+                                </div>
                 
+                                <div class="form-group row mb-3">
+                                    <label for="mem_id" class="col-sm-2 col-form-label">아이디</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="mem_id" name="mem_id" th:value="${memberVo.mem_id}" readonly>
+                                    </div>
+                                </div>
+                
+                                <div class="form-group row mb-3">
+                                    <label for="mem_pw" class="col-sm-3 col-form-label">비밀번호</label>
+                                    <a button type="reset" class="btn btn-success float-right col-sm-2" href="/member/pwchange">비밀번호 변경</a>
+                                </div>
+                                
+                                <div class="form-group row mb-3">
+                                    <label for="mem_email" class="col-sm-2 col-form-label">이메일</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="mem_email" name="mem_email" th:value="${memberVo.mem_email}">
+                                    </div>                   
+                                </div>
+                                
+                                <div class="form-group row mb-3">
+                                    <label for="mem_tel" class="col-sm-2 col-form-label">연락처</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="mem_tel" name="mem_tel" th:value="${memberVo.mem_tel}">
+                                    </div>
+                                </div>
+                
+                                <div class="form-group row mb-3">
+                                    <label for="mem_zipcode" class="col-sm-2 col-form-label">우편번호</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="sample2_postcode" name="mem_zipcode" th:value="${memberVo.mem_zipcode}">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button type="button" class="btn btn-outline-primary" onclick="sample2_execDaumPostcode()">우편번호</button>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3">
+                                    <label for="mem_addr" class="col-sm-2 col-form-label">주소</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="sample2_address" name="mem_addr" th:value="${memberVo.mem_addr}">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3">
+                                    <label for="mem_deaddr" class="col-sm-2 col-form-label">상세주소</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="sample2_detailAddress" name="mem_deaddr" th:value="${memberVo.mem_deaddr}">
+                                        <input type="hidden" id="sample2_extraAddress" placeholder="참고항목">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row mb-3">
+                                <label for="mem_joindate" class="col-sm-2 col-form-label">가입일</label>
+                                    <div class="col-sm-4">
+                                        <span th:text="${#dates.format(memberVo.mem_joindate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                                    </div>
+                                </div>
+                
+                                <div class="form-group row mb-3">
+                                    <label for="mem_updatedate" class="col-sm-2 col-form-label">회원정보 수정일</label>
+                                        <div class="col-sm-4">
+                                            <span th:text="${#dates.format(memberVo.mem_updatedate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button type="button" class="btn btn-success" id="btnModify">수정하기</button>
+                                <a button type="reset" class="btn btn-success float-right" href="/member/mypage">취소</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
+    
 
     <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
     <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
