@@ -8,10 +8,10 @@
 		from
 			review_tbl
 		where
-			pro_code = {pro_code}
+			pro_code = #{pro_code}
 		order by
 			rev_date desc
-		limit
+		limit 
 			#{cri.pageStart}, #{cri.perPageNum}
 	</select>
 	

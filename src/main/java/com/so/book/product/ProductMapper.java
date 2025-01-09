@@ -14,4 +14,9 @@ public interface ProductMapper {
 	int getCountProductListBysecondCategory(@Param("cate_code") Integer second_cate_code);
 	
 	ProductVo pro_info(Integer pro_code);
+	
+	void review_count(Integer pro_code);
+	
+	// 상품후기 리뷰카운트 조회
+	int review_count_pro_info(Integer pro_code);
 }

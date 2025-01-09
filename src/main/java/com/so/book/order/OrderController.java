@@ -131,7 +131,8 @@ public class OrderController {
 		
 	}
 	
-	@GetMapping("/order_list")
+	// 주문목록
+	@GetMapping(value = {"/order_list"})
 	public void order_list(SearchCriteria cri, HttpSession session, Model model) throws Exception {
 		
 		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
@@ -153,6 +154,33 @@ public class OrderController {
 		model.addAttribute("pageMaker", pageMaker);
 		
 		
+	}
+	@GetMapping(value =  {"/review_manage" })
+	public void review_manage (SearchCriteria cri, HttpSession session, Model model) throws Exception {
+		
+		// 상품테이블, 주문, 주문상세테이블, 배송테이블
+		// 상품코드, 상품이미지, 상품명, 배송일, 리뷰작성하기 버튼
+		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
+		
+		cri.setPerPageNum(2);
+		
+		List<Map<String, Object>> review_list = orderService.review_manage(mem_id, cri);
+		
+		// 날짜폴더의 역슬래쉬 \ 를 / 로 변환작업
+		review_list.forEach(r_Info -> {
+			r_Info.put("pro_up_folder", r_Info.get("pro_up_folder").toString().replace("\\", "/"));			
+		});
+		
+		model.addAttribute("review_list", review_list);
+		
+		
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(orderService.getReviewCountByUser_id(mem_id));
+		
+		model.addAttribute("pageMaker", pageMaker);
+	
 	}
 	
 	@GetMapping("/image_display")

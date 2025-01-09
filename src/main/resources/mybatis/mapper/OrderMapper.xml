@@ -46,7 +46,7 @@
 	<select id="getOrderInfoByUser_id" resultType="HashMap" parameterType="map">
 		
 		select 
-			o.ord_code, o.ord_regdate, pt.pro_up_folder, pt.pro_img, pt.pro_name, odt.ord_code, odt.dt_price, odt.dt_amount, payt.payment_status
+			o.ord_code, o.ord_regdate, pt.pro_up_folder, pt.pro_img, pt.pro_name, odt.pro_code, odt.ord_code, odt.dt_price, odt.dt_amount, payt.payment_status
 		from
 			order_tbl o
 		inner join
@@ -101,5 +101,59 @@
 			pt.cate_code = ct.cate_code 
 		where 
 			pt.pro_code = #{pro_code}
+	</select>
+	
+	<select id="review_manage" resultType="HashMap" parameterType="Map">
+	
+		select 
+			o.ord_code, o.ord_regdate,  pt.pro_up_folder, pt.pro_img, pt.pro_name, odt.pro_code, dt.delivery_date, pt.cate_code 
+		from 
+			order_tbl o 
+		inner join 
+			ordetail_tbl odt 
+		on 
+			o.ord_code = odt.ord_code 
+		inner join 
+			product_tbl pt 
+		on 
+			odt.pro_code  = pt.pro_code
+		inner join
+			deliveries_tbl dt
+		on
+			o.ord_code = dt.ord_code
+		where 
+			o.mem_id = #{mem_id}
+		and 
+			dt.delivery_status = '배송완료'
+		order by
+			o.ord_code desc
+		limit 
+			#{cri.pageStart}, #{cri.perPageNum}	
+		
+	</select>
+	
+	<select id="getReviewCountByUser_id" resultType="int" parameterType="String">
+	
+		select 
+			count(*) 
+		from 
+			order_tbl o 
+		inner join 
+			ordetail_tbl odt 
+		on 
+			o.ord_code = odt.ord_code 
+		inner join 
+			product_tbl pt 
+		on 
+			odt.pro_code  = pt.pro_code
+		inner join
+			deliveries_tbl dt
+		on
+			o.ord_code = dt.ord_code
+		where 
+			o.mem_id = #{mem_id}
+		and 
+			dt.delivery_status = '배송완료'
+		
 	</select>
 </mapper>

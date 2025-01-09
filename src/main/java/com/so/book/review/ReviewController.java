@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.so.book.common.utils.PageMaker;
 import com.so.book.common.utils.SearchCriteria;
 import com.so.book.member.MemberVo;
+import com.so.book.product.ProductService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewController {
 
 	private final ReviewService reviewService;
+	private final ProductService productService;
 	
 	@GetMapping("/rev_list/{pro_code}/{page}")
 	public ResponseEntity<Map<String, Object>> rev_list(@PathVariable("pro_code") Integer pro_code, @PathVariable("page") int page) throws Exception {
@@ -44,7 +46,7 @@ public class ReviewController {
 		
 		// 상품후기 목록
 		SearchCriteria cri = new SearchCriteria();
-		cri.setPerPageNum(5);
+		cri.setPerPageNum(10);
 		cri.setPage(page);
 		
 		List<ReviewVo> rev_list = reviewService.rev_list(pro_code, cri);
@@ -74,9 +76,13 @@ public class ReviewController {
 		
 		ResponseEntity<String> entity = null;
 		
+		// 상품후기등록
 		reviewService.review_save(vo);
 		
-		entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		// 상품후기 카운트 읽어오기
+		int review_count = productService.review_count_pro_info(vo.getPro_code());
+		
+		entity = new ResponseEntity<String>(String.valueOf(review_count), HttpStatus.OK);
 		
 		return entity;
 	}

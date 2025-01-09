@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.so.book.common.utils.SearchCriteria;
+import com.so.book.product.ProductMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class ReviewService {
 
 	private final ReviewMapper reviewMapper;
+	private final ProductMapper productMapper;
 	
 	public List<ReviewVo> rev_list(Integer pro_code, SearchCriteria cri) {
 		return reviewMapper.rev_list(pro_code, cri);
@@ -23,8 +26,13 @@ public class ReviewService {
 		return reviewMapper.getCountReviewByPro_code(pro_code);
 	}
 	
+	@Transactional
 	public void review_save(ReviewVo vo) {
+		//1 상품후기등록 작업
 		reviewMapper.review_save(vo);
+		//2 상품후기 count 작업
+		productMapper.review_count(vo.getPro_code());
+		
 	}
 	
 	public ReviewVo review_info(Long rev_code) {

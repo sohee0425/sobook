@@ -37,7 +37,7 @@
               <!-- [[${#temporals.format(item.ord_regdate, 'yyyy-MM-dd')}]] <br>  --> [[${item.ord_code}]] 
             </td>
             <td>
-              <a th:href="|/order/pro_preinfo?pro_code=${item['pro_code']}|">
+              <a th:href="|/order/pro_perinfo?pro_code=${item['pro_code']}|">
               <img style="width: 100px;height: 100px;" th:src="${'/order/image_display?dateFolderName=' + item.pro_up_folder + '&fileName=s_' + item.pro_img}">
               </a>
             </td>
@@ -80,7 +80,6 @@
       </div>
     </div>
   </div>
-
 </div>
 </th:block>
 </html>

@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.so.book.cart.CartMapper;
 import com.so.book.common.utils.SearchCriteria;
+import com.so.book.delivery.DeliveryMapper;
+import com.so.book.delivery.DeliveryVo;
 import com.so.book.payment.PaymentMapper;
 import com.so.book.payment.PaymentVo;
 
@@ -23,6 +25,7 @@ public class OrderService {
 	private final OrderMapper orderMapper;
 	private final PaymentMapper paymentMapper;
 	private final CartMapper cartMapper;
+	private final DeliveryMapper deliveryMapper;
 	
 	// 주문하기 기능 (주문테이블, 주문상세테이블, 결제테이블, 장바구니테이블)
 	@Transactional
@@ -58,6 +61,13 @@ public class OrderService {
 		cartMapper.cart_empty(mem_id);
 		
 		//5 배송테이블
+		DeliveryVo deliveryVo = new DeliveryVo();
+		deliveryVo.setOrd_code(vo.getOrd_code());
+		deliveryVo.setShipping_zipcode(vo.getOrd_zipcode());
+		deliveryVo.setShipping_addr(vo.getOrd_addr());
+		deliveryVo.setShipping_deaddr(vo.getOrd_addr_detail());
+		
+		deliveryMapper.delivery_insert(deliveryVo);
 	}
 	
 	// 실시간결제에 따른 주문내역
@@ -75,6 +85,14 @@ public class OrderService {
 	
 	public String getCategoryNameByPro_code(Integer pro_code) {
 		return orderMapper.getCategoryNameByPro_code(pro_code);
+	}
+
+	public List<Map<String, Object>> review_manage(String mem_id, SearchCriteria cri) {
+		return orderMapper.review_manage(mem_id, cri);
+	}
+	
+	public int getReviewCountByUser_id(String mem_id) {
+		return orderMapper.getReviewCountByUser_id(mem_id);
 	}
 	
 }

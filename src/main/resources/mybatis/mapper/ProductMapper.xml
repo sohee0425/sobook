@@ -4,7 +4,7 @@
 	
 	<select id="getProductListBysecondCategory" resultType="com.so.book.admin.product.ProductVo" parameterType="integer">
 		select
-			pro_code, cate_code, pro_name, pro_price, pro_discount, pro_publisher, pro_content, pro_up_folder, pro_img, pro_amount, pro_buy, pro_date, pro_update
+			pro_code, cate_code, pro_name, pro_price, pro_discount, pro_publisher, pro_content, pro_up_folder, pro_img, pro_amount, pro_buy, pro_review, pro_date, pro_update
 		from
 			product_tbl
 		where
@@ -32,8 +32,27 @@
 	<select id="pro_info" resultType="com.so.book.admin.product.ProductVo" parameterType="Integer">
 		select 
 			pro_code, cate_code, pro_name, pro_price, pro_discount, pro_publisher, pro_content,
-			pro_up_folder,pro_img, pro_amount, pro_buy, pro_date, pro_update
+			pro_up_folder,pro_img, pro_amount, pro_buy, pro_review, pro_date, pro_update
 		from 
+			product_tbl
+		where
+			pro_code = #{pro_code}
+	</select>
+	
+	<update id="review_count" parameterType="Integer">
+		
+		update
+			product_tbl
+		set
+			pro_review = pro_review +1
+		where
+			pro_code = #{pro_code}
+	</update>
+	
+	<select id="review_count_pro_info" resultType="int">
+		select
+			pro_review
+		from
 			product_tbl
 		where
 			pro_code = #{pro_code}
