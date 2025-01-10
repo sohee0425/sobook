@@ -80,12 +80,14 @@ public class MemberController {
 	@PostMapping("/login")
 	public String loginProcess(LoginDTO dto, HttpSession session, RedirectAttributes rttr) throws Exception {
 		
+		
 		MemberVo memberVo = memberService.login(dto.getMem_id());
 		
 		String url = "";
 		String status = "";
 		if(memberVo != null) {
 			if(passwordEncoder.matches(dto.getMem_pw(), memberVo.getMem_pw())) {
+				memberVo.setMem_pw("");
 				session.setAttribute("login_auth", memberVo);
 				
 				url = "/";
@@ -294,7 +296,7 @@ public class MemberController {
 		return "redirect:" + url;
 	}
 
-	// 회원 수정하기 전 비밀번호 확인
+	// 회원 정보 수정하기 전 비밀번호 확인
 //	@GetMapping("/checkPwd")
 //	public void checkPwd() {
 //		

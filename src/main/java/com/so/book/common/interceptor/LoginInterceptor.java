@@ -28,19 +28,19 @@ public class LoginInterceptor implements HandlerInterceptor {
 		HttpSession session = request.getSession();
 		MemberVo memberVo = (MemberVo)session.getAttribute("login_auth");
 		
-		if(memberVo == null) { // 현재 주소를 요청한 사용자는(브라우저) 로그인을 하지 않은 의미 (인증을 안한 상태), 로그인 페이지로 처리
+		if(memberVo == null) { // 로그인 x (인증을 안한 상태), 로그인 페이지로 처리
 			result = false;
 			
 			// ajax 요청주소인지 구분하는 작업
 			if(isAjaxRequest(request)) {
-				response.sendError(400); // 400 http 상태코드. 400 클라이언트 에러정보를 가지고 ajax로 제어가 넘어간다.
+				response.sendError(400); // 400 에러정보를 가지고 제어가 ajax로 넘어감
 			}else {
 				getTargetUrl(request); // 원래 요청된 주소를 세션형태로 저장 "targetUrl"
 				
-				response.sendRedirect("/member/login"); // 로그인주소로 넘어가는 작업
+				response.sendRedirect("/member/login"); // 로그인주소로 넘어감
 			}
-		}else {	// 로그인을 한 의미 (인증을 한 상태)
-			result = true; // true : 컨트롤러로 실행
+		}else {	// 로그인 o (인증을 한 상태)
+			result = true; // true : 컨트롤러로 주소 실행
 		}
 		
 		
@@ -63,9 +63,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 	// 인증되지 않은 상태에서 원래 요청한 주소(URI)의 정보를 저장하는 기능 작업
 	private void getTargetUrl(HttpServletRequest request) {
 		
-		// http://localhost:8888/userinfo/modify?userid=user01 주소요청
-		String uri = request.getRequestURI(); // /userinfo/modify
-		String query = request.getQueryString(); // ? 뒤의 문자열	?userid=user01
+		// 주소요청
+		String uri = request.getRequestURI(); 
+		String query = request.getQueryString(); // ? 뒤의 문자열
 		
 		if(query == null || query.equals("null")) { // 쿼리스트링이 없을 경우
 			query = "";
@@ -73,10 +73,11 @@ public class LoginInterceptor implements HandlerInterceptor {
 			query = "?" + query;
 		}
 		
-		String targetUrl = uri + query; /// userinfo/modify?userid=user01
+		String targetUrl = uri + query;
 		
-		// 클라이언트가 요청한 방식이 get 방식 일 경우
+		// 클라이언트가 요청한 방식이 get 방식인 경우
 		if(request.getMethod().equals("GET")) {
+			// 인증되지 않은 사용자가 원래요청한 주소 및 쿼리스트링을 세션에 저장하고 로그인에서 참조하고자 할 경우 목적
 			request.getSession().setAttribute("targetUrl", targetUrl);
 		}
 		

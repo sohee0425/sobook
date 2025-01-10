@@ -81,7 +81,6 @@ public class ReviewController {
 		
 		// 상품후기 카운트 읽어오기
 		int review_count = productService.review_count_pro_info(vo.getPro_code());
-		
 		entity = new ResponseEntity<String>(String.valueOf(review_count), HttpStatus.OK);
 		
 		return entity;

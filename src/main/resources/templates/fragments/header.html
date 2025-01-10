@@ -12,15 +12,18 @@
       </a>
       <th:block th:if= "${session.login_auth == null}">
       <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/join">회원가입</a>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/login">로그인</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/join">회원가입</a>
+        
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/mypage">마이페이지</a>
       </nav>
       </th:block>
       <th:block th:if= "${session.login_auth != null}">
         <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/mypage">마이페이지</a>
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/cart/cart_list">장바구니</a>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/logout">로그아웃</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/cart/cart_list">장바구니</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/mypage">마이페이지</a>
+        
       </nav>
     </th:block>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/notice/notice_list">공지사항</a>

@@ -58,6 +58,14 @@
                 location.href = "/cart/cart_list";
               }
             }
+          },
+          beforeSend : function(xhr) {
+            xhr.setRequestHeader("AJAX", "true");
+          },
+          error : function(xhr, status, error) {
+            console.log(xhr);
+            alert("로그인이 필요한 기능입니다.");
+            location.href = "/member/login";
           }
         });
       });
