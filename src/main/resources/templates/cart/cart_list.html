@@ -85,35 +85,17 @@
     });
 
     // 수량 변경 btn_cart_amount
-    // $("input[name='btn_cart_amount']").on("change", function () {
-    //   // primaey key 값
-    //   let cart_amount = $(this).val();
-    //   let pro_code = $(this).next("input[name='pro_code']").val();
-
-    //   console.log("수량" + cart_amount);
-    //   console.log("상품코드" +  pro_code);
-
-    //   location.href = `/cart/cart_change?pro_code=${pro_code}&cart_amount=${cart_amount}`;
-    // });
-
     $("input[name='btn_cart_amount']").on("change", function () {
-    let cart_amount = $(this).val();
-    let pro_code = $(this).next("input[name='pro_code']").val();
+       // primaey key 값
+       let cart_amount = $(this).val();
+       let pro_code = $(this).next("input[name='pro_code']").val();
 
-    $.ajax({
-        url: "/cart/cart_change",
-        type: "GET",
-        data: { pro_code: pro_code, cart_amount: cart_amount },
-        success: function (response) {
-            console.log("수량 변경 성공:", response);
-            // 합계 및 총액 등 필요한 부분만 갱신
-            location.reload(); // 페이지 전체 새로고침 대신 특정 요소만 갱신하도록 수정 가능
-        },
-        error: function (xhr, status, error) {
-            console.error("수량 변경 오류:", error);
-        }
-    });
-});
+       console.log("수량" + cart_amount);
+       console.log("상품코드" +  pro_code);
+
+       location.href = `/cart/cart_change?pro_code=${pro_code}&cart_amount=${cart_amount}`;
+     });
+
 
 
     // 선택삭제 btn_sel_delete
