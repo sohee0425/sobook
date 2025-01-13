@@ -17,6 +17,8 @@ import com.so.book.cart.CartVo;
 import com.so.book.common.utils.FileUtils;
 import com.so.book.common.utils.PageMaker;
 import com.so.book.common.utils.SearchCriteria;
+import com.so.book.mail.EmailDTO;
+import com.so.book.mail.EmailService;
 import com.so.book.member.MemberService;
 import com.so.book.member.MemberVo;
 
@@ -33,6 +35,7 @@ public class OrderController {
 	private final OrderService orderService;
 	private final CartService cartService;
 	private final MemberService memberService;
+	private final EmailService emailService;
 	
 	private final FileUtils fileUtils;
 	
@@ -123,6 +126,10 @@ public class OrderController {
 			o_Info.put("pro_up_folder", o_Info.get("pro_up_folder").toString().replace("\\", "/"));
 			order_total_price += ((int) o_Info.get("dt_amount") * (int) o_Info.get("dt_price"));
 		});
+		
+		EmailDTO dto = new EmailDTO("SOBOOK", "SOBOOK", "thlgml@naver.com", "주문내역", "주문내역");
+		
+		emailService.sendMail("mail/orderConfirmation", dto, order_info, order_total_price);
 		
 		log.info("총주문금액:" + order_total_price);
 		

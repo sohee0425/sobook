@@ -41,7 +41,7 @@
             <td th:text="${item['pro_name']}"></td>
             <td th:text="${#numbers.formatInteger(item['pro_price'], 3, 'COMMA') + '원'}"></td>
             <td>
-              <input type="number" name="btn_cart_amount" th:value="${item['cart_amount']}"  style="width: 100px;">
+              <input type="number" name="btn_cart_amount" th:value="${item['cart_amount']}" style="width: 100px;">
               <input type="hidden" name="pro_code" th:value="${item['pro_code']}">
             </td>
             <td th:text="${#numbers.formatInteger(item['unitprice'], 3, 'COMMA') + '원'}"></td>
@@ -87,14 +87,14 @@
     // 수량 변경 btn_cart_amount
     $("input[name='btn_cart_amount']").on("change", function () {
        // primaey key 값
-       let cart_amount = $(this).val();
-       let pro_code = $(this).next("input[name='pro_code']").val();
+      let cart_amount = $(this).val();
+      let pro_code = $(this).next("input[name='pro_code']").val();
 
-       console.log("수량" + cart_amount);
-       console.log("상품코드" +  pro_code);
+      console.log("수량" + cart_amount);
+      console.log("상품코드" +  pro_code);
 
-       location.href = `/cart/cart_change?pro_code=${pro_code}&cart_amount=${cart_amount}`;
-     });
+      location.href = `/cart/cart_change?pro_code=${pro_code}&cart_amount=${cart_amount}`;
+    });
 
 
 

@@ -21,4 +21,5 @@ public class OrderVo {
 	private String ord_email;
 	private int ord_price;
 	private Date ord_regdate;
+	private String ord_status;
 }

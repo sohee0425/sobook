@@ -4,7 +4,7 @@
 
 	<insert id="delivery_insert" parameterType="com.so.book.delivery.DeliveryVo">
 		insert into
-			deliveries_tbl(ord_code, shipping_zipcode, shipping_addr, shipping_deaddr)
+			delivery_tbl(ord_code, shipping_zipcode, shipping_addr, shipping_deaddr)
 		values
 			(#{ord_code}, #{shipping_zipcode}, #{shipping_addr}, #{shipping_deaddr})
 	</insert>
