@@ -5,7 +5,7 @@ import com.so.book.common.utils.SearchCriteria;
 
 public interface NoticeMapper {
 
-	public int getTotalNotice(SearchCriteria cri);
+	int getTotalNotice(SearchCriteria cri);
 	
 	NoticeVo notice_read(int ntc_bno);
 	

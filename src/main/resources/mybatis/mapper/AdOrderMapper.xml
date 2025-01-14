@@ -2,4 +2,75 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.so.book.admin.order.AdOrderMapper">
 
+	<select id="order_list" resultType="HashMap" parameterType="com.so.book.common.utils.SearchCriteria">
+		select
+			 ot.ord_regdate, ot.ord_code, ot.ord_price, ot.ord_name, ot.ord_status,  pt.payment_method, pt.payment_status
+		from
+			order_tbl ot 
+		inner join 
+			payment_tbl pt
+		on 
+			ot.ord_code = pt.ord_code
+		where
+			ot.ord_code > 0
+			
+		<include refid="search"></include>
+		<include refid="period"></include>
+			
+		order by 
+			ot.ord_regdate desc
+		limit 
+		    #{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select 
+			count(*)
+		from 
+			order_tbl ot 
+		inner join
+			payment_tbl pt
+		on 
+			ot.ord_code = pt.ord_code
+		where 
+			ot.ord_code > 0
+		
+		<include refid="search"></include>
+		<include refid="period"></include>
+		
+		
+	</select>
+	
+	<sql id="search">
+	   <if test="cri.searchType != null">
+	   	<if test="cri.searchType == 'c'.toString()">
+	   		and ot.ord_code = #{cri.keyword}
+	   	</if>
+	   	<if test="cri.searchType == 'm'.toString()">
+	   		and ot.mem_id = #{cri.keyword}
+	   	</if>
+	   	<if test="cri.searchType == 'n'.toString()">
+	   		and ot.ord_name = #{cri.keyword}
+	   	</if>
+	   	<if test="cri.searchType == 'p'.toString()">
+	   		and pt.payment_method like concat('%', #{cri.keyword}, '%') 
+	   	</if>
+	   </if>
+ 	</sql>
+ 	
+ 	<sql id="period">
+ 		<if test="period != null and !period.equals('') and start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
+ 			<if test="period == 'ord_regdate'.toString()">
+ 				<![CDATA[
+ 				and ot.ord_regdate >= date(#{start_date}) and ot.ord_regdate < date(#{end_date}) + 1
+ 				]]>
+ 			</if>
+ 			<if test="period == 'payment_date'.toString()">
+ 				<![CDATA[
+ 				and pt.payment_date >= date(#{start_date}) and pt.payment_date < date(#{end_date}) + 1
+ 				]]>
+ 			</if>
+ 		</if>
+ 	</sql>
+ 	
 </mapper>

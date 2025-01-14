@@ -134,7 +134,7 @@
 						</table>
 					</form>
 					<!-- 페이징 및 검색 파라미터 정보 -->
-					<form id="criteriaForm" action="" method="get">
+					<for id="criteriaForm" action="" method="get">
 						<!--페이징, 검색 파라미터-->
 						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
 						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
@@ -157,17 +157,14 @@
 							<ul class="pagination">
 								<!--이전표시 여부-->
 								<th:block th:if="${pageMaker.prev}">
-									<li class="page-item"><a class="page-link"
-										th:href="|/admin/product/pro_list${pageMaker.makeSearch(pageMaker.startPage - 1) }|">Previous</a></li>
+									<li class="page-item">
+										<a class="page-link" th:href="|/admin/product/pro_list${pageMaker.makeSearch(pageMaker.startPage - 1) }|">Previous</a></li>
 								</th:block>
 
-								<th:block
-									th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
-									<li class="page-item"
-										th:classappend="${pageMaker.cri.page == num? 'active' : ''}">
-										<a class="page-link"
-										th:href="|/admin/product/pro_list${pageMaker.makeSearch(num)}|"
-										th:text="${num}"></a>
+								<!-- 페이지 번호 출력-->
+								<th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+									<li class="page-item" th:classappend="${pageMaker.cri.page == num? 'active' : ''}">
+										<a class="page-link" th:href="|/admin/product/pro_list${pageMaker.makeSearch(num)}|" th:text="${num}"></a>
 									</li>
 								</th:block>
 
