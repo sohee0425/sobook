@@ -16,6 +16,9 @@
 			
 		<include refid="search"></include>
 		<include refid="period"></include>
+		<include refid="payment_method"></include>
+		<include refid="payment_status"></include>
+		<include refid="ord_status"></include>
 			
 		order by 
 			ot.ord_regdate desc
@@ -37,10 +40,14 @@
 		
 		<include refid="search"></include>
 		<include refid="period"></include>
+		<include refid="payment_method"></include>
+		<include refid="payment_status"></include>
+		<include refid="ord_status"></include>
 		
 		
 	</select>
 	
+	<!-- 기본키워드검색 -->
 	<sql id="search">
 	   <if test="cri.searchType != null">
 	   	<if test="cri.searchType == 'c'.toString()">
@@ -52,12 +59,15 @@
 	   	<if test="cri.searchType == 'n'.toString()">
 	   		and ot.ord_name = #{cri.keyword}
 	   	</if>
-	   	<if test="cri.searchType == 'p'.toString()">
+	   	
+	   <!-- 	<if test="cri.searchType == 'p'.toString()">
 	   		and pt.payment_method like concat('%', #{cri.keyword}, '%') 
-	   	</if>
+	   	</if> 결제방식이 밑에 있어서 삭제 고민 -->
+	   	
 	   </if>
  	</sql>
  	
+ 	<!-- 날짜 -->
  	<sql id="period">
  		<if test="period != null and !period.equals('') and start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
  			<if test="period == 'ord_regdate'.toString()">
@@ -73,4 +83,24 @@
  		</if>
  	</sql>
  	
+ 	<!-- 결제방식 -->
+ 	<sql id="payment_method">
+ 		<if test="payment_method != null and !payment_method.equals('')">
+ 			and pt.payment_method like concat('%', #{payment_method}, '%')
+ 		</if>
+ 	</sql>
+ 	
+ 	<!-- 결제상태 -->
+ 	<sql id="payment_status">
+ 		<if test="payment_status != null and !payment_status.equals('')">
+ 			and pt.payment_status = #{payment_status}
+ 		</if>
+ 	</sql>
+ 	
+ 	<!-- 주문현황 -->
+ 	<sql id="ord_status">
+ 		<if test="ord_status != null and !ord_status.equals('')">
+ 			and ot.ord_status = #{ord_status}
+ 		</if>
+ 	</sql>
 </mapper>

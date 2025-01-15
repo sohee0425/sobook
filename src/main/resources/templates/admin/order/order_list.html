@@ -53,6 +53,47 @@
 				const day = String(date.getDate()).padStart(2, '0');
 				return `${year}-${month}-${day}`;
 			}
+
+			function initializeSearchForm() {
+				// 폼 요소 가져오기
+				const searchType = document.querySelector('select[name="searchType"]');
+				const keyword = document.querySelector('input[name="keyword"]');
+				const period = document.querySelector('select[name="period"]');
+				const startDate = document.getElementById('start_date');
+				const endDate = document.getElementById('end_date');
+				const paymentMethodRadios = document.querySelectorAll('input[name="payment_method"]');
+				const paymentStatusRadios = document.querySelectorAll('input[name="payment_status"]');
+				const ordStatusRadios = document.querySelectorAll('input[name="ord_status"]');
+
+				// 드롭다운 초기화
+				if (searchType) searchType.value = ''; // 기본값으로 빈 문자열 설정하여 초기화
+				if (period) period.value = 'ord_regdate'; // 기본값으로 주문일 선택하여 초기화
+
+				// 텍스트 입력 초기화
+				if(keyword) keyword.value = ''; // 검색 텍스트 입력 초기화
+				if(startDate) startDate.value = ''; // 날짜 입력 초기화
+				if(endDate) endDate.value = ''; // 날짜 입력 초기화
+
+				// 라디오 버튼 초기화
+				if(paymentMethodRadios.length > 0) {
+					paymentMethodRadios.forEach((radio, index) => {
+						radio.checked = index === 0; // 첫번째 버튼만 선택되도록 설정하고 나머지 버튼은 선택 해제
+					});
+				}
+
+				if(paymentStatusRadios.length > 0) {
+					paymentStatusRadios.forEach((radio, index) => {
+						radio.checked = index === 0;
+					});
+				}
+
+				if(ordStatusRadios.length > 0) {
+					ordStatusRadios.forEach((radio, index) => {
+						radio.checked = index === 0;
+					});
+				}
+				console.log('검색 삭제');
+			}
 		</script>
 	</th:block>
 
@@ -72,16 +113,16 @@
 							<div class="col-2">검색어</div>
 							<div class="col-3">
 								<select name="searchType" class="form-control">
-									<option value="" selected>검색종류 선택</option>
-									<option value="c">주문번호</option>
-									<option value="m">회원아이디</option>
-									<option value="n">주문자</option>
-									<option value="p">결제방식</option>
+									<option value="" th:selected= "${''} == ${pageMaker.cri.searchType}">검색종류 선택</option>
+									<option value="c" th:selected= "${'c'} == ${pageMaker.cri.searchType}">주문번호</option>
+									<option value="m" th:selected= "${'m'} == ${pageMaker.cri.searchType}">회원아이디</option>
+									<option value="n" th:selected= "${'n'} == ${pageMaker.cri.searchType}">주문자</option>
+									<!-- <option value="p" th:selected= "${'p'} == ${pageMaker.cri.searchType}">결제방식</option> 다른거로 바꿀지, 아예 삭제할지 생각해보기 결제방식을 밑에서 따로 검색 파라미터로 뺴니까.. -->
 									
 								</select>
 							</div>
 							<div class="col-7">
-								<input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요.">
+								<input type="text" name="keyword" class="form-control" th:value="${pageMaker.cri.keyword}"  placeholder="검색어를 입력하세요.">
 							</div>
 						</div>
 
@@ -90,27 +131,103 @@
 							<div class="col-2">
 								<div class="form-group">
 									<select class="form-control" name="period">
-										<option value="ord_regdate">주문일</option>
-										<option value="payment_date">결제일</option>
+										<option value="ord_regdate" th:selected= "${'ord_regdate'} == ${ord_regdate}">주문일</option>
+										<option value="payment_date" th:selected= "${'payment_date'} == ${payment_date}">결제일</option>
 									</select>
 								</div>
 							</div>
 						
 						<div class="col-3">
-							<input type="date" name="start_date" id="start_date" style="width: auto;">
-							<input type="date" name="end_date" id="end_date" style="width: auto;">
+							<input type="date" name="start_date" id="start_date" style="width: auto;" th:value="${start_date}">
+							<input type="date" name="end_date" id="end_date" style="width: auto;" th:value="${end_date}">
 						</div>
 						<div class="col-5">
 							<button type="button" class="btn btn-sm btn-outline-info" onclick="setDateRange('today')">오늘</button>
 							<button type="button" class="btn btn-sm btn-outline-info" onclick="setDateRange('week')">일주일</button>
 							<button type="button" class="btn btn-sm btn-outline-info" onclick="setDateRange('month')">1개월</button>
-							<button type="button" class="btn btn-sm btn-outline-info" onclick="setDateRange('3month')">3개월</button>
+							<button type="button" class="btn btn-sm btn-outline-info" onclick="setDateRange('3months')">3개월</button>
 							<button type="button" class="btn btn-sm btn-outline-info" onclick="setDateRange('all')">전체</button>
 						</div>
 					</div>
+
+					<div class="row mt-1">
+						<div class="col-2">결제방식</div>
+						<div class="col-10">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="payment_method" id="payment_method1" value="" th:checked= "${''} == ${payment_method}">
+								<label class="form-check-label" for="payment_method1">전체</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="payment_method" id="payment_method2" value="무통장" th:checked= "${'무통장'} == ${payment_method}">
+								<label class="form-check-label" for="payment_method2">무통장</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="payment_method" id="payment_method3" value="카카오페이" th:checked= "${'카카오페이'} == ${payment_method}">
+								<label class="form-check-label" for="payment_method3">카카오페이</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="row mt-1">
+						<div class="col-2">결제상태</div>
+						<div class="col-10">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="payment_status" id="payment_status1" value="" th:checked= "${''} == ${payment_status}">
+								<label class="form-check-label" for="payment_status1">전체</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="payment_status" id="payment_status2" value="입금대기" th:checked= "${'입금대기'} == ${payment_status}">
+								<label class="form-check-label" for="payment_status2">입금대기</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="payment_status" id="payment_status3" value="입금완료" th:checked= "${'입금완료'} == ${payment_status}">
+								<label class="form-check-label" for="payment_status3">입금완료</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="row mt-1">
+						<div class="col-2">주문현황</div>
+						<div class="col-10">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="ord_status" id="ord_status1" value="" th:checked= "${''} == ${ord_status}">
+								<label class="form-check-label" for="ord_status1">전체</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="ord_status" id="ord_status2" value="준비중" th:checked= "${'배송준비'} == ${ord_status}">
+								<label class="form-check-label" for="ord_status2">준비중</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="ord_status" id="ord_status3" value="배송중" th:checked= "${'배송중'} == ${ord_status}">
+								<label class="form-check-label" for="ord_status3">배송중</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="ord_status" id="ord_status4" value="배송완료" th:checked= "${'배송완료'} == ${ord_status}">
+								<label class="form-check-label" for="ord_status4">배송완료</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="ord_status" id="ord_status5" value="취소" th:checked= "${'취소'} == ${ord_status}">
+								<label class="form-check-label" for="ord_status5">취소</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="ord_status" id="ord_status6" value="환불" th:checked= "${'환불'} == ${ord_status}">
+								<label class="form-check-label" for="ord_status6">환불</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="ord_status" id="ord_status7" value="반품" th:checked= "${'환불'} == ${ord_status}">
+								<label class="form-check-label" for="ord_status7">반품</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="ord_status" id="ord_status8" value="교환" th:checked= "${'환불'} == ${ord_status}">
+								<label class="form-check-label" for="ord_status8">교환</label>
+							</div>
+						</div>
+					</div>
+
 						<div class="row mt-3">
 							<div class="col text-center">
 								<button type="submit" class="btn btn-primary">검색</button>
+								<button type="button" class="btn btn-primary" id="btn_search_init">초기화</button>
 							</div>
 						</div>
 				</div>
@@ -128,13 +245,13 @@
 									<th style="width: 10%;">주문 금액</th>
 									<th style="width: 15%;">결제방법</th>
 									<th style="width: 10%;">결제상태</th>
-									<th style="width: 10%;">주문상태</th>
+									<th style="width: 10%;">주문현황</th>
 									<th style="width: 10%;">관리</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each= "order_info:${order_list}">
-									<td th:text="${order_info.ord_code}"></td>
+									<td th:text="${order_info.ord_code}"><a href="@{/admin/order/orderdetail_info(ord_code=${order_info.ord_code})}"></a></td>
 									<td th:text="${#temporals.format(order_info.ord_regdate, 'yyyy-MM-dd')}"></td>
 									<td th:text="${order_info.ord_name}"></td>
 									<td th:text="|${#numbers.formatInteger(order_info.ord_price, 3, 'COMMA')}원|"></td>
@@ -165,8 +282,18 @@
 						<input type="hidden" name="period" id="period" th:value="${period}">
 						<input type="hidden" name="start_date" id="start_date" th:value="${start_date}">
 						<input type="hidden" name="end_date" id="end_date" th:value="${end_date}">
+
+						<!-- 결제 방법 -->
+						<input type="hidden" name="payment_method" id="payment_method" th:value="${payment_method}">
+
+						<!-- 결제 상태 -->
+						<input type="hidden" name="payment_status" id="payment_status" th:value="${payment_status}">
+
+						<!-- 주문 현황-->
+						 <input type="hidden" name="ord_status" id="ord_status" th:value="${ord_status}"> 
 					</form>
 					</div>
+
 
 					<div class="card-footer clearfix">
 						<nav aria-label="Page navigation example">
@@ -180,7 +307,7 @@
 								<!-- 페이지 번호 출력-->
 								<th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
 									<li class="page-item" th:classappend="${pageMaker.cri.page == num? 'active' : ''}">
-										<a class="page-link" th:href="${num}" th:text="${num}"></a>
+										<a class="page-link movePage" th:href="${num}" th:text="${num}"></a>
 									</li>
 								</th:block>
 
@@ -218,6 +345,10 @@
 
 
 		}); // ready event end
+
+		document.getElementById('btn_search_init').addEventListener('click', () => {
+			initializeSearchForm();
+		});
 	</script>
 </th:block>
 </html>
