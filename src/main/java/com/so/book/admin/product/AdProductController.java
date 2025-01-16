@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -142,12 +140,23 @@ public class AdProductController {
 	
 	// 상품목록
 	@GetMapping("/pro_list") // 데이터 보여줘야할 때 model 필요
-	public void pro_list(Model model, SearchCriteria cri) throws Exception {
+	public void pro_list(Model model, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("period") String period, @ModelAttribute("start_date") String start_date, 
+					@ModelAttribute("end_date") String end_date, @ModelAttribute("cate_code") String cate_code, @ModelAttribute("pro_buy") String pro_buy) throws Exception {
+		
+		log.info("검색정보" + cri);
+		log.info("날짜검색" + period);
+		log.info("날짜검색" + start_date);
+		log.info("날짜검색" + end_date);
+		log.info("카테고리"+cate_code);
+//		log.info("카테고리"+cate_prtcode);
+		log.info("판매여부"+pro_buy);
+		
+		
 		
 		cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
 		
 		//1) 상품목록
-		List<ProductVo> pro_list = adProductService.pro_list(cri);
+		List<ProductVo> pro_list = adProductService.pro_list(cri, period, start_date, end_date, cate_code, pro_buy);
 		
 		
 		// 날짜 폴더의 \ 를 / 로 변환하는 작업
@@ -163,7 +172,7 @@ public class AdProductController {
 		pageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGE_SIZE);
 		
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(adProductService.getTotalCount(cri));
+		pageMaker.setTotalCount(adProductService.getTotalCount(cri, period, start_date, end_date, cate_code, pro_buy));
 		
 		model.addAttribute("pageMaker", pageMaker);
 		

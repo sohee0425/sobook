@@ -8,7 +8,7 @@
 		values(#{cate_code}, #{pro_name}, #{pro_price}, #{pro_discount}, #{pro_publisher}, #{pro_content}, #{pro_up_folder}, #{pro_img}, #{pro_amount}, #{pro_buy})
 	</insert>
 
-	<select id="pro_list" resultType="com.so.book.admin.product.ProductVo" parameterType="com.so.book.common.utils.SearchCriteria">
+	 <select id="pro_list" resultType="com.so.book.admin.product.ProductVo" parameterType="com.so.book.common.utils.SearchCriteria">
 		select
 			pro_code, cate_code, pro_name, pro_price, pro_discount, pro_publisher, pro_content, pro_up_folder, pro_img, pro_amount, pro_buy, pro_review, pro_date, pro_update
 		from
@@ -17,8 +17,11 @@
 			pro_code > 0
 			
 		<include refid="search"></include>
+		<include refid="period"></include>
+		<include refid="cate_code_condition"></include>
+		<include refid="pro_buy"></include>
 			
-		limit #{pageStart}, #{perPageNum}
+		limit #{cri.pageStart}, #{cri.perPageNum}
 	</select>
 	
 	<select id="getTotalCount" resultType="int">
@@ -30,28 +33,66 @@
 			pro_code > 0
 			
 		<include refid="search"></include>
+		<include refid="period"></include>
+		<include refid="cate_code_condition"></include>
+		<include refid="pro_buy"></include>
 			
 	</select>
 	
-<sql id="search">
+	<sql id="search">
+		<if test="cri.searchType != null">
+		 <if test="cri.searchType == 'n'.toString()">
+			and pro_name like concat('%', #{cri.keyword}, '%')
+		 </if>
+		  <if test="cri.searchType == 'c'.toString()">
+			and pro_code like concat('%', #{cri.keyword}, '%')
+		 </if>
+		  <if test="cri.searchType == 'p'.toString()">
+			and pro_publisher like concat('%', #{cri.keyword}, '%')
+		 </if>
+		  <if test="cri.searchType == 'np'.toString()">
+			and pro_name like concat('%', #{cri.keyword}, '%') 
+			 or 
+			pro_publisher like concat('%', #{cri.keyword}, '%')
+		 </if>
+		</if>
+	</sql>
+	
+	<!-- 날짜검색 -->
+	<sql id="period">
+		<if test="period != null and !period.equals('') and start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
+			<if test="period == 'pro_date'.toString()">
+				<![CDATA[
+				and pro_date >= date(#{start_date}) and pro_date < date(#{end_date}) + 1
+				]]>
+			</if>
+			<if test="period == 'pro_update'.toString()">
+				<![CDATA[
+				and pro_update >= date(#{start_date}) and pro_update < date(#{end_date}) + 1
+				]]>
+			</if>
+		</if>
+	</sql>
+	
+	<!-- 카테고리 검색 -->
+	<sql id="cate_code_condition">
+    	<!-- <if test="cate_prtcode != null and !cate_prtcode.equals('')">
+      	  	and cate_prtcode = #{cate_prtcode}
+    	</if> 생각해보니 이거 없어도 진행은 될 것 같다.. product_tbl에 cate_code만 있어서 진행은 되는데.. 그리고 2차 카테고리가 중요?한 것 같아서.. 다른 클래스 파라미터에서 빼도 검색은 된다 빼도 되는지 자세한 건 질문해보자-->
+    	<if test="cate_code != null and !cate_code.equals('')">
+        	and cate_code = #{cate_code}
+    	</if>
+	</sql>
+	
+	
+	
+	<!-- 판매여부 검색 -->
+	<sql id="pro_buy">
+		<if test="pro_buy != null and !pro_buy.equals('')">
+			and pro_buy = #{pro_buy}
+		</if>
+	</sql>
 
-	<if test="searchType != null">
-	 <if test="searchType == 'n'.toString()">
-		and pro_name like concat('%', #{keyword}, '%')
-	 </if>
-	  <if test="searchType == 'c'.toString()">
-		and pro_code like concat('%', #{keyword}, '%')
-	 </if>
-	  <if test="searchType == 'p'.toString()">
-		and pro_publisher like concat('%', #{keyword}, '%')
-	 </if>
-	  <if test="searchType == 'np'.toString()">
-		and pro_name like concat('%', #{keyword}, '%') 
-		 or 
-		pro_publisher like concat('%', #{keyword}, '%')
-	 </if>
-	</if>
-</sql>
 
 	<delete id="pro_sel_delete">
 		delete from

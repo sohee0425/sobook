@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.so.book.admin.category.CategoryVo;
 import com.so.book.common.utils.SearchCriteria;
 
 import lombok.RequiredArgsConstructor;
@@ -19,12 +18,12 @@ public class AdProductService {
 		adProductMapper.pro_insert(vo);
 	}
 	
-	public List<ProductVo> pro_list(SearchCriteria cri) {
-		return adProductMapper.pro_list(cri);
+	public List<ProductVo> pro_list(SearchCriteria cri, String period, String start_date, String end_date, String cate_code, String pro_buy) {
+		return adProductMapper.pro_list(cri, period, start_date, end_date, cate_code, pro_buy);
 	}
 
-	public int getTotalCount(SearchCriteria cri) {
-		return adProductMapper.getTotalCount(cri);
+	public int getTotalCount(SearchCriteria cri, String period, String start_date, String end_date, String cate_code, String pro_buy) {
+		return adProductMapper.getTotalCount(cri, period, start_date, end_date, cate_code, pro_buy);
 	}
 	
 	public void pro_sel_delete(int[] pro_code_arr) {

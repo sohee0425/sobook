@@ -5,6 +5,89 @@
 
 <th:block layout:fragment="script">
 	<script src="/ckeditor/ckeditor.js"></script>
+
+	<script>
+				// 날짜 설정 함수
+				function setDateRange(range) {
+				const today = new Date();  // 날짜객체.
+				const startInput = document.getElementById('start_date'); // 시작날짜 태그를 참조
+				const endInput = document.getElementById('end_date'); // 종료날짜 태그를 참조
+				
+				let startDate, endDate;
+	
+				switch (range) {
+					case 'today':
+						startDate = new Date(today);
+						endDate = new Date(today);
+						break;
+					case 'week':
+						startDate = new Date(today);
+						startDate.setDate(today.getDate() - 6);
+						endDate = new Date(today);
+						break;
+					case 'month':
+						startDate = new Date(today);
+						startDate.setMonth(today.getMonth() - 1);
+						endDate = new Date(today);
+						break;
+					case '3months':
+						startDate = new Date(today);
+						startDate.setMonth(today.getMonth() - 3);
+						endDate = new Date(today);
+						break;
+					case 'all':
+						startDate = '';
+						endDate = '';
+						break;
+					default:
+						return;
+				}
+	
+				// 포맷팅하여 input에 값 설정
+				startInput.value = startDate ? formatDate(startDate) : '';
+				endInput.value = endDate ? formatDate(endDate) : '';
+			}
+	
+			// 날짜를 yyyy-MM-dd 형식으로 포맷
+			function formatDate(date) {
+				const year = date.getFullYear();
+				const month = String(date.getMonth() + 1).padStart(2, '0');
+				const day = String(date.getDate()).padStart(2, '0');
+				return `${year}-${month}-${day}`;
+			}
+
+			function initializeSearchForm() {
+
+				const searchType = document.querySelector('select[name="searchType"]');
+				const keyword = document.querySelector('input[name="keyword"]');
+				const period = document.querySelector('select[name="period"]');
+				const startDate = document.getElementById('start_date');
+				const endDate = document.getElementById('end_date');
+				const catePrtcode = document.querySelector('select[name="cate_prtcode"]');
+				const cateCode = document.querySelector('select[name="cate_code"]');
+				const proButRadio = document.querySelectorAll('input[name="pro_buy"]');
+
+				// 드롭다운 초기화
+				if (searchType) searchType.value = '';
+				if (period) period.value = 'pro_date';
+				if (catePrtcode) catePrtcode.value = '1차 카테고리';
+				if (cateCode) cateCode.value = '2차 분류';
+
+				// 텍스트 초기화
+				if(keyword) keyword.value = '';
+				if(startDate) startDate.value = '';
+				if(endDate) endDate.value = '';
+
+				// 라디오버튼 초기화
+				if(proButRadio.length > 0) {
+					proButRadio.forEach((radio, index) => {
+						radio.checked = index === 0;
+					});
+				}
+			}
+			
+
+	</script>
 </th:block>
 
 <th:block layout:fragment="content">
@@ -18,11 +101,9 @@
 						<h3 class="card-title">상품 목록</h3>
 					</div>
 					<!-- list start-->
-					<div class="card-body row">
-						<!--search-->
-					<div class="col-8">
+					<div class="card-body">
 						<form action="/admin/product/pro_list" method="get">
-							<div class="form-group row">
+							<div class="row">
 								<div class="col-2">검색어</div>
 								<div class="col-3">
 									<select name="searchType" class="form-control">
@@ -36,45 +117,80 @@
 								<div class="col-5">
 									<input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요.">
 								</div>
-								<div class="col-2">
-									<button type="submit" class="btn btn-block btn-outline-info">Serach</button>
-								</div>
 							</div>
 
 							<div class="row mt-3">
-								<div class="col-2">카테고리</div>
-								<div class="col-5">
-									<div class="form-group">
-										<select class="form-control" name="cate_prt_code" id="btn_firstCategory">
-										<option>1차 카테고리</option>						  
-										<option th:each= "category:${cate_list}" th:value="${category.cate_code}" th:text="${category.cate_name}"></option>							  
-										</select>							
-									</div>
-								</div>
-								<div class="col-5">
-									<div class="form-group">
-										<select class="form-control" name="cate_code" id="btn_secondCategory">
-											<option>2차 카테고리</option>	
-										</select>
-									</div>
-								</div>
-							</div>
-
 							<div class="col-2">날짜</div>
 							<div class="col-2">
 								<div class="form-group">
 									<select class="form-control" name="period">
-										<option value=""></option>
+										<option value="pro_date" th:selected= "${'pro_date'} == ${pro_date}">등록일</option>
+										<option value="pro_update" th:selected= "${'pro_update'} == ${pro_update}">수정일</option>
 									</select>
 								</div>
 							</div>
-			
 							
-						</form>
-					</div>
-					<div class="col-4">
-						<button type="button" class="btn btn-block w-50 btn-outline-danger" id="btn_sel_delete">선택삭제</button>
-					</div>
+							<div class="col-3">
+								<input type="date" name="start_date" id="start_date" style="width: auto;" th:value="${start_date}">
+								<input type="date" name="end_date" id="end_date" style="width: auto;" th:value="${end_date}">
+							</div>
+							<div class="col-5">
+								<button type="button" class="btn btn-sm btn-outline-info" onclick="setDateRange('today')">오늘</button>
+								<button type="button" class="btn btn-sm btn-outline-info" onclick="setDateRange('week')">일주일</button>
+								<button type="button" class="btn btn-sm btn-outline-info" onclick="setDateRange('month')">1개월</button>
+								<button type="button" class="btn btn-sm btn-outline-info" onclick="setDateRange('3months')">3개월</button>
+								<button type="button" class="btn btn-sm btn-outline-info" onclick="setDateRange('all')">전체</button>
+							</div>
+						</div>
+							
+						<div class="row mt-3">
+							<div class="col-2">카테고리</div>
+							<div class="col-5">
+								<div class="form-group">
+									<select class="form-control" name="cate_prtcode" id="btn_firstCategory">
+									<option>1차 카테고리</option>						  
+									<option th:each= "category:${cate_list}" th:value="${category.cate_code}" th:text="${category.cate_name}"></option>							  
+									</select>							
+								</div>
+							</div>
+							<div class="col-5">
+								<div class="form-group">
+									<select class="form-control" name="cate_code" id="btn_secondCategory">
+										<option>2차 카테고리</option>
+										<option th:each= "subCategory:${sub_cate_list}" th:value="${subCategory.cate_code}" th:text="${subCategory.cate_name}"></option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="row mt-3">
+							<div class="col-2">판매여부</div>
+							<div class="col-10">
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="pro_buy" id="pro_buy1" value="" th:checked= "${''} == ${pro_buy}">
+									<label class="form-check-label" for="pro_buy1">전체</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="pro_buy" id="pro_buy2" value="Y" th:checked= "${'Y'} == ${pro_buy}">
+									<label class="form-check-label" for="pro_buy2">판매</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="pro_buy" id="pro_buy3" value="N" th:checked= "${'N'} == ${pro_buy}">
+									<label class="form-check-label" for="pro_buy3">미판매</label>
+								</div>
+							</div>
+						</div>
+
+							<div class="row mt-3">
+								<div class="col text-center">
+									<button type="submit" class="btn btn-primary">Serach</button>
+									<button type="button" class="btn btn-primary" id="btn_sel_delete">선택삭제</button>
+									<button type="button" class="btn btn-primary" id="btn_search_init">초기화</button>
+								</div>
+							</div>
+						</div>
+					</form>
+					
 					
 					<form name="frm_pro_list" id="frm_pro_list" action="/admin/product/pro_sel_delete" method="post" class="col">
 						<table class="table table-bordered">
@@ -107,7 +223,7 @@
 										th:text="|${#numbers.formatInteger(productVo.pro_price, 3, 'COMMA')}원|"></td>
 									<td th:text="${productVo.pro_amount}"></td>
 									<td
-										th:text="${#dates.format(productVo.pro_date, 'yyyy-MM-dd HH:mm:ss')}"></td>
+										th:text="${#dates.format(productVo.pro_date, 'yyyy-MM-dd')}"></td>
 									<td>
 										<button type="button" class="btn btn-block btn-outline-info" th:data-pro_code="${productVo.pro_code}" name="btn_pro_edit">EDIT</button>
 										<button type="button" class="btn btn-block btn-outline-info" th:data-pro_code="${productVo.pro_code}" name="btn_pro_del">DELETE</button>
@@ -116,8 +232,10 @@
 							</tbody>
 						</table>
 					</form>
+
+
 					<!-- 페이징 및 검색 파라미터 정보 -->
-					<for id="criteriaForm" action="" method="get">
+					<form id="criteriaForm" action="" method="get">
 						<!--페이징, 검색 파라미터-->
 						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
 						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
@@ -132,6 +250,18 @@
 						
 						<!--수정상품코드-->
 						<input type="hidden" name="pro_code" id="pro_code">
+
+						<!-- 날짜 검색 -->
+						<input type="hidden" name="period" id="period" th:value="${period}">
+						<input type="hidden" name="start_date" id="start_date" th:value="${start_date}">
+						<input type="hidden" name="end_date" id="end_date" th:value="${end_date}">
+
+						<!-- 카테고리 검색 -->
+						<!-- <input type="hidden" name="cate_prtcode" id="cate_prtcode" th:value="${cate_prtcode}"> -->
+						<input type="hidden" name="cate_code" id="cate_code" th:value="${cate_code}">
+
+						<!-- 판매여부 검색 -->
+						<input type="hidden" name="pro_buy" id="pro_buy" th:value="${pro_buy}">
 					</form>
 					</div>
 
@@ -288,6 +418,10 @@
 			});
 
 		}); // ready event end
+
+		document.getElementById('btn_search_init').addEventListener('click', () => {
+			initializeSearchForm();
+		})
 	</script>
 </th:block>
 </html>

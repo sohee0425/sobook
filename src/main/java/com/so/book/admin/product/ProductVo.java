@@ -13,6 +13,7 @@ public class ProductVo {
 
 	private Integer pro_code;
 	private Integer cate_code;
+//	private int cate_prtcode;
 	private String pro_name;
 	private int pro_price;
 	private int pro_discount;
