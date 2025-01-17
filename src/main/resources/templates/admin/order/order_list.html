@@ -194,8 +194,8 @@
 								<label class="form-check-label" for="ord_status1">전체</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="ord_status" id="ord_status2" value="준비중" th:checked= "${'배송준비'} == ${ord_status}">
-								<label class="form-check-label" for="ord_status2">준비중</label>
+								<input class="form-check-input" type="radio" name="ord_status" id="ord_status2" value="배송준비" th:checked= "${'배송준비'} == ${ord_status}">
+								<label class="form-check-label" for="ord_status2">배송준비</label>
 							</div>
 							<div class="form-check form-check-inline">
 								<input class="form-check-input" type="radio" name="ord_status" id="ord_status3" value="배송중" th:checked= "${'배송중'} == ${ord_status}">
@@ -214,11 +214,11 @@
 								<label class="form-check-label" for="ord_status6">환불</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="ord_status" id="ord_status7" value="반품" th:checked= "${'환불'} == ${ord_status}">
+								<input class="form-check-input" type="radio" name="ord_status" id="ord_status7" value="반품" th:checked= "${'반품'} == ${ord_status}">
 								<label class="form-check-label" for="ord_status7">반품</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="ord_status" id="ord_status8" value="교환" th:checked= "${'환불'} == ${ord_status}">
+								<input class="form-check-input" type="radio" name="ord_status" id="ord_status8" value="교환" th:checked= "${'교환'} == ${ord_status}">
 								<label class="form-check-label" for="ord_status8">교환</label>
 							</div>
 						</div>
@@ -251,7 +251,9 @@
 							</thead>
 							<tbody>
 								<tr th:each= "order_info:${order_list}">
-									<td th:text="${order_info.ord_code}"><a href="@{/admin/order/orderdetail_info(ord_code=${order_info.ord_code})}"></a></td>
+									<td>
+										<a th:href="@{/admin/order/orderdetail_info(ord_code=${order_info.ord_code})}">[[${order_info.ord_code}]]</a>
+									</td>
 									<td th:text="${#temporals.format(order_info.ord_regdate, 'yyyy-MM-dd')}"></td>
 									<td th:text="${order_info.ord_name}"></td>
 									<td th:text="|${#numbers.formatInteger(order_info.ord_price, 3, 'COMMA')}원|"></td>
@@ -260,7 +262,6 @@
 									<td th:text="${order_info.ord_status}"></td>
 									<td>
 										<button type="button" class="btn btn-block btn-outline-info">EDIT</button>
-										<button type="button" class="btn btn-block btn-outline-info">DELETE</button>
 									</td>
 								</tr>
 							</tbody>

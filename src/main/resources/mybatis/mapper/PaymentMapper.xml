@@ -9,4 +9,13 @@
 			(#{ord_code}, #{mem_id}, #{payment_method}, #{payment_price}, #{payment_status})
 	</insert>
 
+	<update id="payment_status" parameterType="map">
+	
+		update
+			payment_tbl
+		set
+			payment_status = #{payment_status}
+		where
+			payment_id = #{payment_id}
+	</update>
 </mapper>

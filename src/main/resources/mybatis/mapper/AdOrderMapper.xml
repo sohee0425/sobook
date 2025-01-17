@@ -103,4 +103,71 @@
  			and ot.ord_status = #{ord_status}
  		</if>
  	</sql>
+ 	
+ 	<select id="orderdetail_info" resultType="HashMap">
+ 		select 
+ 			ot.ord_code, pt.pro_name, pt.pro_code, pt.pro_up_folder, pt.pro_img, ot.dt_amount, ot.dt_price, o.ord_status, o.ord_regdate 
+ 		from
+ 			order_tbl o
+		inner join 
+			ordetail_tbl ot
+		on 
+			o.ord_code = ot.ord_code
+		inner join 
+			product_tbl pt
+		on 
+			ot.pro_code = pt.pro_code
+		where 
+			ot.ord_code = #{ord_code}
+ 	</select>
+ 	
+ 	<select id="payment_info" resultType="com.so.book.payment.PaymentVo">
+ 		
+ 		select
+ 			payment_id, ord_code, mem_id, payment_method, payment_price, payment_status, payment_date
+ 		from
+ 			payment_tbl
+ 		where 
+ 			ord_code = #{ord_code}
+ 	</select>
+ 	
+ 	<select id="order_info" resultType="com.so.book.order.OrderVo">
+ 	select 
+ 		ord_code, mem_id, ord_name, ord_zipcode, ord_addr, ord_addr_detail, ord_tel, ord_email, ord_price, ord_status, ord_message, ord_regdate 
+	from 
+		order_tbl
+	where
+		ord_code = #{ord_code}
+ 	</select>
+ 	
+ 	<delete id="order_product_del" parameterType="map">
+ 		delete from
+ 			ordetail_tbl
+ 		where
+ 			ord_code = #{ord_code}
+ 		and
+ 			pro_code = #{pro_code}
+ 			
+ 	</delete>
+ 	
+ 	<update id="order_info_edit">
+ 		update
+ 			 order_tbl
+		set 
+			ord_name = #{ord_name}, ord_tel = #{ord_tel}, ord_email = #{ord_email}, ord_zipcode = #{ord_zipcode}, ord_addr = #{ord_addr}, ord_addr_detail = #{ord_addr_detail}
+		where 
+			ord_code = #{ord_code}
+ 	</update>
+ 	
+ 	<update id="admin_ord_message" parameterType="map">
+ 	
+ 		update
+ 			order_tbl
+ 		set
+ 			ord_message = #{ord_message}
+ 		where 
+			ord_code = #{ord_code}	
+ 	
+ 	</update>
+ 	
 </mapper>

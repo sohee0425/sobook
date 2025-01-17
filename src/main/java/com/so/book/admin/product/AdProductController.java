@@ -156,6 +156,9 @@ public class AdProductController {
 		cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
 		
 		//1) 상품목록
+		if (pro_buy == null || pro_buy.trim().isEmpty() || "ALL".equals(pro_buy)) {
+		    pro_buy = null; // 전체 조회 처리
+		}
 		List<ProductVo> pro_list = adProductService.pro_list(cri, period, start_date, end_date, cate_code, pro_buy);
 		
 		
