@@ -43,6 +43,19 @@ public class AdOrderService {
 		
 		// 주문 상세테이블에서 상품 삭제
 		adOrderMapper.order_product_del(ord_code, pro_code);
+		
+		// 주문번호 활용한 주문상세 테이블 주문금액
+		int ord_total_price = adOrderMapper.order_total_price(ord_code);
+		
+		// 주문테이블 총금액 변경
+		adOrderMapper.order_info_change_price(ord_code, ord_total_price);
+		
+		// 결제테이블 결제금액 변경
+		adOrderMapper.payment_change_price(ord_code, ord_total_price);
+	}
+	
+	public void order_status(Integer ord_code, String ord_status) {
+		adOrderMapper.order_status(ord_code, ord_status);
 	}
 	
 	public void order_info_edit(OrderVo vo) {

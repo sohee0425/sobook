@@ -4,7 +4,7 @@
 
 	<select id="order_list" resultType="HashMap" parameterType="com.so.book.common.utils.SearchCriteria">
 		select
-			 ot.ord_regdate, ot.ord_code, ot.ord_price, ot.ord_name, ot.ord_status,  pt.payment_method, pt.payment_status
+			 ot.ord_regdate, ot.ord_code, ot.ord_price, ot.ord_name, ot.ord_status,  pt.payment_method, pt.payment_status, pt.payment_id
 		from
 			order_tbl ot 
 		inner join 
@@ -168,6 +168,42 @@
  		where 
 			ord_code = #{ord_code}	
  	
+ 	</update>
+ 	
+ 	<select id="order_total_price" resultType="int">
+ 		select
+ 			sum(dt_price * dt_amount) as ord_total_price
+ 		from
+ 			ordetail_tbl
+ 		where
+ 			ord_code = #{ord_code}
+ 	</select>
+ 	
+ 	<update id="order_info_change_price">
+ 		update
+ 			order_tbl
+ 		set
+ 			ord_price = #{ord_total_price}
+ 		where
+ 			ord_code = #{ord_code}
+ 	</update>
+ 	
+ 	<update id="payment_change_price">
+ 		update
+ 			payment_tbl
+ 		set
+ 			payment_price = #{ord_total_price}
+ 		where
+ 			ord_code = #{ord_code}
+ 	</update>
+ 	
+ 	<update id="order_status" parameterType="map">
+ 		update
+ 			order_tbl
+ 		set
+ 			ord_status = #{ord_status}
+ 		where
+ 			ord_code = #{ord_code}
  	</update>
  	
 </mapper>

@@ -249,22 +249,10 @@
       
       // data : 스프링에서 json포맷으로 보낸 댓글목록과페이징정보데이타 받게된다
 			$.getJSON(url, function(data) {
-				console.log(data.rev_list); // 댓글 목록데이터
-				console.log(data.pageMaker); // 댓글 페이징정보
+				console.log(data.rev_list); // 상품후기와 답변 목록데이터
+				console.log(data.pageMaker); // 댓글 페이징
 
-				// data 매개변수로 넘어 온 댓글목록과 페이징정보를 이용하여, 자바스크립트 코드로 태그와데이타를 결합하는
-				// 작업이 힘들다. 그래서 이부분을 핸들바 템플릿을 사용한다.
-				/*
-				let strHtml = "<table><tr>";
-				for(let i=0; i<data.list.length; i++) {
-					strHtml += "<td>" +  data.list[i].retext + "/" + data.list[i].replyer + "</td>";
-				}
-				  strHtml += "</tr></table>";
-
-				console.log(strHtml);
-				*/
-
-				// 상품후기목록출력함수
+				// 상품후기와 답변 목록출력함수
 				// data.rev_list : 상품후기목록데이타, $("div#reviewList") : 상품후기가 출력될 태그위치  $("#templateReview") : 상품후기 핸들바템플릿
 				fn_displayReViewData(data.rev_list, $("div#reviewList"), $("#templateReview"));
 				// 페이징출력함수

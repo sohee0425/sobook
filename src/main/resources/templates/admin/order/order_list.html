@@ -258,10 +258,27 @@
 									<td th:text="${order_info.ord_name}"></td>
 									<td th:text="|${#numbers.formatInteger(order_info.ord_price, 3, 'COMMA')}원|"></td>
 									<td th:text="${order_info.payment_method}"></td>
-									<td th:text="${order_info.payment_status}"></td>
-									<td th:text="${order_info.ord_status}"></td>
 									<td>
-										<button type="button" class="btn btn-block btn-outline-info">EDIT</button>
+										<select name="payment_status">
+											<option th:selected= "${order_info.payment_status == '입금대기'}" value="입금대기">입금대기</option>
+											<option th:selected= "${order_info.payment_status == '입금완료'}" value="입금완료">입금완료</option>
+										</select>
+										<button type="button" class="mt-2" name="btn_payment_status_change" th:data-payment_id="${order_info.payment_id}">변경</button>
+									</td>
+									
+									<td>
+										<select name="ord_status">
+											<option th:selected= "${order_info.ord_status == '입금대기'}">입금대기</option>
+											<option th:selected= "${order_info.ord_status == '배송준비'}">배송준비</option>
+											<option th:selected= "${order_info.ord_status == '배송중'}">배송중</option>
+											<option th:selected= "${order_info.ord_status == '배송완료'}" >배송완료</option>
+											<option th:selected= "${order_info.ord_status == '취소'}" >취소</option>
+											<option th:selected= "${order_info.ord_status == '환불'}" >환불</option>
+										</select>
+										<button type="button" class="mt-2" name="btn_ord_status_change" th:data-ord_code="${order_info.ord_code}">변경</button>
+									</td>
+									<td>
+										<button type="button" class="btn btn-block btn-outline-info" name="btn_ord_detail" th:data-ord_code="${order_info.ord_code}">상세정보</button>
 									</td>
 								</tr>
 							</tbody>
@@ -342,6 +359,49 @@
 				criteriaForm.find("input[name='page']").val($(this).attr("href"));
 				criteriaForm.submit();
 
+			});
+
+			// 상세정보
+			$("button[name='btn_ord_detail']").on("click", function() {
+				let ord_code = $(this).data("ord_code");
+				location.href = `/admin/order/orderdetail_info?ord_code=${ord_code}`;
+			});
+
+			// 결제 상태 변경
+			$("button[name='btn_payment_status_change']").on("click", function() {
+
+				let payment_id = $(this).data("payment_id");
+				let payment_status = $(this).prev("select[name='payment_status']").val();
+
+				$.ajax({
+					url : '/admin/order/payment_status',
+					data : {payment_id : payment_id, payment_status : payment_status},
+					type : "post",
+					dataType : 'text',
+					success : function(result) {
+						if (result == "success") {
+							alert("결제상태가 변경되었습니다.");
+						}
+					}
+				});
+			});
+
+			// 주문현황 변경
+			$("button[name='btn_ord_status_change']").on("click", function() {
+				let ord_code = $(this).data("ord_code");
+				let ord_status = $(this).prev("select[name='ord_status']").val();
+
+				$.ajax({
+					url : '/admin/order/order_status',
+					data : {ord_code : ord_code, ord_status : ord_status},
+					type : "post",
+					dataType : 'text',
+					suscces : function(result) {
+						if (result == "success") {
+							alert("주문현황이 변경되었습니다.");
+						}
+					}
+				});
 			});
 
 
