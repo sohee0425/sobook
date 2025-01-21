@@ -281,8 +281,7 @@ public class AdProductController {
 		return "redirect:/admin/product/pro_list";
 	}
 	
-	// 상품 삭제
+	// 상품 상세
 	
-	// 상품 검색
 
 }

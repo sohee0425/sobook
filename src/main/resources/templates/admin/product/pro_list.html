@@ -107,15 +107,15 @@
 								<div class="col-2">검색어</div>
 								<div class="col-3">
 									<select name="searchType" class="form-control">
-										<option value="" selected>검색종류 선택</option>
-										<option value="n">상품명</option>
-										<option value="c">상품번호</option>
-										<option value="p">제조사</option>
-										<option value="np">상품명 or 제조사</option>
+										<option value="" th:selected= "${''} == ${pageMaker.cri.searchType}">검색종류 선택</option>
+										<option value="n" th:selected= "${'n'} == ${pageMaker.cri.searchType}">상품명</option>
+										<option value="c" th:selected= "${'c'} == ${pageMaker.cri.searchType}">상품번호</option>
+										<option value="p" th:selected= "${'p'} == ${pageMaker.cri.searchType}">제조사</option>
+										<option value="np" th:selected= "${'mp'} == ${pageMaker.cri.searchType}">상품명 or 제조사</option>
 									</select>
 								</div>
 								<div class="col-5">
-									<input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요.">
+									<input type="text" name="keyword" class="form-control" th:value="${pageMaker.cri.keyword}" placeholder="검색어를 입력하세요.">
 								</div>
 							</div>
 
@@ -183,7 +183,7 @@
 
 							<div class="row mt-3">
 								<div class="col text-center">
-									<button type="submit" class="btn btn-primary">Serach</button>
+									<button type="submit" class="btn btn-primary">검색</button>
 									<button type="button" class="btn btn-primary" id="btn_search_init">초기화</button>
 									<button type="button" class="btn btn-primary" id="btn_sel_delete">선택삭제</button>
 								</div>
@@ -225,8 +225,8 @@
 									<td
 										th:text="${#dates.format(productVo.pro_date, 'yyyy-MM-dd')}"></td>
 									<td>
-										<button type="button" class="btn btn-block btn-outline-info" th:data-pro_code="${productVo.pro_code}" name="btn_pro_edit">EDIT</button>
-										<button type="button" class="btn btn-block btn-outline-info" th:data-pro_code="${productVo.pro_code}" name="btn_pro_del">DELETE</button>
+										<button type="button" class="btn btn-block btn-outline-info" th:data-pro_code="${productVo.pro_code}" name="btn_pro_edit">수정</button>
+										<button type="button" class="btn btn-block btn-outline-info" th:data-pro_code="${productVo.pro_code}" name="btn_pro_del">삭제</button>
 									</td>
 								</tr>
 							</tbody>
@@ -235,7 +235,7 @@
 
 
 					<!-- 페이징 및 검색 파라미터 정보 -->
-					<form id="criteriaForm" action="" method="get">
+					<form id="criteriaForm" action="/admin/product/pro_list" method="get">
 						<!--페이징, 검색 파라미터-->
 						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
 						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
@@ -271,21 +271,24 @@
 								<!--이전표시 여부-->
 								<th:block th:if="${pageMaker.prev}">
 									<li class="page-item">
-										<a class="page-link" th:href="|/admin/product/pro_list${pageMaker.makeSearch(pageMaker.startPage - 1) }|">Previous</a></li>
+										<!-- <a class="page-link" th:href="|/admin/product/pro_list${pageMaker.makeSearch(pageMaker.startPage - 1) }|">Previous</a></li> -->
+										<a class="page-link movePage" th:href= "${pageMaker.startPage - 1}">Previous</a></li>
 								</th:block>
 
 								<!-- 페이지 번호 출력-->
 								<th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
 									<li class="page-item" th:classappend="${pageMaker.cri.page == num? 'active' : ''}">
-										<a class="page-link" th:href="|/admin/product/pro_list${pageMaker.makeSearch(num)}|" th:text="${num}"></a>
+										<!-- <a class="page-link" th:href="|/admin/product/pro_list${pageMaker.makeSearch(num)}|" th:text="${num}"></a> -->
+										<a class="page-link movePage" th:href="${num}" th:text="${num}"></a>
 									</li>
 								</th:block>
 
 
 								<!--다음표시여부-->
 								<th:block th:if="${pageMaker.next}">
-									<li class="page-item"><a class="page-link"
-										th:href="|/list${pageMaker.makeSearch(pageMaker.endPage + 1) }|">Next</a></li>
+									<li class="page-item">
+										<!-- <a class="page-link" th:href="|/list${pageMaker.makeSearch(pageMaker.endPage + 1) }|">Next</a></li> -->
+										<a class="page-link movePage" th:href= "${pageMaker.endPage +1}">Next</a></li>
 								</th:block>
 							</ul>
 						</nav>
@@ -414,6 +417,14 @@
 				$("#pro_code").val(pro_code);
 
 				criteriaForm.attr("action", "/admin/product/pro_delete");
+				criteriaForm.submit();
+			});
+
+			// 페이지 번호 출력
+			$("a.movePage").on("click", function(e) {
+				e.preventDefault();
+
+				criteriaForm.find("input[name='page']").val($(this).attr("href"));
 				criteriaForm.submit();
 			});
 
