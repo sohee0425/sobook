@@ -41,7 +41,7 @@ public class AdOrderController {
 	// 주문목록
 	@GetMapping("/order_list")
 	public void order_list(@ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("period") String period, @ModelAttribute("start_date") String start_date, @ModelAttribute("end_date") String end_date, @ModelAttribute("payment_method") String payment_method, 
-						@ModelAttribute("payment_status") String payment_status, @ModelAttribute("ord_status") String ord_status,  Model model) throws Exception {
+						@ModelAttribute("payment_status") String payment_status, @ModelAttribute("delivery_status") String delivery_status,  Model model) throws Exception {
 		
 		log.info("검색정보:" + cri);
 		log.info("날짜검색: " + period);
@@ -49,15 +49,15 @@ public class AdOrderController {
 		log.info("날짜검색: " + end_date);
 		log.info("결제방식 " + payment_method);
 		log.info("결제상태 " + payment_status);
-		log.info("주문현황 " + ord_status);
+		log.info("배송상태 " + delivery_status);
 		
 		cri.setPerPageNum(5);
 		
-		List<Map<String, Object>> order_list = adOrderService.order_list(cri, period, start_date, end_date, payment_method, payment_status, ord_status);
+		List<Map<String, Object>> order_list = adOrderService.order_list(cri, period, start_date, end_date, payment_method, payment_status, delivery_status);
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(adOrderService.getTotalCount(cri, period, start_date, end_date, payment_method, payment_status, ord_status));
+		pageMaker.setTotalCount(adOrderService.getTotalCount(cri, period, start_date, end_date, payment_method, payment_status, delivery_status));
 		
 		model.addAttribute("order_list", order_list);
 		model.addAttribute("pageMaker", pageMaker);
@@ -140,11 +140,23 @@ public class AdOrderController {
 	}
 	
 	// 주문상태변경
-	@PostMapping("/order_status")
-	public ResponseEntity<String> order_status(Integer ord_code, String ord_status) throws Exception {
+//	@PostMapping("/order_status")
+//	public ResponseEntity<String> order_status(Integer ord_code, String ord_status) throws Exception {
+//		ResponseEntity<String> entity = null;
+//		
+//		adOrderService.order_status(ord_code, ord_status);
+//		
+//		entity = new ResponseEntity<String>("success", HttpStatus.OK);
+//		
+//		return entity;
+//	}
+	
+	// 배송상태 변경
+	@PostMapping("/delivery_status")
+	public ResponseEntity<String> delivery_status(Integer ord_code, String delivery_status) throws Exception {
 		ResponseEntity<String> entity = null;
 		
-		adOrderService.order_status(ord_code, ord_status);
+		adOrderService.delivery_status(ord_code, delivery_status);
 		
 		entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		

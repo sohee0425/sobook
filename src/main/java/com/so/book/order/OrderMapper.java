@@ -25,4 +25,6 @@ public interface OrderMapper {
 	
 	int getReviewCountByUser_id(String mem_id);
 	
+	List<Map<String, Object>> order_detail_info(Integer ord_code);
+	
 }

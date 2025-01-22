@@ -18,12 +18,12 @@ public class AdOrderService {
 
 	private final AdOrderMapper adOrderMapper;
 	
-	public List<Map<String, Object>> order_list(SearchCriteria cri, String period, String start_date, String end_date, String payment_method, String payment_status, String ord_status) {
-		return adOrderMapper.order_list(cri, period, start_date, end_date, payment_method, payment_status, ord_status);
+	public List<Map<String, Object>> order_list(SearchCriteria cri, String period, String start_date, String end_date, String payment_method, String payment_status, String delivery_status) {
+		return adOrderMapper.order_list(cri, period, start_date, end_date, payment_method, payment_status, delivery_status);
 	}
 	
-	public int getTotalCount(SearchCriteria cri, String period, String start_date, String end_date, String payment_method, String payment_status, String ord_status) {
-		return adOrderMapper.getTotalCount(cri, period, start_date, end_date, payment_method, payment_status, ord_status);
+	public int getTotalCount(SearchCriteria cri, String period, String start_date, String end_date, String payment_method, String payment_status, String delivery_status) {
+		return adOrderMapper.getTotalCount(cri, period, start_date, end_date, payment_method, payment_status, delivery_status);
 	}
 	
 	public List<Map<String, Object>> orderdetail_info(Integer ord_code) {
@@ -64,5 +64,10 @@ public class AdOrderService {
 	
 	public void admin_ord_message(Integer ord_code, String ord_message) {
 		adOrderMapper.admin_ord_message(ord_code, ord_message);
+	}
+	
+	
+	public void delivery_status(Integer ord_code, String delivery_status) {
+		adOrderMapper.delivery_status(ord_code, delivery_status);
 	}
 }

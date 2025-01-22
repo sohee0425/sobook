@@ -20,28 +20,30 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col" style="width: 10%;">주문번호</th>
-                <th scope="col" style="width: 20%;">상품이미지</th>
-                <th scope="col" style="width: 15%;">상품이름</th>
-                <th scope="col" style="width: 15%;">비고</th>
+                <th scope="col" style="width: 10%; text-align: center;">주문번호</th>
+                <th scope="col" style="width: 15%; text-align: center;">주문일</th>
+                <th scope="col" style="width: 20%; text-align: center;">상품이미지</th>
+                <th scope="col" style="width: 15%; text-align: center;">상품이름</th>
+                <th scope="col" style="width: 15%; text-align: center;">비고</th>
               </tr>
             </thead>
             <tbody>
               <tr th:each= "item : ${review_list}">
-                <td>
-                  [[${#temporals.format(item.ord_regdate, 'yyyy-MM-dd')}]] <br> [[${item.ord_code}]] 
+                <td class="text-center">
+                  [[${item.ord_code}]] <br> 
                 </td>
-                <td>
+                <td class="text-center"> [[${#temporals.format(item.ord_regdate, 'yyyy-MM-dd')}]]</td>
+                <td class="text-center">
                   <a th:href="|/order/pro_perinfo?pro_code=${item['pro_code']}#tabs-2|">
 
                   <img style="width: 100px;height: 100px;" th:src="${'/order/image_display?dateFolderName=' + item.pro_up_folder + '&fileName=s_' + item.pro_img}">
                   </a>
                 </td>
-                <td>
+                <td class="text-center">
                   [[${item['pro_name']}]] <br>
                   <!-- <span style="color: red;">배송</span> -->
                 </td>
-                <td><button type="button" name="btn_review_write" th:data-pro_code="${item['pro_code']}" class="btn btn-outline-success">상품평쓰기</button></td>
+                <td class="text-center"><button type="button" name="btn_review_write" th:data-pro_code="${item['pro_code']}" class="btn btn-outline-success">상품평쓰기</button></td>
               </tr>
             </tbody>        
           </table>

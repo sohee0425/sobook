@@ -4,13 +4,17 @@
 
 	<select id="order_list" resultType="HashMap" parameterType="com.so.book.common.utils.SearchCriteria">
 		select
-			 ot.ord_regdate, ot.ord_code, ot.ord_price, ot.ord_name, ot.ord_status,  pt.payment_method, pt.payment_status, pt.payment_id
+			 ot.ord_regdate, ot.ord_code, ot.ord_price, ot.ord_name,  pt.payment_method, pt.payment_status, pt.payment_id, dt.delivery_status
 		from
 			order_tbl ot 
 		inner join 
 			payment_tbl pt
 		on 
 			ot.ord_code = pt.ord_code
+		inner join 
+			delivery_tbl dt 
+		on 
+			ot.ord_code = dt.ord_code
 		where
 			ot.ord_code > 0
 			
@@ -18,7 +22,7 @@
 		<include refid="period"></include>
 		<include refid="payment_method"></include>
 		<include refid="payment_status"></include>
-		<include refid="ord_status"></include>
+		<include refid="delivery_status"></include>
 			
 		order by 
 			ot.ord_regdate desc
@@ -35,6 +39,10 @@
 			payment_tbl pt
 		on 
 			ot.ord_code = pt.ord_code
+		inner join 
+			delivery_tbl dt 
+		on 
+			ot.ord_code = dt.ord_code
 		where 
 			ot.ord_code > 0
 		
@@ -42,7 +50,7 @@
 		<include refid="period"></include>
 		<include refid="payment_method"></include>
 		<include refid="payment_status"></include>
-		<include refid="ord_status"></include>
+		<include refid="delivery_status"></include>
 		
 		
 	</select>
@@ -59,11 +67,6 @@
 	   	<if test="cri.searchType == 'n'.toString()">
 	   		and ot.ord_name = #{cri.keyword}
 	   	</if>
-	   	
-	   <!-- 	<if test="cri.searchType == 'p'.toString()">
-	   		and pt.payment_method like concat('%', #{cri.keyword}, '%') 
-	   	</if> 결제방식이 밑에 있어서 삭제 고민 -->
-	   	
 	   </if>
  	</sql>
  	
@@ -97,10 +100,10 @@
  		</if>
  	</sql>
  	
- 	<!-- 주문현황 -->
- 	<sql id="ord_status">
- 		<if test="ord_status != null and !ord_status.equals('')">
- 			and ot.ord_status = #{ord_status}
+ 	<!-- 배송상태 -->
+ 	<sql id="delivery_status">
+ 		<if test="delivery_status != null and !delivery_status.equals('')">
+ 			and dt.delivery_status = #{delivery_status}
  		</if>
  	</sql>
  	
@@ -202,6 +205,15 @@
  			order_tbl
  		set
  			ord_status = #{ord_status}
+ 		where
+ 			ord_code = #{ord_code}
+ 	</update>
+ 	
+ 	<update id="delivery_status" parameterType="map">
+ 		update
+ 			delivery_tbl
+ 		set
+ 			delivery_status = #{delivery_status}
  		where
  			ord_code = #{ord_code}
  	</update>

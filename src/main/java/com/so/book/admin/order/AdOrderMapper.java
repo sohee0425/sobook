@@ -13,11 +13,11 @@ public interface AdOrderMapper {
 
 	List<Map<String, Object>> order_list(@Param("cri") SearchCriteria cri, @Param("period") String period, @Param("start_date") String start_date, 
 						@Param("end_date") String end_date, @Param("payment_method") String payment_method, @Param("payment_status") String payment_status,
-						@Param("ord_status") String ord_status);
+						@Param("delivery_status") String delivery_status);
 	
 	int getTotalCount(@Param("cri") SearchCriteria cri, @Param("period") String period,  @Param("start_date") String start_date, 
 						@Param("end_date") String end_date, @Param("payment_method") String payment_method, @Param("payment_status") String payment_status,
-						@Param("ord_status") String ord_status);
+						@Param("delivery_status") String delivery_status);
 	
 	List<Map<String, Object>> orderdetail_info(Integer ord_code);
 	
@@ -38,5 +38,7 @@ public interface AdOrderMapper {
 	void payment_change_price(@Param("ord_code") Integer ord_code, @Param("ord_total_price") int ord_total_price);
 	
 	void order_status(@Param("ord_code") Integer ord_code, @Param("ord_status") String ord_status);
+	
+	void delivery_status(@Param("ord_code") Integer ord_code, @Param("delivery_status") String delivery_status);
 	
 }

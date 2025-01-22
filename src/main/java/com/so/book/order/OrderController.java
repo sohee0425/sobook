@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.so.book.cart.CartService;
 import com.so.book.cart.CartVo;
+import com.so.book.common.constants.Constants;
 import com.so.book.common.utils.FileUtils;
 import com.so.book.common.utils.PageMaker;
 import com.so.book.common.utils.SearchCriteria;
@@ -127,7 +128,7 @@ public class OrderController {
 			order_total_price += ((int) o_Info.get("dt_amount") * (int) o_Info.get("dt_price"));
 		});
 		
-		EmailDTO dto = new EmailDTO("SOBOOK", "SOBOOK", "thlgml@naver.com", "주문내역", "주문내역");
+		EmailDTO dto = new EmailDTO("SOBOOK", "SOBOOK", "thlgml@naver.com", "[SOBOOK]주문내역", "주문내역");
 		
 		emailService.sendMail("mail/orderConfirmation", dto, order_info, order_total_price);
 		
@@ -144,7 +145,7 @@ public class OrderController {
 		
 		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
 		
-		cri.setPerPageNum(2);
+		cri.setPerPageNum(5);
 		
 		List<Map<String, Object>> order_list = orderService.getOrderInfoByUser_id(mem_id, cri);
 		
@@ -169,7 +170,7 @@ public class OrderController {
 		// 상품코드, 상품이미지, 상품명, 배송일, 리뷰작성하기 버튼
 		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
 		
-		cri.setPerPageNum(2);
+		cri.setPerPageNum(Constants.REVIEW_LIST_PAGE_SIZE);
 		
 		List<Map<String, Object>> review_list = orderService.review_manage(mem_id, cri);
 		
@@ -188,6 +189,21 @@ public class OrderController {
 		
 		model.addAttribute("pageMaker", pageMaker);
 	
+	}
+	
+	// 주문내역 상세 정보
+	@GetMapping("/order_detail_info")
+	public void order_detail_info(Integer ord_code, Model model) throws Exception {
+		
+		// 주문 상세 목록
+		List<Map<String, Object>> order_detail_info = orderService.order_detail_info(ord_code);
+		
+		// 날짜폴더 역슬래시를 변환
+		order_detail_info.forEach(o_Info -> {
+					o_Info.put("pro_up_folder", o_Info.get("pro_up_folder").toString().replace("\\", "/"));			
+				});
+		
+		model.addAttribute("order_detail_info", order_detail_info);
 	}
 	
 	@GetMapping("/image_display")

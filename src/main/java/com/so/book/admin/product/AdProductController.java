@@ -141,7 +141,7 @@ public class AdProductController {
 	// 상품목록
 	@GetMapping("/pro_list") // 데이터 보여줘야할 때 model 필요
 	public void pro_list(Model model, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("period") String period, @ModelAttribute("start_date") String start_date, 
-					@ModelAttribute("end_date") String end_date, @ModelAttribute("cate_code") String cate_code, @ModelAttribute("pro_buy") String pro_buy) throws Exception {
+					@ModelAttribute("end_date") String end_date,  @ModelAttribute("cate_code") String cate_code, @ModelAttribute("pro_buy") String pro_buy) throws Exception {
 		
 		log.info("검색정보" + cri);
 		log.info("날짜검색" + period);
@@ -151,7 +151,9 @@ public class AdProductController {
 //		log.info("카테고리"+cate_prtcode);
 		log.info("판매여부"+pro_buy);
 		
-		
+		log.info("검색 유형: " + cri.getSearchType());
+		log.info("검색 키워드: " + cri.getKeyword());
+
 		
 		cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
 		

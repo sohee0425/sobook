@@ -14,5 +14,8 @@ public class Constants {
 	public static final int ADMIN_NOTICE_LIST_PAGE_SIZE = 5;
 	
 	// 사용자 공지사항 목록 개수 설정
-	public static final int NOTICE_LIST_PAGE_SIZE = 3;
+	public static final int NOTICE_LIST_PAGE_SIZE = 5;
+	
+	// 사용자 리뷰작성 목록 개수 설정
+	public static final int REVIEW_LIST_PAGE_SIZE = 5;
 }

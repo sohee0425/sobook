@@ -95,4 +95,8 @@ public class OrderService {
 		return orderMapper.getReviewCountByUser_id(mem_id);
 	}
 	
+	List<Map<String, Object>> order_detail_info(Integer ord_code) {
+		return orderMapper.order_detail_info(ord_code);
+	}
+	
 }
