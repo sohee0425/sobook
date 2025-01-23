@@ -1,7 +1,5 @@
 package com.so.book.member;
 
-import java.net.Authenticator;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,10 +34,14 @@ public class MemberController {
 		
 	}
 	
+	
+	
+	
 	// 회원정보 저장
 	@PostMapping("/join")
 	public String join(MemberVo vo) {
 		
+
 		vo.setMem_pw(passwordEncoder.encode(vo.getMem_pw()));
 		
 		memberService.join(vo);
@@ -47,28 +49,24 @@ public class MemberController {
 		return "redirect:/member/login";
 	}
 	
-	
 	// 아이디 중복체크
-	@GetMapping("/idCheck")
-	public ResponseEntity<String> idCheck(String mem_id) throws Exception {
+		@GetMapping("/idCheck")
+		public ResponseEntity<String> idCheck(String mem_id) throws Exception {
+				
+			ResponseEntity<String> entity = null;
 			
-		ResponseEntity<String> entity = null;
-			
-		String isUse = "";
-			
-		if(memberService.idCheck(mem_id) != null) {
-			isUse = "no"; // 아이디 사용불가능
-		}else {
-			isUse = "yes"; // 아이디 사용가능
+			String isUse = "";
+				
+			if(memberService.idCheck(mem_id) != null) {
+				isUse = "no"; // 아이디 사용불가능
+			}else {
+				isUse = "yes"; // 아이디 사용가능
+			}
+				
+			entity = new ResponseEntity<String>(isUse, HttpStatus.OK);
+				
+			return entity;
 		}
-			
-		entity = new ResponseEntity<String>(isUse, HttpStatus.OK);
-			
-		return entity;
-	}
-	
-//	
-	
 	
 	// 로그인 폼
 		@GetMapping("/login")

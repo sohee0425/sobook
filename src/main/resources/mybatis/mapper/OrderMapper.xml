@@ -178,4 +178,38 @@
 		where 
 			ot.ord_code = #{ord_code} 
 	</select>
+	
+	<select id="payment_info" resultType="com.so.book.payment.PaymentVo">
+		select
+ 			payment_id, ord_code, mem_id, payment_method, payment_price, payment_status, payment_date
+ 		from
+ 			payment_tbl
+ 		where 
+ 			ord_code = #{ord_code}
+	</select>
+	
+	<select id="order_delivery_info" resultType="com.so.book.order.OrderVo">
+		select ord_code, mem_id, ord_name, ord_zipcode, ord_addr, ord_addr_detail, ord_tel, ord_email, ord_price, ord_status, ord_message, ord_regdate
+		from 
+			order_tbl
+		where
+			ord_code = #{ord_code}
+		
+	</select>
+	
+	<update id="order_info_edit">
+		update
+ 			 order_tbl
+		set 
+			ord_name = #{ord_name}, ord_tel = #{ord_tel}, ord_email = #{ord_email}, ord_zipcode = #{ord_zipcode}, ord_addr = #{ord_addr}, ord_addr_detail = #{ord_addr_detail}
+		where 
+			ord_code = #{ord_code}
+	</update>
+	
+	<!-- 주문 상태 조회
+    <select id="getOrderStatus" resultType="Integer">
+        SELECT ord_status
+        FROM order_tbl
+        WHERE ord_code = #{ord_code}
+    </select> -->
 </mapper>

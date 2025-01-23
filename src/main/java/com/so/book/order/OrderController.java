@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -196,14 +198,46 @@ public class OrderController {
 	public void order_detail_info(Integer ord_code, Model model) throws Exception {
 		
 		// 주문 상세 목록
-		List<Map<String, Object>> order_detail_info = orderService.order_detail_info(ord_code);
+		List<Map<String, Object>> order_product_info = orderService.order_detail_info(ord_code);
 		
 		// 날짜폴더 역슬래시를 변환
-		order_detail_info.forEach(o_Info -> {
+		order_product_info.forEach(o_Info -> {
 					o_Info.put("pro_up_folder", o_Info.get("pro_up_folder").toString().replace("\\", "/"));			
 				});
 		
-		model.addAttribute("order_detail_info", order_detail_info);
+		model.addAttribute("order_product_info", order_product_info);
+		
+		// 결제내역
+		model.addAttribute("payment_info", orderService.payment_info(ord_code));
+		
+		// 배송지 정보
+		OrderVo order_delivery_info = orderService.order_delivery_info(ord_code);
+		model.addAttribute("order_delivery_info", order_delivery_info);
+		
+	}
+	
+	// 배송지 변경
+	@PostMapping("/order_info_edit")
+	public ResponseEntity<String> order_info_edit(OrderVo vo) throws Exception {
+		ResponseEntity<String> entity = null;
+		
+		// 주문 상태 확인해서 배송 중 전까지만 배송지 변경하게 하고싶다
+//	    String delyStatus = orderService.getOrderStatus(vo.getOrd_code());  // 주문 상태 조회
+//	    
+//	    if ("배송준비".equals(delyStatus)) {  // 배송준비중 상태일 때만 수정 가능
+//	        orderService.order_info_edit(vo);  // 배송지 정보 수정
+//	        entity = new ResponseEntity<String>("success", HttpStatus.OK);  // 성공 응답
+//	    } else {
+//	        // 배송준비중 상태가 아니면 수정 불가
+//	        entity = new ResponseEntity<String>("배송지 변경은 배송준비 상태에서만 가능합니다.", HttpStatus.BAD_REQUEST);
+//	    }
+//	    
+//	    return entity;
+		orderService.order_info_edit(vo);
+		
+		entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		
+		return entity;
 	}
 	
 	@GetMapping("/image_display")

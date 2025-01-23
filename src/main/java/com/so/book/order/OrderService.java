@@ -3,7 +3,6 @@ package com.so.book.order;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,8 +94,27 @@ public class OrderService {
 		return orderMapper.getReviewCountByUser_id(mem_id);
 	}
 	
-	List<Map<String, Object>> order_detail_info(Integer ord_code) {
+	// 주문 상세 내역
+	public List<Map<String, Object>> order_detail_info(Integer ord_code) {
 		return orderMapper.order_detail_info(ord_code);
 	}
 	
+	// 주문 상세 결제 정보
+	public PaymentVo payment_info(Integer ord_code) {
+		return orderMapper.payment_info(ord_code);
+	}
+	
+	// 주문 상세 배송지 정보
+	public OrderVo order_delivery_info(Integer ord_code) {
+		return orderMapper.order_delivery_info(ord_code);
+	}
+	
+	// 주문 상세 배송지 변경
+	public void order_info_edit(OrderVo vo) {
+		orderMapper.order_info_edit(vo);
+	}
+	
+//	public String getOrderStatus(Integer ord_code) {
+//		return orderMapper.getOrderStatus(ord_code);
+//	}
 }

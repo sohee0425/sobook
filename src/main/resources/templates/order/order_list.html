@@ -34,7 +34,7 @@
         <tbody>
           <tr th:each= "item : ${order_list}">
             <td class="text-center">
-              <a th:href= "@{/order/order_list/order_detail_info(ord_code=${item.ord_code})}"> [[${item.ord_code}]] </a>
+              <a th:href= "@{/order/order_detail_info(ord_code=${item.ord_code})}"> [[${item.ord_code}]] </a>
             </td>
             <td class="text-center">
               <a th:href="|/order/pro_perinfo?pro_code=${item['pro_code']}|">
