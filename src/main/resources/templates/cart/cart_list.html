@@ -36,7 +36,7 @@
               <input type="checkbox" name="check" th:value="${item['pro_code']}">
             </td>
             <td>
-              <img style="width: 100px;height: 100px;" th:src="${'/order/image_display?dateFolderName=' + item.pro_up_folder + '&fileName=s_' + item.pro_img}">
+              <img style="width: 100px;height: 150px;" th:src="${'/order/image_display?dateFolderName=' + item.pro_up_folder + '&fileName=s_' + item.pro_img}">
             </td>
             <td th:text="${item['pro_name']}"></td>
             <td th:text="${#numbers.formatInteger(item['pro_price'], 3, 'COMMA') + '원'}"></td>

@@ -83,6 +83,8 @@ public class CartController {
 		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
 		vo.setMem_id(mem_id);
 		
+		 System.out.println("수량 변경 - 상품 코드: " + vo.getPro_code() + ", 변경된 수량: " + vo.getCart_amount());
+		
 		cartService.cart_change(vo);
 		
 		

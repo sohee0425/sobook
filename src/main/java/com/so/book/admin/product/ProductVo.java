@@ -26,4 +26,5 @@ public class ProductVo {
 	private int pro_review;
 	private Date pro_date;
 	private Date pro_update;
+	private String pro_writer;
 }
