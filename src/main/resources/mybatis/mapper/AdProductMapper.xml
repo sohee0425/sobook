@@ -88,11 +88,8 @@
 		 </if>
 		  <if test="cri.searchType == 'p'.toString()">
 			and  pro_publisher like concat('%', #{cri.keyword}, '%')
-		 </if>
-		  <if test="cri.searchType == 'np'.toString()">
-			and  pro_name like concat('%', #{cri.keyword}, '%') 
-			 or 
-			 pro_publisher like concat('%', #{cri.keyword}, '%')
+		 </if><if test="cri.searchType == 'w'.toString()">
+			and  pro_writer like concat('%', #{cri.keyword}, '%')
 		 </if>
 		</if>
 	</sql>

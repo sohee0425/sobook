@@ -2,4 +2,123 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.so.book.admin.review.AdReviewMapper">
 
+	<select id="review_list" resultMap="Review_Relies_Map">
+		select 
+			rt.rev_code, rt.mem_id , rt.pro_code , rt.rev_content, rt.rev_score , rt.rev_date, 
+			pt.pro_name, pt.pro_up_folder, pt.pro_img,
+			rrt.reply_id, rrt.manager_id, rrt.reply_content , rrt.reply_date 
+		from 
+		 	review_tbl rt 	
+		left join 
+		 	product_tbl pt
+		on 
+			rt.pro_code  = pt.pro_code
+		left outer join 
+			review_replies_tbl rrt 
+		on 
+			rt.rev_code = rrt.rev_code
+		where 
+			rt.rev_code > 0
+			
+		<include refid="search"></include>
+		<include refid="rev_score"></include>
+		<include refid="rev_content"></include>
+			
+		order by rt.rev_code desc
+		
+		limit #{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	
+	<resultMap type="com.so.book.review.ReviewVo" id="Review_Relies_Map">
+	
+	<!-- 리뷰 기본 정보 -->
+	<id property="rev_code" column="rev_code"/> <!-- 리뷰 PK -->
+	<result property="mem_id" column="mem_id" />
+	<result property="pro_code" column="pro_code" />
+	<result property="rev_content" column="rev_content" />
+	<result property="rev_score" column="rev_score" />
+	<result property="rev_date" column="rev_date" />
+	
+	<!-- 상품 정보 -->
+	<association property="product" javaType="com.so.book.admin.product.ProductVo">
+	<result property="pro_name" column="pro_name"/>
+	<result property="pro_up_folder" column="pro_up_folder"/>
+	<result property="pro_img" column="pro_img"/>
+	</association>
+	
+	<!-- 답변 정보 -->
+	<collection property="replies" ofType="com.so.book.review.ReviewReply">
+		<id property="reply_id" column="reply_id"/> <!-- pk -->
+		<result property="manager_id" column="manager_id"/>
+		<result property="reply_content" column="reply_content"/>
+		<result property="reply_date" column="reply_date"/>
+	</collection>
+	</resultMap>
+	
+	<select id="review_count" resultType="int">
+		select
+			count(*)
+		from
+			review_tbl rt
+		where
+			rt.rev_code > 0
+			
+		<include refid="search"></include>
+		<include refid="rev_score"></include>
+		<include refid="rev_content"></include>
+	</select>
+	
+	<select id="reply_info" resultType="com.so.book.review.ReviewReply">
+		
+		select
+			reply_id, rev_code, manager_id, reply_content, reply_date
+		where
+			reply_id = #{reply_id}
+	</select>
+	
+	<update id="reply_modify_save">
+		update
+			review_replies_tbl
+		set
+			reply_content = #{reply_content}, reply_date = now()
+		where
+			reply_id = #{reply_id}
+	</update>
+	
+	<delete id="reply_delete">
+	
+		delete from
+			review_replies_tbl
+		where
+			reply_id = #{reply_id}
+	</delete>
+	
+	<!-- 기본 키워드 검색 -->
+	<sql id="search">
+		<if test="cri.searchType != null">
+	   	<if test="cri.searchType == 'n'.toString()">
+	   		and pt.pro_name like concat ('%', #{cri.keyword}, '%')
+	   	</if>
+	   	<if test="cri.searchType == 'c'.toString()">
+	   		and pt.pro_code = #{cri.keyword}
+	   	</if>
+	   	<if test="cri.searchType == 'm'.toString()">
+	   		and rt.mem_id = #{cri.keyword}
+	   	</if>
+	   </if>
+	  </sql>
+	   
+	  <!-- 후기 내용 -->
+	  <sql id="rev_content">
+		<if test="rev_content != null and  !rev_content.equals('')">
+			and rt.rev_content like concat('%', #{rev_content}, '%')
+		</if>
+	  </sql>
+	
+	<!-- 후기 평점 -->
+	<sql id="rev_score">
+		<if test="rev_score != null and  !rev_score.equals('')">
+			and rt.rev_score = #{rev_score}
+		</if>
+	</sql>
 </mapper>

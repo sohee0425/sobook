@@ -20,4 +20,6 @@ public interface ReviewMapper {
 	void review_modify(ReviewVo vo);
 	
 	void review_delete(Long rev_code);
+	
+	void reply_insert(ReviewReply vo);
 }

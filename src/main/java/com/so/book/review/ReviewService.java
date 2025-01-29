@@ -46,4 +46,8 @@ public class ReviewService {
 	public void review_delete(Long rev_code) {
 		reviewMapper.review_delete(rev_code);
 	}
+	
+	public void reply_insert(ReviewReply vo) {
+		reviewMapper.reply_insert(vo);
+	}
 }

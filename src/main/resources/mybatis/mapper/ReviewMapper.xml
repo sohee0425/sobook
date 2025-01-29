@@ -56,4 +56,10 @@
 		where
 			rev_code = #{rev_code}
 	</delete>
+	
+	<insert id="reply_insert">
+		insert into
+			review_replies_tbl(rev_code, manager_id, reply_content)
+		values(#{rev_code}, #{manager_id}, #{reply_content})
+	</insert>
 </mapper>
