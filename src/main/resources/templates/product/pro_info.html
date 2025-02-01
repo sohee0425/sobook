@@ -48,7 +48,14 @@
               {{authControlView mem_id rev_code}}
             </td>
           </tr>
-          {{/each}}
+          {{#if replies.length}}
+          {{#each replies}}
+          <tr>
+            <td colspan="6">[관리자] 답변글 : {{reply_content}} 작성일 : {{convertDate reply_date}}</td>></td>
+          </tr>
+            {{/each}}
+            {{/if}}
+            {{/each}}
         </tbody>
       </table>
     </script>

@@ -2,18 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.so.book.review.ReviewMapper">
 
-	<select id="rev_list" resultType="com.so.book.review.ReviewVo" parameterType="map">
-		select
-			rev_code, mem_id, pro_code, rev_content, rev_score, rev_date
-		from
-			review_tbl
-		where
+	<select id="rev_list" resultMap="ReviewResultMap">
+		select 
+			rt.rev_code, rt.mem_id, rt.pro_code, rt.rev_content, rt.rev_score, rt.rev_date,
+			rrt.rev_code, rrt.manager_id, rrt.reply_id, rrt.reply_content, rrt.reply_date 
+		from 
+			review_tbl rt 
+		left outer join 
+			review_replies_tbl rrt 
+		on 
+			rt.rev_code = rrt.rev_code
+		where 
 			pro_code = #{pro_code}
-		order by
-			rev_date desc
+        order by 
+			rt.rev_date desc, rrt.reply_date asc
 		limit 
 			#{cri.pageStart}, #{cri.perPageNum}
 	</select>
+	
+	<resultMap type="com.so.book.review.ReviewVo" id="ReviewResultMap">
+		<id property="rev_code" column="rev_code"/> <!-- PK -->
+		<result property="mem_id" column="mem_id"/>
+		<result property="pro_code" column="pro_code"/>
+		<result property="rev_content" column="rev_content"/>
+		<result property="rev_score" column="rev_score"/>
+		<result property="rev_date" column="rev_date"/>
+		
+		<collection property="replies" ofType="com.so.book.review.ReviewReply">
+			<id property="reply_id" column="reply_id"/>
+			<!-- FK 중복작업은 하면 안됨 -->
+			<result property="manager_id" column="manager_id"/>
+			<result property="reply_content" column="reply_content"/>
+			<result property="reply_date" column="reply_date"/>
+		</collection>
+	</resultMap>
 	
 	<select id="getCountReviewByPro_code" resultType="int" parameterType="Integer">
 		select

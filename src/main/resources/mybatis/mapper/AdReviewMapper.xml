@@ -72,6 +72,8 @@
 		
 		select
 			reply_id, rev_code, manager_id, reply_content, reply_date
+		from 
+			review_replies_tbl
 		where
 			reply_id = #{reply_id}
 	</select>
