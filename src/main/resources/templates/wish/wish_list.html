@@ -41,7 +41,10 @@
                 </td>
                 <td class="text-center" th:text="${item.pro_name}"></td>
                 <td class="text-center" th:text="${#numbers.formatInteger(item['pro_price'], 3, 'COMMA') + '원'}"></td>
-                <td class="text-center"> <button type="button" class="btn btn-outline-success" th:data-pro_code="${item.pro_code}" name="btn_wish_delete">삭제</button></td>
+                <td class="text-center">
+                	<button type="button" class="btn btn-outline-success" th:data-pro_code="${item.pro_code}" name="btn_wish_delete">삭제</button>
+                	<button type="button" class="btn btn-outline-success mt-2" th:data-pro_code="${item.pro_code}" name="btn_wish_delete">주문</button>
+                </td>
               </tr>
             </tbody>        
           </table>
@@ -50,7 +53,7 @@
 
         <div class="row">
           <div>
-            <button type="button" class="btn btn-outline-success" id="btn_sel_delete">찜 삭제</button>
+            <button type="button" class="btn btn-outline-success" id="btn_sel_delete">선택삭제</button>
           </div>
         </div>
       
@@ -60,15 +63,16 @@
 						<!--페이징, 검색 파라미터-->
 						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
 						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
-						<input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}">
-						<input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}">
+						
+						<input type="hidden" name="pro_code" id="pro_code">
+						
             </form>
     
 
           <div class="card-footer clearfix">
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
-              <!-- 이전표시여부 Previous  pageMaker.getPrev() -->
+              <!-- 이전표시여부 -->
               <th:block th:if="${pageMaker.prev}">
                 <li class="page-item">
                   <a class="page-link" th:href="|/order/review_manage${pageMaker.makeSearch(pageMaker.startPage - 1)}|">Previous</a>
@@ -120,20 +124,22 @@
       let wishForm = $("#wishForm");
       wishForm.submit();
     });
+    
     let criteriaForm = $("#criteriaForm");
     
     // 찜 삭제 버튼 btn_wish_delete
     $("button[name='btn_wish_delete']").on("click", function() {
-      
-      if(!confirm("삭제하시겠습니까?")) return;
+        if (!confirm("삭제하시겠습니까?")) return;
 
-      let pro_code = $(this).data("pro_code");
+        let pro_code = $(this).data("pro_code"); 
 
-      $("#pro_code").val(pro_code);
+        console.log("삭제 요청 pro_code:", pro_code); 
 
-      criteriaForm.attr("action", "/wish/wish_delete");
-      criteriaForm.submit();
+        $("#pro_code").val(pro_code);
+        $("#criteriaForm").attr("action", "/wish/wish_delete");
+        $("#criteriaForm").submit();
     });
+
 
 
         

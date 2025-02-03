@@ -12,7 +12,9 @@ public interface WishMapper {
 
 	void wish_add(WishVo vo);
 	
-	List<Map<String, Object>> getLikeLIstByUserid(@Param("mem_id") String mem_id, @Param("cri") SearchCriteria cri);
+//	List<Map<String, Object>> getLikeLIstByUserid(String mem_id);
+	
+	int getLikeLIstByUserid(String mem_id);
 	
 	List<Map<String, Object>> wish_list(@Param("mem_id") String mem_id, @Param("cri") SearchCriteria cri);
 

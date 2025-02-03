@@ -20,8 +20,12 @@ public class WishService {
 		wishMapper.wish_add(vo);
 	}
 	
-	public List<Map<String, Object>> getLikeLIstByUserid(String mem_id, SearchCriteria cri) {
-		return wishMapper.getLikeLIstByUserid(mem_id, cri);
+//	public List<Map<String, Object>> getLikeLIstByUserid(String mem_id) {
+//		return wishMapper.getLikeLIstByUserid(mem_id);
+//	}
+	
+	public int getLikeLIstByUserid(String mem_id) {
+		return wishMapper.getLikeLIstByUserid(mem_id);
 	}
 	
 	public List<Map<String, Object>> wish_list(String mem_id, SearchCriteria cri) {

@@ -55,6 +55,8 @@ public class WishController {
 		
 		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
 		
+		cri.setPerPageNum(5);
+		
 		List<Map<String, Object>> wish_list = wishService.wish_list(mem_id, cri);
 		
 		// 날짜폴더의 역슬래쉬 \ 를 / 로 변환작업
@@ -62,11 +64,12 @@ public class WishController {
 			WishVo.put("pro_up_folder", WishVo.get("pro_up_folder").toString().replace("\\", "/"));
 		});
 		
+		model.addAttribute("wish_list", wish_list);
+		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-//		pageMaker.setTotalCount(wishService.getLikeLIstByUserid(mem_id, cri));
+		pageMaker.setTotalCount(wishService.getLikeLIstByUserid(mem_id));
 		
-		model.addAttribute("wish_list", wish_list);
 		model.addAttribute("pageMaker", pageMaker);
 		
 	}
@@ -84,14 +87,14 @@ public class WishController {
 	
 	// 위시 리스트 삭제
 	@GetMapping("/wish_delete")
-	public String wish_delete(SearchCriteria cri, Integer pro_code, RedirectAttributes rttr) {
+	public String wish_delete(SearchCriteria cri, Integer pro_code, RedirectAttributes rttr) throws Exception {
 		
 		wishService.wish_delete(pro_code);
 		
 		rttr.addAttribute("page", cri.getPage());
 		rttr.addAttribute("perPageNum", cri.getPerPageNum());
-		rttr.addAttribute("searchType", cri.getSearchType());
-		rttr.addAttribute("keyword", cri.getKeyword());
+		rttr.addFlashAttribute("pro_code", pro_code);
+
 		
 		return "redirect:/wish/wish_list";
 	}
