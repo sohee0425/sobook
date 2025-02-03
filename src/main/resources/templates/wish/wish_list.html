@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-3">
+        <a class="link-offset-2  link-underline-warning" href="/member/mypage">
+          <th:block th:replace= "~{member/mypage_menu :: menu}"></th:block>
+      </div>
+			
+		
+		<div class="col-9">
+      <!-- 목록 -->
+			<div class="text-center mb-3">
+        <h3 class="mt-3 mb-4 text-center">위시 리스트</h3>    
+      </div>
+      <div class="table-responsive">
+        <form id="wishForm" method="post" action="/wish/wish_sel_delete">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 10%;"><input type="checkbox" id="checkAll"></th>
+                <th scope="col" style="width: 30%; text-align: center;">상품이미지</th>
+                <th scope="col" style="width: 20%; text-align: center;">상품명</th>
+                <th scope="col" style="width: 15%; text-align: center;">상품가격</th>
+                <th scope="col" style="width: 15%; text-align: center;">비고</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each= "item : ${wish_list}">
+                <td>
+                  <input type="checkbox" name="check" th:value="${item['pro_code']}">
+                </td>
+                <td class="text-center">
+                  <a th:href="|/order/pro_perinfo?pro_code=${item['pro_code']}|">
+                  <img style="width: 100px;height: 100px;" th:src="${'/order/image_display?dateFolderName=' + item.pro_up_folder + '&fileName=s_' + item.pro_img}">
+                  </a>
+                </td>
+                <td class="text-center" th:text="${item.pro_name}"></td>
+                <td class="text-center" th:text="${#numbers.formatInteger(item['pro_price'], 3, 'COMMA') + '원'}"></td>
+                <td class="text-center"> <button type="button" class="btn btn-outline-success" th:data-pro_code="${item.pro_code}" name="btn_wish_delete">삭제</button></td>
+              </tr>
+            </tbody>        
+          </table>
+        </form>
+        </div>
+
+        <div class="row">
+          <div>
+            <button type="button" class="btn btn-outline-success" id="btn_sel_delete">찜 삭제</button>
+          </div>
+        </div>
+      
+
+       <!-- 페이징 및 검색 파라미터 정보 -->
+					<form id="criteriaForm" action="/wish/wish_list" method="get">
+						<!--페이징, 검색 파라미터-->
+						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
+						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
+						<input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}">
+						<input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}">
+            </form>
+    
+
+          <div class="card-footer clearfix">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center">
+              <!-- 이전표시여부 Previous  pageMaker.getPrev() -->
+              <th:block th:if="${pageMaker.prev}">
+                <li class="page-item">
+                  <a class="page-link" th:href="|/order/review_manage${pageMaker.makeSearch(pageMaker.startPage - 1)}|">Previous</a>
+                </li>
+              </th:block>
+                <!--  페이지번호 출력.  1  2  3  4  5 -->
+                <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+                <li class="page-item" th:classappend="${pageMaker.cri.page == num ? 'active' : ''}">
+                  <a class="page-link" th:href="|/order/review_manage${pageMaker.makeSearch(num)}|" th:text="${num}"></a>
+                </li>        
+                </th:block>
+              
+              <!--  다음표시여부 Next -->
+              <th:block th:if="${pageMaker.next}">
+                <li class="page-item">
+                  <a class="page-link" th:href="|/order/review_manage${pageMaker.makeSearch(pageMaker.endPage + 1)}|">Next</a>
+                </li>
+              </th:block>
+              </ul>
+            </nav>
+          </div>
+		</div>
+	</div>	
+</div>
+
+<script th:inline="javascript">
+
+  $(document).ready(function() {
+
+    $("#checkAll").on("click", function() {
+					$("input[name='check']").prop("checked", this.checked);
+					isCheck = this.checked;					
+				});
+
+				$("input[name='check']").on("click", function() {
+					$("#checkAll").prop("checked", this.checked);
+
+					$("input[name='check']").each(function() {
+						if(!$(this).is(":checked")) {
+							$("#checkAll").prop("checked", false);
+						}
+					});
+				});
+
+    // 찜 체크버튼 선택 삭제 버튼 이벤트
+    $("button#btn_sel_delete").on("click", function() {
+      if(!confirm("삭제하시겠습니까?")) return;
+
+      let wishForm = $("#wishForm");
+      wishForm.submit();
+    });
+    let criteriaForm = $("#criteriaForm");
+    
+    // 찜 삭제 버튼 btn_wish_delete
+    $("button[name='btn_wish_delete']").on("click", function() {
+      
+      if(!confirm("삭제하시겠습니까?")) return;
+
+      let pro_code = $(this).data("pro_code");
+
+      $("#pro_code").val(pro_code);
+
+      criteriaForm.attr("action", "/wish/wish_delete");
+      criteriaForm.submit();
+    });
+
+
+        
+  });
+
+</script>
+
+</th:block>
+</html>

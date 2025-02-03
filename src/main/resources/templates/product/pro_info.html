@@ -196,13 +196,49 @@
       </div>
     </div>
   </div>
+
   <script>
 
     $(document).ready(function() {
+      $("#btn_wish_add").on("click", function () {
+        console.log("찜 클릭");
+
+        $.ajax({
+          url: '/wish/wish_add',
+          type: 'post',
+          data: { pro_code: [[${productVo.pro_code}]] },
+          dataType: 'text',
+          success: function(result) {
+            if (result === "success") {
+              alert("찜 추가되었습니다.");
+              if (confirm("찜 목록으로 이동하시겠습니까?")) {
+                location.href = '/wish/wish_list';
+              }
+            }
+          },
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader("AJAX", "true");
+          },
+          error: function(xhr, status, error) {
+            console.log(xhr);
+
+            if (xhr.status === 401) { // 로그인 필요
+              alert("로그인이 필요한 기능입니다.");
+              location.href = "/member/login";
+            } else {
+              alert("이미 찜 목록에 추가한 상품입니다.");
+              if(confirm("찜 목록으로 이동하시겠습니까?")) {
+                location.href = '/wish/wish_list';
+              }
+            }
+          }
+        });
+      });
+
 
       // 장바구니 클릭이벤트.  id="btn_cart_add"
       $("#btn_cart_add").on("click", function() {
-        //console.log("장바구니 클릭");
+        console.log("장바구니 클릭");
 
         $.ajax({
           url: '/cart/cart_add',

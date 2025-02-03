@@ -2,4 +2,54 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.so.book.wish.WishMapper">
 
+	<insert id="wish_add" parameterType="com.so.book.wish.WishVo">
+		insert into
+			wish_tbl(pro_code, mem_id)
+		values
+			(#{pro_code},#{mem_id})
+		
+	</insert>
+	
+	<select id="getLikeLIstByUserid" resultType="int">
+		select
+			count(*)
+		from
+			wish_tbl
+		where
+			mem_id = #{mem_id}
+	</select>
+	
+	<select id="wish_list" >
+		select 
+			w.pro_code, w.mem_id, p.pro_name, p.pro_up_folder, p.pro_img, p.pro_price 
+		from 
+			wish_tbl w
+		inner join 
+			product_tbl p
+		on
+			w.pro_code = p.pro_code
+		where
+			w.mem_id = #{mem_id}
+		
+	</select>
+	
+	<delete id="wish_sel_delete">
+		delete from
+			wish_tbl
+		where
+			pro_code in
+		<foreach collection="pro_code_arr" item="item" open="(" separator="," close=")">
+			#{item}
+		
+		</foreach>
+		and
+			mem_id = #{mem_id}
+	</delete>
+
+	<delete id="wish_delete" parameterType="Integer">
+		delete from
+			wish_tbl
+		where
+			pro_code = #{pro_code}
+	</delete>
 </mapper>
