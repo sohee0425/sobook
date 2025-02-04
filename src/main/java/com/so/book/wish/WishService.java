@@ -41,6 +41,17 @@ public class WishService {
 		wishMapper.wish_sel_delete(map);
 	}
 	
+	public void wish_sel_cart_add(int[] pro_code, String mem_id) {
+		
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("pro_code_arr", pro_code);
+		map.put("mem_id", mem_id);
+		
+		wishMapper.wish_sel_cart_add(map);
+	}
+	
+	
+	
 	public void wish_delete(Integer pro_code) {
 		wishMapper.wish_delete(pro_code);
 	}

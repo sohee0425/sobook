@@ -141,7 +141,7 @@ public class AdProductController {
 	// 상품목록
 	@GetMapping("/pro_list") // 데이터 보여줘야할 때 model 필요
 	public void pro_list(Model model, @ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("period") String period, @ModelAttribute("start_date") String start_date, 
-					@ModelAttribute("end_date") String end_date,  @ModelAttribute("cate_code") String cate_code, @ModelAttribute("pro_buy") String pro_buy) throws Exception {
+					@ModelAttribute("end_date") String end_date,  @ModelAttribute("cate_code") String cate_code, @ModelAttribute("cate_prtcode") String cate_prtcode, @ModelAttribute("pro_buy") String pro_buy) throws Exception {
 		
 		log.info("검색정보" + cri);
 		log.info("날짜검색" + period);
@@ -161,7 +161,7 @@ public class AdProductController {
 		if (pro_buy == null || pro_buy.trim().isEmpty() || "ALL".equals(pro_buy)) {
 		    pro_buy = null; // 전체 조회 처리
 		}
-		List<ProductVo> pro_list = adProductService.pro_list(cri, period, start_date, end_date, cate_code, pro_buy);
+		List<ProductVo> pro_list = adProductService.pro_list(cri, period, start_date, end_date, cate_code, pro_buy, cate_prtcode);
 		
 		
 		// 날짜 폴더의 \ 를 / 로 변환하는 작업
@@ -177,7 +177,7 @@ public class AdProductController {
 		pageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGE_SIZE);
 		
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(adProductService.getTotalCount(cri, period, start_date, end_date, cate_code, pro_buy));
+		pageMaker.setTotalCount(adProductService.getTotalCount(cri, period, start_date, end_date, cate_code, pro_buy, cate_prtcode));
 		
 		model.addAttribute("pageMaker", pageMaker);
 		

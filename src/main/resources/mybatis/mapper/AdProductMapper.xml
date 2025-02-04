@@ -8,7 +8,7 @@
 		values(#{cate_code}, #{pro_name}, #{pro_price}, #{pro_discount}, #{pro_publisher}, #{pro_content}, #{pro_up_folder}, #{pro_img}, #{pro_amount}, #{pro_buy}, #{pro_writer})
 	</insert>
 
-	<select id="pro_list" resultType="com.so.book.admin.product.ProductVo" parameterType="com.so.book.common.utils.SearchCriteria">
+	<!--<select id="pro_list" resultType="com.so.book.admin.product.ProductVo" parameterType="com.so.book.common.utils.SearchCriteria">
 		select
 			pro_code, cate_code, pro_name, pro_price, pro_discount, pro_publisher, pro_content, pro_up_folder, pro_img, pro_amount, pro_buy, pro_review, pro_date, pro_update
 		from
@@ -18,13 +18,12 @@
 			
 		<include refid="search"></include>
 		<include refid="period"></include>
-		<!-- <include refid="cate_code_condition"></include> -->
 		<include refid="pro_buy"></include>
 			
 		limit #{cri.pageStart}, #{cri.perPageNum}
-	</select> 
+	</select> -->
 	
-<!-- <select id="pro_list" resultType="com.so.book.admin.product.ProductVo" parameterType="com.so.book.common.utils.SearchCriteria">
+<select id="pro_list" resultType="com.so.book.admin.product.ProductVo" parameterType="com.so.book.common.utils.SearchCriteria">
     select
         p.pro_code, p.cate_code, p.pro_name, p.pro_price, p.pro_discount, p.pro_publisher, p.pro_content,
         p.pro_up_folder, p.pro_img, p.pro_amount, p.pro_buy, p.pro_review, p.pro_date, p.pro_update,
@@ -32,7 +31,8 @@
     from
         product_tbl p
     left join
-        category_tbl c on p.cate_code = c.cate_code 
+        category_tbl c 
+        on p.cate_code = c.cate_code 
     where
         p.pro_code > 0
     
@@ -42,10 +42,10 @@
     <include refid="pro_buy"></include>
 
     limit #{cri.pageStart}, #{cri.perPageNum}
-</select>  -->
+</select> 
 
 	
-	 <select id="getTotalCount" resultType="int">
+	 <!-- <select id="getTotalCount" resultType="int">
 		select
 			count(*)
 		from
@@ -55,12 +55,11 @@
 			
 		<include refid="search"></include>
 		<include refid="period"></include>
-		<!--<include refid="cate_code_condition"></include>-->
 		<include refid="pro_buy"></include>
 			
-	</select>
+	</select>  -->
 	
-	<!--<select id="getTotalCount" resultType="int">
+	<select id="getTotalCount" resultType="int">
 		select
 			count(*)
 		from
@@ -76,7 +75,7 @@
 		 <include refid="cate_code_condition"></include>  
 		<include refid="pro_buy"></include>
 			
-	</select> -->
+	</select> 
 	
 	<sql id="search">
 		<if test="cri.searchType != null">
@@ -118,8 +117,16 @@
     	<if test="cate_code != null and !cate_code.equals('')">
         	and c.cate_code = #{cate_code}
     	</if>
-	</sql>  -->
+	</sql> -->
 	
+	<sql id="cate_code_condition"> 
+    <if test="cate_prtcode != null and cate_prtcode != ''">
+        and c.cate_prtcode = #{cate_prtcode}
+    </if>
+    <if test="cate_code != null and cate_code != ''">
+        and c.cate_code = #{cate_code}
+    </if>
+</sql>
 	
 	
 	<!-- 판매여부 검색 -->

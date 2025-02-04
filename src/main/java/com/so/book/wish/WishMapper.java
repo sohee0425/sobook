@@ -20,5 +20,7 @@ public interface WishMapper {
 
 	void wish_sel_delete(HashMap<String, Object> map);
 	
+	void wish_sel_cart_add(HashMap<String, Object> map);
+	
 	void wish_delete(Integer pro_code);
 }

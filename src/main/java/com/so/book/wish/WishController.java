@@ -85,6 +85,17 @@ public class WishController {
 		return "redirect:/wish/wish_list";
 	}
 	
+	// 위시 리스트 선택 장바구니
+	@PostMapping("/wish_sel_cart_add")
+	public String wish_sel_cart_add(int [] check, HttpSession session) throws Exception {
+		
+		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
+		
+		wishService.wish_sel_cart_add(check, mem_id);
+		
+		return "redirect:/cart/cart_list";
+	}
+	
 	// 위시 리스트 삭제
 	@GetMapping("/wish_delete")
 	public String wish_delete(SearchCriteria cri, Integer pro_code, RedirectAttributes rttr) throws Exception {

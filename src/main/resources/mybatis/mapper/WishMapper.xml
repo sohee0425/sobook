@@ -45,6 +45,16 @@
 		and
 			mem_id = #{mem_id}
 	</delete>
+	
+	<insert id="wish_sel_cart_add">
+	    insert into wish_tbl (pro_code, mem_id)
+	    values 
+	    <foreach collection="pro_code_arr" item="item" separator=",">
+	        (#{item}, #{mem_id})
+	    </foreach>
+	</insert>
+
+	
 
 	<delete id="wish_delete" parameterType="Integer">
 		delete from

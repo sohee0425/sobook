@@ -12,10 +12,10 @@ public interface AdProductMapper {
 	void pro_insert(ProductVo vo);
 	
 	List<ProductVo> pro_list(@Param("cri") SearchCriteria cri, @Param("period") String period, @Param("start_date") String start_date, @Param("end_date") String end_date, 
-			 @Param("cate_code") String cate_code, @Param("pro_buy") String pro_buy);
+			 @Param("cate_code") String cate_code, @Param("pro_buy") String pro_buy, @Param("cate_prtcode") String cate_prtcode);
 	
 	int getTotalCount(@Param("cri") SearchCriteria cri, @Param("period") String period, @Param("start_date") String start_date, @Param("end_date") String end_date,
-			 @Param("cate_code") String cate_code, @Param("pro_buy") String pro_buy);
+			 @Param("cate_code") String cate_code, @Param("pro_buy") String pro_buy, @Param("cate_prtcode") String cate_prtcode);
 	
 	void pro_sel_delete(int[] pro_code_arr);
 	
