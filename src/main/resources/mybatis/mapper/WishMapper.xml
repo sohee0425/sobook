@@ -46,13 +46,42 @@
 			mem_id = #{mem_id}
 	</delete>
 	
-	<insert id="wish_sel_cart_add">
-	    insert into wish_tbl (pro_code, mem_id)
-	    values 
-	    <foreach collection="pro_code_arr" item="item" separator=",">
-	        (#{item}, #{mem_id})
-	    </foreach>
-	</insert>
+	 <!-- <insert id="wish_sel_cart_add">
+    insert into wish_tbl (pro_code, mem_id)
+    values 
+    <foreach collection="pro_code_arr" item="item" separator=",">
+        (#{item}, #{mem_id})
+    </foreach>
+    on duplicate key update 
+        cart_amount = cart_amount + 
+        (SELECT COALESCE(c.cart_amount, 0) 
+         FROM cart_tbl c 
+         WHERE c.pro_code = wish_tbl.pro_code 
+           AND c.mem_id = wish_tbl.mem_id)
+</insert> -->
+
+<insert id="wish_sel_cart_add">
+    insert into cart_tbl (pro_code, mem_id, cart_amount)
+    values 
+    <foreach collection="pro_code_arr" item="item" separator=",">
+        (#{item}, #{mem_id}, 1)
+    </foreach>
+    on duplicate key update 
+        cart_amount = cart_amount + 1
+</insert>
+
+<insert id="wish_sel_order_add">
+    insert into order_tbl (pro_code, mem_id)
+    values 
+    <foreach collection="pro_code_arr" item="item" separator=",">
+        (#{item}, #{mem_id})
+    </foreach>
+</insert>
+
+
+
+
+
 
 	
 

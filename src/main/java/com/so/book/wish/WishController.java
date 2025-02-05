@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.so.book.common.utils.FileUtils;
@@ -87,13 +88,24 @@ public class WishController {
 	
 	// 위시 리스트 선택 장바구니
 	@PostMapping("/wish_sel_cart_add")
-	public String wish_sel_cart_add(int [] check, HttpSession session) throws Exception {
+	public String wish_sel_cart_add(@RequestParam("pro_code_arr") int[] pro_code_arr, HttpSession session) throws Exception {
 		
 		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
 		
-		wishService.wish_sel_cart_add(check, mem_id);
+		wishService.wish_sel_cart_add(pro_code_arr, mem_id);
 		
 		return "redirect:/cart/cart_list";
+	}
+	
+	// 선택 주문
+	@PostMapping("/wish_sel_order_add")
+	public String wish_sel_order_add(@RequestParam("pro_code_arr") int[] pro_code_arr, HttpSession session) throws Exception {
+		
+		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
+		
+		wishService.wish_sel_order_add(pro_code_arr, mem_id);
+		
+		return "redirect:/order/order_info";
 	}
 	
 	// 위시 리스트 삭제
