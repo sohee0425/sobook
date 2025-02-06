@@ -64,7 +64,7 @@
           <div>
             <button type="button" class="btn btn-outline-success" id="btn_sel_delete">선택삭제</button>
             <button type="button" class="btn btn-outline-success" id="btn_sel_cart_add">장바구니 담기</button>
-            <button type="button" class="btn btn-outline-success" id="btn_sel_order_add">주문하기</button>
+            <button type="button" class="btn btn-outline-success" id="btn_sel_order_add" >주문하기</button>
           </div>
         </div>
       
@@ -92,7 +92,7 @@
                 <!--  페이지번호 출력.  1  2  3  4  5 -->
                 <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
                 <li class="page-item" th:classappend="${pageMaker.cri.page == num ? 'active' : ''}">
-                  <a class="page-link" th:href="|/order/review_manage${pageMaker.makeSearch(num)}|" th:text="${num}"></a>
+                  <a class="page-link mt-5" style="background-color: #BACD92;" th:href="|/order/review_manage${pageMaker.makeSearch(num)}|" th:text="${num}"></a>
                 </li>        
                 </th:block>
               
@@ -168,10 +168,12 @@
     });
 
    // 선택 주문하기 버튼 이벤트
-$("#btn_sel_order_add").on("click", function () {
+   $("#btn_sel_order_add").on("click", function () {
+    if (!confirm("선택한 상품을 주문하시겠습니까?")) return;
+
     let selectedProCodes = [];
     $(".wish-check:checked").each(function () {
-        selectedProCodes.push($(this).val()); // 체크된 값 가져오기
+        selectedProCodes.push($(this).val());
     });
 
     if (selectedProCodes.length === 0) {
@@ -179,20 +181,25 @@ $("#btn_sel_order_add").on("click", function () {
         return;
     }
 
-    // hidden input 생성 후 값 설정 (기존에 hidden input이 없다면 새로 추가)
-    $("input[name='pro_code_arr']").remove();  // 기존의 hidden input 삭제
+    // 기존의 hidden input 삭제 후 새로 추가
+    $("input[name='pro_code_arr']").remove();
     selectedProCodes.forEach(function (code) {
         $("<input>")
             .attr("type", "hidden")
             .attr("name", "pro_code_arr")
             .val(code)
-            .appendTo("#wishForm");
+            .appendTo("#wishForm"); // 폼에 추가
     });
 
-    // 선택된 상품을 주문하기 위해 폼의 action을 주문 액션으로 변경
-    $("#wishForm").attr("action", "/wish/wish_sel_order_add").submit();
+    $("#wishForm").attr("action", "/wish/wish_sel_order_add").submit(); // 주문하기 폼 제출
 });
 
+    $("button#btn_sel_order_add").on("click", function() {
+      if (!confirm("선택한 상품을 주문하시겠습니까?")) return;
+
+      
+          location.href = "/order/order_info?type=buy";
+        });
 
 
     let criteriaForm = $("#criteriaForm");

@@ -80,9 +80,6 @@
 
 
 
-
-
-
 	
 
 	<delete id="wish_delete" parameterType="Integer">
