@@ -9,3 +9,4 @@
 
 ## 팀원구성
 김소희 ![Image](https://github.com/user-attachments/assets/bd77dd23-b88f-49e2-8151-0d8dc1153bf1)
+<img src="https://github.com/user-attachments/assets/bd77dd23-b88f-49e2-8151-0d8dc1153bf1  width="200" height="400"/>
