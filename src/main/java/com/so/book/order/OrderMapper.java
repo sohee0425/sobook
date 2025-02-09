@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.so.book.admin.product.ProductVo;
 import com.so.book.common.utils.SearchCriteria;
 import com.so.book.payment.PaymentVo;
 

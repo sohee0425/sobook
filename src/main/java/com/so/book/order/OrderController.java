@@ -142,7 +142,7 @@ public class OrderController {
 	}
 	
 	// 주문목록
-	@GetMapping(value = {"/order_list"})
+	@GetMapping("/order_list")
 	public void order_list(SearchCriteria cri, HttpSession session, Model model) throws Exception {
 		
 		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();

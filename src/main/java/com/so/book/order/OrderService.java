@@ -74,10 +74,11 @@ public class OrderService {
 		return orderMapper.getOrderInfoByOrd_code(ord_code);
 	}
 	
+	// 주문내역
 	public List<Map<String, Object>> getOrderInfoByUser_id(String mem_id, SearchCriteria cri) {
 		return orderMapper.getOrderInfoByUser_id(mem_id, cri);
 	}
-	
+	//카운트
 	public int getOrderCountByUser_id(String mem_id) {
 		return orderMapper.getOrderCountByUser_id(mem_id);
 	}
@@ -117,4 +118,5 @@ public class OrderService {
 //	public String getOrderStatus(Integer ord_code) {
 //		return orderMapper.getOrderStatus(ord_code);
 //	}
+	
 }
