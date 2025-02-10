@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.so.book.admin.member.AdMemberMapper">
+
+	<select id="member_list">
+    select mem_id, mem_name, mem_tel, mem_joindate, mem_code
+    from mem_tbl
+    where mem_code > 0
+    <include refid="search"></include>
+	<include refid="period"></include>
+	limit 
+		    #{cri.pageStart}, #{cri.perPageNum}
+</select>
+	
+	
+	<select id="mem_count" resultType="int">
+    select count(*)
+    from mem_tbl
+   where mem_code > 0
+    <include refid="search"></include>
+	<include refid="period"></include>
+	limit 
+		    #{cri.pageStart}, #{cri.perPageNum}
+</select>
+<!-- 기본키워드검색 -->
+	<sql id="search">
+	   <if test="cri.searchType != null">
+	   <if test="cri.searchType == 'c'.toString()">
+	   		and mem_code = #{cri.keyword}
+	   	</if>
+	   	<if test="cri.searchType == 'i'.toString()">
+	   		and mem_id = #{cri.keyword}
+	   	</if>
+	   	<if test="cri.searchType == 'n'.toString()">
+	   		and mem_name = #{cri.keyword}
+	   	</if>
+	   </if>
+ 	</sql>
+ 	
+ 	<!-- 날짜 -->
+ 	<sql id="period">
+ 		<if test="period != null and !period.equals('') and start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
+ 			<if test="period == 'mem_joindate'.toString()">
+ 				<![CDATA[
+ 				and mem_joindate >= date(#{start_date}) and mem_joindate < date(#{end_date}) + 1
+ 				]]>
+ 			</if>
+ 		</if>
+ 	</sql>
+ 	
+ 	<select id="member_detail_info" resultType="HashMap">
+ 		select
+ 		mem_code,mem_id,mem_name, mem_pw, mem_email, mem_zipcode,mem_addr, mem_deaddr, mem_tel, mem_receivEmail, mem_receivSMS, mem_point, mem_joindate, mem_updatedate, mem_lastlogin
+ 		from mem_tbl
+ 		where mem_code = #{mem_code}
+ 	</select>
+ 	
+ 	<update id="detail_save">
+ 		update
+ 			mem_tbl
+ 		set
+ 			mem_name = #{mem_name}, mem_email=#{mem_email}, mem_tel=#{mem_tel}, mem_zipcode=#{mem_zipcode}, mem_addr=#{mem_addr}, mem_deaddr=#{mem_deaddr}
+ 		where
+ 			mem_code = #{mem_code}
+ 	</update>
+</mapper>

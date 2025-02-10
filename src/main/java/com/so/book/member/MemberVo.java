@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString
 public class MemberVo {
 
+	private Integer mem_code;
 	private String mem_id;
 	private String mem_name;
 	private String mem_pw;
