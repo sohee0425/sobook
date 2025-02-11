@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="content">
+
+    <title>상품 검색</title>
+
+<body>
+    <h2>상품 검색 결과</h2>
+    <table>
+        <tr>
+            <th>상품명</th>
+            <th>출판사</th>
+            <th>가격</th>
+        </tr>
+        <tr th:each="product : ${productList}">
+            <td th:text="${product.proName}"></td>
+            <td th:text="${product.proPublisher}"></td>
+            <td th:text="${product.proPrice}"></td>
+        </tr>
+    </table>
+</body>
+
+
+</th:block>
+</html>

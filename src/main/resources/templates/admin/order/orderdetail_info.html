@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/layouts/ad_layout}">
+	<th:block layout:fragment="css">
 	<head>
 		<meta charset="UTF-8">
 		<title>주문 상세 정보</title>
@@ -80,8 +83,9 @@
 		</style>
 		<!-- jQuery -->
 		<script src="/plugins/jquery/jquery.min.js"></script>
+	</th:block>
 </head>
-
+<th:block layout:fragment="content">
 <body>
 <div class="container-fluid">
 	<div class="row">
@@ -197,79 +201,99 @@
 		</tbody>
 	</table>
 
-	<div class="row">
-		<div class="col text-center mt-3 mb-3">
-			<h3>배송지 정보</h3>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col text-center mt-3 mb-3">
+				<h3>배송지 정보</h3>
+			</div>
 		</div>
-	
-	<table class="table_form">
-		<thead>
-			<tr>
-				<th colspan="4"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<th>이름</th>
-				<td colspan="3">
-					<input type="text" name="ord_name" id="ord_name" th:value="${order_info.ord_name}">
-				</td>
-				
-			</tr>
-			<tr>
-				<th>연락처</th>
-				<td><input type="text" name="ord_tel" id="ord_tel" th:value="${order_info.ord_tel}"></td>
-				<th>이메일</th>
-				<td><input type="text" name="ord_email" id="ord_email" th:value="${order_info.ord_email}"></td>
-			</tr>
-			<tr>
-				<th>우편번호</th>
-				<td>
-					<input type="text" name="ord_zipcode" id="sample2_postcode" th:value="${order_info.ord_zipcode}"></td>
-				<td colspan="2"><input type="button" onclick="sample2_execDaumPostcode()" value="우편번호 찾기">
-				</td>
-			</tr>
-			<tr>
-				<th>주소</th>
-				<td colspan="3">
-					<input type="text" name="ord_addr" id="sample2_address" class="addr" th:value="${order_info.ord_addr}">
-				</td>
-			</tr>
-			<tr>
-				<th>상세 주소</th>
-				<td colspan="3">
-					<input type="text" name="ord_addr_detail" id="sample2_detailAddress" class="addr" th:value="${order_info.ord_addr_detail}">
-				</td>
-				<input type="hidden" id="sample2_extraAddress" placeholder="참고항목">
-			</tr>
-			<tr>
-				<th>비고</th>
-				<td colspan="3">
-					<button type="button" id="btn_ord_info_edit" class="btn btn-block btn-outline-dark">정보 수정</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	</div>
+		
+		<div class="row">
+			<div class="col-12">
+				<table class="table_form">
+					<thead>
+						<tr>
+							<th colspan="4"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>이름</th>
+							<td colspan="3">
+								<input type="text" name="ord_name" id="ord_name" th:value="${order_info.ord_name}">
+							</td>
+							
+						</tr>
+						<tr>
+							<th>연락처</th>
+							<td><input type="text" name="ord_tel" id="ord_tel" th:value="${order_info.ord_tel}"></td>
+							<th>이메일</th>
+							<td><input type="text" name="ord_email" id="ord_email" th:value="${order_info.ord_email}"></td>
+						</tr>
+						<tr>
+							<th>우편번호</th>
+							<td>
+								<input type="text" name="ord_zipcode" id="sample2_postcode" th:value="${order_info.ord_zipcode}"></td>
+							<td colspan="2"><input type="button" onclick="sample2_execDaumPostcode()" value="우편번호 찾기">
+							</td>
+						</tr>
+						<tr>
+							<th>주소</th>
+							<td colspan="3">
+								<input type="text" name="ord_addr" id="sample2_address" class="addr" th:value="${order_info.ord_addr}">
+							</td>
+						</tr>
+						<tr>
+							<th>상세 주소</th>
+							<td colspan="3">
+								<input type="text" name="ord_addr_detail" id="sample2_detailAddress" class="addr" th:value="${order_info.ord_addr_detail}">
+							</td>
+							<input type="hidden" id="sample2_extraAddress" placeholder="참고항목">
+						</tr>
+						<tr>
+							<th>비고</th>
+							<td colspan="3">
+								<button type="button" id="btn_ord_info_edit" class="btn btn-block btn-outline-dark">정보 수정</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 
 	<div class="row">
-		<div class="col text-center mb-3 mt-3">
+		<div class="col-12 text-center mb-3 mt-3">
 			<h3>관리자 메모</h3>
 		</div>
 	</div>
-	<table class="table_form">
-		<thead>
-			<tr>
-				<th colspan="4"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<td>
-				<textarea cols="80" rows="5" style="width: 100%;" id="admin_message" th:text="${order_info.ord_message}"></textarea>
-				<button type="button" id="btn_ord_message" class="btn btn-block btn-outline-dark">저장</button>
-			</td>
-		</tbody>
-	</table>
+
+	<div class="row">
+		<div class="col-12">
+			<table class="table_form">
+				<thead>
+					<tr>
+						<th colspan="4"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+                        <th>관리자 메모</th>
+                        <td colspan="3">
+                            <textarea cols="80" rows="5" style="width: 100%;" id="admin_message" th:text="${order_info.ord_message}"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>저장</th>
+                        <td colspan="3">
+                            <button type="button" id="btn_ord_message" class="btn btn-block btn-outline-dark">저장</button>
+                        </td>
+                    </tr>
+				</tbody>
+			</table>
+		</div>
+	
+	</div>
+</div>
 	
 	<div class="mt-3">
 		<button type="button" class="btn btn-primary" onclick="location.href='/admin/order/order_list'">주문목록</button>
@@ -461,4 +485,5 @@
 			}
 		</script>
 </body>
+</th:block>
 </html>

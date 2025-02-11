@@ -29,6 +29,8 @@ public class PageMaker {
 		calcData();
 	}
 	
+	
+	
 	// 페이징 기능에 필요한 계산 역할
 	private void calcData() {
 		

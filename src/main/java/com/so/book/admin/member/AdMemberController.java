@@ -51,6 +51,7 @@ public class AdMemberController {
 	@GetMapping("/member_detail_info")
 	public void member_detail_info(Integer mem_code, Model model) {
 		
+		// 회원 상세 목록
 		List<Map<String, Object>> member_detail_info = adMemberService.member_detail_info(mem_code);
 		
 		model.addAttribute("member_detail_info", member_detail_info);

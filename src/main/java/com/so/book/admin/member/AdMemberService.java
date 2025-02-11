@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.so.book.common.utils.SearchCriteria;
 import com.so.book.member.MemberVo;
+import com.so.book.payment.PaymentVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +28,7 @@ public class AdMemberService {
 	public List<Map<String, Object>> member_detail_info(Integer mem_code) {
 		return adMemberMapper.member_detail_info(mem_code);
 	}
+	
 	
 	public void detail_save(MemberVo vo) {
 		adMemberMapper.detail_save(vo);
