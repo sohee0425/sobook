@@ -2,7 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{admin/layouts/ad_layout}">
+
+<th:block layout:fragment="css">
+	<style>
+		
+		.card-header.custom-card-header {
+			background-color: black !important;
+			color: white !important;
+		}
 	
+	
+	</style>
+	</th:block>
+
 	<th:block layout:fragment="script">
 		<script src="/ckeditor/ckeditor.js"></script>
 	</th:block>
@@ -13,7 +25,7 @@
 		<div class="row">
 			<div class="col">
 				<div class="card card-primary">
-					<div class="card-header">
+					<div class="card-header custom-card-header">
 						<h3 class="card-title">공지사항 등록</h3>
 					</div>
 					<!-- /.card-header -->
@@ -40,7 +52,7 @@
 						<!-- /.card-body -->
 		
 						<div class="card-footer">
-						<button type="submit" class="btn btn-primary">글 저장</button>
+						<button type="submit" class="btn btn-secondary">글 저장</button>
 						</div>
 					</div>
 				</form>

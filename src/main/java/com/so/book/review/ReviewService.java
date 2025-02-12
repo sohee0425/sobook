@@ -2,7 +2,6 @@ package com.so.book.review;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,4 +49,5 @@ public class ReviewService {
 	public void reply_insert(ReviewReply vo) {
 		reviewMapper.reply_insert(vo);
 	}
+
 }

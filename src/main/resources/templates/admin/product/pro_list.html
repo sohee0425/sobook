@@ -3,17 +3,17 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{admin/layouts/ad_layout}">
 
-	<th:block layout:fragment="css">
-		<style>
-			
-			.card-header.custom-card-header {
-				background-color: black !important;
-				color: white !important;
-			}
+<th:block layout:fragment="css">
+	<style>
+		
+		.card-header.custom-card-header {
+			background-color: black !important;
+			color: white !important;
+		}
 
 
-		</style>
-	</th:block>
+	</style>
+</th:block>
 
 <th:block layout:fragment="script">
 	<script src="/ckeditor/ckeditor.js"></script>
@@ -228,7 +228,9 @@
 									<input type="hidden" name="pro_up_folder" th:value="${productVo.pro_up_folder}">
 									<input type="hidden" name="pro_img" th:value="|s_${productVo.pro_img}|">
 									</td>
-									<td th:text="${productVo.pro_code}"></td>
+									<td>
+										<a th:href= "@{/admin/product/pro_edit(pro_code=${productVo.pro_code})}">[[${productVo.pro_code}]]</a>
+									</td>
 									<td>[[${productVo.pro_name}]]<br> <img
 										style="width: 100px; height: 100px;"
 										th:src="${'/admin/product/image_display?dateFolderName=' + productVo.pro_up_folder + '&fileName=s_' + productVo.pro_img}">

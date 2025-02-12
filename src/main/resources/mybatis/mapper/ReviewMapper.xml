@@ -79,9 +79,23 @@
 			rev_code = #{rev_code}
 	</delete>
 	
+	<!--<delete id="review_delete" parameterType="Long">
+     리뷰 삭제 
+    delete from review_tbl
+    where rev_code = #{rev_code};
+    
+     상품 테이블에서 해당 상품의 리뷰 수를 갱신 (예: 리뷰 수 감소) 
+    update product_tbl
+    set review_count = review_count - 1
+    where product_code = (select product_ from review_tbl where rev_code = #{rev_code});
+</delete>-->
+	
+	
 	<insert id="reply_insert">
 		insert into
 			review_replies_tbl(rev_code, manager_id, reply_content)
 		values(#{rev_code}, #{manager_id}, #{reply_content})
 	</insert>
+	
+	
 </mapper>

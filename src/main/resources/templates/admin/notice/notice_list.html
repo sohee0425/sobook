@@ -2,7 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{admin/layouts/ad_layout}">
+
+<th:block layout:fragment="css">
+<style>
 	
+	.card-header.custom-card-header {
+		background-color: black !important;
+		color: white !important;
+	}
+
+
+</style>
+</th:block>	
 	
 <th:block layout:fragment="script">
 	<script src="/ckeditor/ckeditor.js"></script>
@@ -14,17 +25,15 @@
 		<div class="row">
 			<div class="col">
 				<div class="card card-primary">
-					<div class="card-header">
+					<div class="card-header custom-card-header">
 						<h3 class="card-title">공지사항 목록</h3>
 					</div>
-					<!-- /.card-header -->
-					<!-- list start-->
-					<div class="card-body row">
+					<div class="card-body">
 						<!--search-->
-					<div class="col-8">
 						<form action="/admin/notice/notice_list" method="get" >
-							<div class="form-group row">
-								<div class="col-2">
+							<div class="row">
+								<div class="col-2">검색어</div>
+								<div class="col-3">
 									<select name="searchType" class="form-control">
 										<option selected>검색종류 선택</option>
 										<option value="t">제목</option>
@@ -33,18 +42,19 @@
 										<option value="ti">제목 or 작성자</option>
 									</select>
 								</div>
-								<div class="col-4">
-									<input type="text" name="keyword" class="form-control" placeholder="검색어 입력">
+								<div class="col-5">
+									<input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요.">
 								</div>
-								<div class="col-2">
-									<button type="submit" class="btn btn-block btn-outline-info">Serach</button>
+							</div>
+
+								<div class="row mt-4">
+									<div class="col text-center">
+										<button type="submit" class="btn btn-outline-info">Serach</button>
+										<button type="button" class="btn btn-outline-danger" id="btn_nt_sel_delete">선택삭제</button>
+									</div>
 								</div>
 							</div>
 						</form>
-					</div>
-						<div class="col-4">
-							<button type="button" class="btn btn-block w-50 btn-outline-danger" id="btn_nt_sel_delete">선택삭제</button>
-						</div>
 
 					<form name="frm_nt_list" id="frm_nt_list" action="/admin/notice/nt_sel_delete" method="post" class="col">
 						<table class="table table-bordered">

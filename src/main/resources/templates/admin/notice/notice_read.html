@@ -2,54 +2,140 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{admin/layouts/ad_layout}">
+
+<th:block layout:fragment="css">
+
+		<meta charset="UTF-8">
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				margin: 20px;
+			}
 	
+			.container-fluid {
+				max-width: 1200px;
+				margin: auto;
+				padding: 20px;
+				background-color: #f9f9f9;
+				border: 1px solid #ddd;
+				border-radius: 10px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			}
+	
+			.text-center {
+				text-align: center;
+			}
+	
+			h3 {
+				margin-bottom: 20px;
+				color: #333;
+			}
+	
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-bottom: 20px;
+			}
+	
+			table thead {
+				background-color: pink;
+				color: black;
+			}
+	
+			table th, table td {
+				padding: 10px;
+				text-align: center;
+				border: 1px solid #ddd;
+			}
+	
+			table th {
+				font-weight: bold;
+			}
+	
+			table tbody tr:nth-child(even) {
+				background-color: #f2f2f2;
+			}
+	
+			img {
+				max-width: 100px;
+				height: auto;
+				border: 1px solid #ddd;
+				border-radius: 5px;
+			}
+	
+			p {
+				font-weight: bold;
+				color: #555;
+			}
+	
+			input {
+				text-align: center;
+				font-size: medium;
+			}
+	
+			.btn-custom {
+		background-color: #ff6347; /* 버튼 색상 */
+		font-size: 1.2rem;       /* 글자 크기 */
+		padding: 10px 20px;      /* 여백 */
+	}
+			
+	
+</style>
+	<!-- jQuery -->
+	<script src="/plugins/jquery/jquery.min.js"></script>
+
+</th:block>
+
+
 <th:block layout:fragment="content">
-<h3 class="text-center mt-5 mb-3">공지사항 조회</h3>
-	<div class="container mt-5">
+
+<div class="container-fluid">
 	<div class="row">
-		<div class="col">
-			<div class="card card-primary">
-				<div class="card-header">
-					<h3 class="card-title">공지사항 조회</h3>
-				</div>
-				<!-- /.card-header -->
-				<!-- form start -->
-				<form class="form-horizontal" method="post" id="saveForm" action="/admin/notice/notice_read">
-				<div class="card-body">
-					<div class="form-group">
-					<label for="ntc_title">제목</label>
-					<label type="text" class="form-control" id="ntc_title" name="ntc_title" th:text="${NoticeVo.ntc_title}"></label>
-					</div>
-					<div class="form-group">
-						<label for="adm_id">작성자</label>
-						<div>
-						<label type="text" class="form-control" id="adm_id" name="adm_id"  th:text="${NoticeVo.adm_id}"></label>
-						</div>
-					</div>
-					
-					
-					<div class="form-group">
-						<label for="ntc_content">내용</label>
-						<label class="form-control" id="ntc_content" name="ntc_content"  th:text="${NoticeVo.ntc_content}"></label>
-					</div>
-					<label class="form-control text-right" th:text="|등록일 : ${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')} / 수정일 : ${#dates.format(NoticeVo.ntc_updatedate, 'yyyy-MM-dd HH:mm:ss')}|"></label>
-
-					
-	
-					<div class="card-footer">
-
-					<input type="hidden" id="ntc_bno" name="ntc_bno" th:value="${NoticeVo.ntc_bno}">
-
-					<button type="button" class="btn btn-primary"  onclick="fn_go_list()">글 목록</button>
-					<button type="button" class="btn btn-success"  onclick="fn_go_edit()">글 수정</button>
-					<button type="button" class="btn btn-danger"  onclick="fn_go_delete()">글 삭제</button>
-					
-					</div>
-				</div>
-			</form>
-			</div>
+		<div class="col text-center mb-3 mt-3">
+			<h3>공지사항 조회</h3>
 		</div>
 	</div>
+	<form class="form-horizontal" method="post" id="saveForm" action="/admin/notice/notice_read">
+	<div class="row">
+		<div class="col-12">
+			<table class="table_form">
+				<thead>
+					<tr>
+						<th colspan="4"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>제목</th>
+						<td colspan="3">[[${NoticeVo.ntc_title}]]</td>
+					</tr>
+					<tr>
+						<th>작성자</th>
+						<td colspan="3">[[${NoticeVo.adm_id}]]</td>
+					</tr>
+					<tr>
+						<th>등록일</th>
+						<td>[[${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd HH:mm:ss')}]]
+						<th>수정일</th>
+						<td>[[${#dates.format(NoticeVo.ntc_updatedate, 'yyyy-MM-dd HH:mm:ss')}]]
+					</tr>
+					<tr>
+						<th>내용</th>
+						<td colspan="3">[[${NoticeVo.ntc_content}]]</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="row justify-content-center">
+				<div>
+					<button type="button" class="btn btn-secondary" onclick="fn_go_list()">글 목록</button>
+					<button type="button" class="btn btn-secondary" onclick="fn_go_edit()">글 수정</button>
+					<button type="button" class="btn btn-secondary" onclick="fn_go_delete()">글 삭제</button>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</form>
 </div>
 
 </th:block> 
@@ -92,3 +178,4 @@
 </script>
 
 </th:block>
+
