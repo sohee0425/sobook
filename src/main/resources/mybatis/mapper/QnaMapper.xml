@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.so.book.qna.QnaMapper">
+
+	<insert id="qna_write" parameterType="com.so.book.qna.QnaVo">
+		insert into
+			question_tbl(mem_id, pro_code, qna_title, qna_content, qna_date, qna_update)
+		values
+			(#{mem_id}, #{pro_code}, #{qna_title}, #{qna_content}, #{qna_date}, #{qna_update})
+	</insert>
+	
+	<select id="qna_list" resultMap="QnaResultMap">
+		select
+			qt.qna_code ,qt.mem_id, qt.pro_code, qt.qna_title, qt.qna_content, qt.qna_date, qt.qna_update
+			qa.ans_code, qa.qna_code, qa.manager_id, qa.ans_title, qa.ans_content, qa.ans_date, qa.ans_update 
+		from 
+			question_tbl qt 
+		left outer join 
+			qna_answer_tbl qa
+		on 
+			qt.qna_code = qa.qna_code
+		where 
+			pro_code = #{pro_code}
+		order by 
+			qt.qna_date desc, qa.ans_date asc
+		limit
+			#{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	
+	<resultMap type="com.so.book.qna.QnaVo" id="QnaResultMap">
+		<id property="qna_code" column="qna_code"/>
+		<result property="mem_id" column="mem_id"/>
+		<result property="pro_code" column="pro_code"/>
+		<result property="qna_title" column="qna_title"/>
+		<result property="qna_content" column="qna_content"/>
+		<result property="qna_date" column="qna_date"/>
+		<result property="qna_update" column="qna_update"/>
+		
+		<collection property="answer" ofType="com.so.book.qna.AnswerVo">
+			<id property="ans_code" column="ans_code"/>
+			<result property="qna_code" column="qna_code"/>
+			<result property="manager_id" column="manager_id"/>
+			<result property="ans_title" column="ans_title"/>
+			<result property="ans_content" column="ans_content"/>
+			<result property="ans_date" column="ans_date"/>
+			<result property="ans_update" column="ans_update"/>
+		</collection>
+	</resultMap>
+	
+	<select id="getCountQna" resultType="int">
+		select
+			count(*)
+		from
+			question_tbl
+		where
+			pro_code = #{pro_code}
+	</select>
+	
+	<select id="qna_info" resultType="com.so.book.qna.QnaVo" parameterType="Integer">
+		select
+			qna_code, mem_id, pro_code, qna_title, qna_content, qna_date, qna_update
+		from
+			question_tbl
+		where
+			qna_code = #{qna_code}
+	</select>
+	
+	<update id="qna_modify" parameterType="com.so.book.qna.QnaVo">
+		update
+			question_tbl
+		set
+			qna_title = #{qna_title}, qna_content = #{qna_content}, qna_date = now()
+		where
+			qna_code = #{qna_code}
+	</update>
+	
+	<delete id="qna_delete">
+		delete from
+			question_tbl
+		where
+			qna_code = #{qna_code}
+	</delete>
+	
+	<insert id="answer_insert">
+		insert into
+			qna_answer_tbl(qna_code, manager_id, ans_title, ans_content)
+		values (#{qna_code}, #{manager_id}, #{ans_title}, #{ans_content})
+	</insert>
+</mapper>

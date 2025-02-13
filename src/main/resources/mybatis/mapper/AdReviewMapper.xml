@@ -22,7 +22,6 @@
 			
 		<include refid="search"></include>
 		<include refid="rev_score"></include>
-		<include refid="rev_content"></include>
 			
 		order by rt.rev_code desc
 		
@@ -123,4 +122,5 @@
 			and rt.rev_score = #{rev_score}
 		</if>
 	</sql>
+	
 </mapper>

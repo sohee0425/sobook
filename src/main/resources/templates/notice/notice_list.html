@@ -2,102 +2,131 @@
 <html xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
     layout:decorate="~{layouts/layout}">
-    
+
+	.pagination {
+  justify-content: center; /* 페이지 네비게이션을 가운데로 정렬 */
+}
+
+.pagination .page-item {
+  color: #6c757d;  /* 기본 페이지 번호 색상 */
+}
+
+.pagination .page-item a {
+  color: #007bff;  /* 페이지 번호의 링크 색상 */
+}
+
+.pagination .page-item.active {
+  background-color: #007bff;  /* 활성화된 페이지의 배경색 */
+  border-color: #007bff;  /* 활성화된 페이지의 테두리 색 */
+}
+
+.pagination .page-item.active a {
+  color: white;  /* 활성화된 페이지의 링크 색상 */
+}
+
     <th:block layout:fragment="content">
+
       <div class="card-header">
           <h3 class="mb-5 text-center">공지사항</h3>       
         </div>  
-        <!--search-->
-					<div class="col-8">
-						<form action="/notice/notice_list" method="get" >
-							<div class="form-group row">
-								<div class="col-5 mb-3">
-									<select name="searchType" class="form-control">
+
+
+		<div class="container mt-5">
+			<div class="row">
+				<div class="col">
+					<div class="card card-primary">
+						<div class="card-body">
+							<!--search-->
+							<form action="/notice/notice_list" method="get" >
+								<div class="row">
+									<div class="col-2">검색어</div>
+									<div class="col-3">
+										<select name="searchType" class="form-control">
 										<option selected>검색종류 선택</option>
 										<option value="t">제목</option>
 										<option value="n">글번호</option>
 										<option value="i">작성자</option>
 										<option value="ti">제목 or 작성자</option>
 									</select>
+									</div>
+									<div class="col-5">
+										<input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요.">
+									</div>
 								</div>
-								<div class="col-4">
-									<input type="text" name="keyword" class="form-control" placeholder="검색어 입력">
+	
+									<div class="row mt-4">
+										<div class="col text-center">
+											<button type="submit" class="btn btn-outline-secondary">Serach</button>
+										</div>
+									</div>
 								</div>
-								<div class="col-2">
-									<button type="submit" class="btn btn-block btn-outline-info">Serach</button>
-								</div>
-							</div>
+							</form>
+	
+							<form action="/notice/notice_list" method="get" >
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th style="width: 10%">No.</th>
+										<th style="width: 30%">제목</th>
+										<th style="width: 10%">작성자</th>
+										<th style="width: 10%">조회수</th>
+										<th style="width: 20%">등록일</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="NoticeVo:${list}" th:object="${NoticeVo}">
+										<td th:text="${NoticeVo.ntc_bno}"></td>
+										<td><a style="color: black;" th:href= "|/notice/notice_read?ntc_bno=${NoticeVo.ntc_bno}|" th:text="${NoticeVo.ntc_title}"></a></td>
+										<td th:text="${NoticeVo.adm_id}"></td>
+										<td th:text="${NoticeVo.ntc_viewcount}"></td>
+										<td
+											th:text="${#dates.format(NoticeVo.ntc_regdate, 'yyyy-MM-dd')}"></td>
+									</tr>
+								</tbody>
+							</table>
 						</form>
-					</div> 
-            <div class="row">
-              <div class="col-12">
-                <div class="card">
-                  
-                  <form action="/notice/notice_list" method="get">
-                  <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
-                      <thead>
-                        <tr>
-                          <th>글 번호</th>
-                          <th>작성자</th>
-                          <th>제목</th>
-                          <th>조회수</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr th:each= "NoticeVo:${list}">
-                          <td th:text="${NoticeVo.ntc_bno}"></td>
-                          <td th:text="${NoticeVo.adm_id}"></td>
-                          <td><a th:href= "|/notice/notice_read?ntc_bno=${NoticeVo.ntc_bno}|" th:text="${NoticeVo.ntc_title}"></a></td>
-                          <td th:text="${NoticeVo.ntc_viewcount}"><span class="tag tag-success"></span></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-          </form>
-        </div>
-          <!-- 페이징 및 검색 파라미터 정보 -->
-					<form id="criteriaForm" action="" method="get">
-						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
-						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
-						<input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}">
-						<input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}">
-						<input type="hidden" name="ntc_bno" id="ntc_bno">
-					</form>
+
+						<!-- 페이징 및 검색 파라미터 정보 -->
+						<form id="criteriaForm" action="" method="get">
+							<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
+							<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
+							<input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}">
+							<input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}">
+							<input type="hidden" name="ntc_bno" id="ntc_bno">
+						</form>
 					
 
-					<div class="card-footer clearfix">
-						<nav aria-label="Page navigation example">
-							<ul class="pagination">
-							<!-- 이전표시 여부 -->
-								<th:block th:if="${pageMaker.prev}">
-									<li class="page-item"><a class="page-link"
-										th:href="|/notice/notice_list${pageMaker.makeSearch(pageMaker.startPage - 1) }|">Previous</a></li>
-								</th:block>
+						<div class="card-footer clearfix">
+							<nav aria-label="Page navigation example">
+								<ul class="pagination justify-content-center">
+								<!-- 이전표시 여부 -->
+									<th:block th:if="${pageMaker.prev}">
+										<li class="page-item">
+											<a class="page-link" th:href="|/notice/notice_list${pageMaker.makeSearch(pageMaker.startPage - 1) }|">Previous</a></li>
+									</th:block>
 
-								<th:block
-									th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
-									<li class="page-item"
-										th:classappend="${pageMaker.cri.page == num? 'active' : ''}">
-										<a class="page-link"
-										th:href="|/notice/notice_list${pageMaker.makeSearch(num)}|"
-										th:text="${num}"></a>
-									</li>
-								</th:block>
+									<th:block
+										th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+										<li class="page-item"
+											th:classappend="${pageMaker.cri.page == num? 'active' : ''}">
+											<a class="page-link" th:href="|/notice/notice_list${pageMaker.makeSearch(num)}|" th:text="${num}"></a>
+										</li>
+									</th:block>
 
 
-								<!-- 다음표시여부 -->
-								<th:block th:if="${pageMaker.next}">
-									<li class="page-item"><a class="page-link"
-										th:href="|/notice/notice_list${pageMaker.makeSearch(pageMaker.endPage + 1) }|">Next</a></li>
-								</th:block>
-							</ul>
-						</nav>
+									<!-- 다음표시여부 -->
+									<th:block th:if="${pageMaker.next}">
+										<li class="page-item"><a class="page-link" th:href="|/notice/notice_list${pageMaker.makeSearch(pageMaker.endPage + 1) }|">Next</a></li>
+									</th:block>
+								</ul>
+							</nav>
+						</div>
 					</div>
-        </div>
-    </th:block>
+				</div>
+			</div>
+		</div>
+
+</th:block>
 
 
 </html>

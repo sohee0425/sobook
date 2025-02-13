@@ -1,6 +1,7 @@
 package com.so.book.review;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ public class ReviewService {
 
 	private final ReviewMapper reviewMapper;
 	private final ProductMapper productMapper;
+	
 	
 	public List<ReviewVo> rev_list(Integer pro_code, SearchCriteria cri) {
 		return reviewMapper.rev_list(pro_code, cri);

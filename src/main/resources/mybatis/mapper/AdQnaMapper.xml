@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.so.book.admin.qna.AdQnaMapper">
+
+	<select id="qna_list" resultMap="Qna_answer">
+		select 
+			qt.qna_code, qt.mem_id, qt.pro_code, qt.qna_title, qt.qna_content, qt.qna_date, qt.qna_update,
+			qat.ans_code, qat.manager_id, qat.ans_title, qat.ans_content, qat.ans_date, qat.ans_update 
+		from 
+			question_tbl qt 
+		left join
+			qna_answer_tbl qat 
+		on 
+			qt.qna_code = qat.qna_code
+		where 
+			qt.qna_code > 0
+		order by 
+			qt.qna_code desc
+		limit
+			#{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	
+	<resultMap type="com.so.book.qna" id="Qna_answer">
+	<!-- 기본 qna 정보 -->
+	<id property="qna_code" column="qna_code"/>
+	<result property="mem_id" column="mem_id"/>
+	<result property="pro_code" column="pro_code"/>
+	<result property="qna_title" column="qna_title"/>
+	<result property="qna_content" column="qna_content"/>
+	<result property="qna_date" column="qna_date"/>
+	<result property="qna_update" column="qna_update"/>
+	
+	<!-- 답글 정보 -->
+	<collection property="answer" ofType="com.so.book.qna.AnswerVo">
+		<id property="ans_code" column="ans_code"/>
+		<result property="qna_code" column="qna_code"/>
+		<result property="manager_id" column="manager_id"/>
+		<result property="ans_title" column="ans_title"/>
+		<result property="ans_content" column="ans_content"/>
+		<result property="ans_date" column="ans_date"/>
+		<result property="ans_update" column="ans_update"/>
+	</collection>
+	
+	</resultMap>
+	
+	<select id="qna_count">
+		select
+			count(*)
+		from
+			question_tbl
+		where
+			qna_code > 0
+	</select>
+	
+	<select id="answer_info" resultType="com.so.book.qna.AnswerVo">
+		select
+			ans_code, qna_code, manager_id, ans_title, ans_content, ans_date, ans_update
+		from
+			qna_answer_tbl
+		where
+			ans_code = #{ans_code}
+	</select>
+	
+	<update id="answer_modify_save">
+		update
+			qna_answer_tbl
+		set
+			ans_title = #{ans_title}, ans_content = #{ans_content}, ans_date = now()
+		where
+			ans_code = #{ans_code}
+	</update>
+	
+	<delete id="answer_delete">
+		delete from
+			qna_answer_tbl
+		where
+			ans_code = #{ans_code}
+	</delete>
+</mapper>

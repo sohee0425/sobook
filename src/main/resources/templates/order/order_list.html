@@ -48,8 +48,12 @@
             <td class="text-center" th:text="${item['dt_amount']}"></td>
             <td class="text-center" th:text="${#numbers.formatInteger(item['dt_price'] * item['dt_amount'], 3, 'COMMA') + '원'}"></td>
             <td class="text-center" th:text="${item.payment_status}"></td>
-            <td class="text-center" th:text="${item.delivery_status}"></td>
-
+            <td class="text-center">
+              <div>
+                <span th:text="${item.delivery_status}"></span><br>
+                <button type="button" name="btn_review_write" th:data-pro_code="${item['pro_code']}" class="btn btn-outline-secondary"  th:if="${item.delivery_status == '배송완료'}">상품평쓰기</button>
+              </div>
+            </td>            
           </tr>
         </tbody>        
       </table>
@@ -84,6 +88,22 @@
     </div>
   </div>
 </div>
+
+<script>
+  $(document).ready(function() {
+    // name="btn_review_write"
+
+    // 상품평 이벤트
+    $("button[name='btn_review_write']").on("click", function() {
+      let pro_code = $(this).data("pro_code");
+
+      // console.log("상품코드", pro_code);
+
+      location.href = `/order/pro_perinfo?pro_code=${pro_code}#tabs-2`;
+    });
+  });
+
+</script>
 </th:block>
 </html>
 

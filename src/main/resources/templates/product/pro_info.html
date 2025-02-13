@@ -186,7 +186,7 @@
       <ul style="background-color: white;">
         <li><a href="#tabs-1">상세정보</a></li>
         <li><a href="#tabs-2">리뷰</a></li>
-        <li><a href="#tabs-3">QnA</a></li>
+        <li><a href="#tabs-3">Q&A</a></li>
       </ul>
       <div id="tabs-1">
         <p th:utext="${productVo.pro_content}"></p>
@@ -334,6 +334,7 @@
     // 댓글목록출력함수 : 핸들바 템플릿 사용
 		// replyData : json포맷의 댓글목록데이타
 		// target : 댓글목록 데이타가 출력될 위치
+    // UI작업
 		// template : 핸들바 템플릿 
 		function fn_displayReViewData(reviewData, target, template) {
 			let templateObj = Handlebars.compile(template.html()); //댓글 핸들바템플릿 내용을 문법검사

@@ -54,7 +54,7 @@ public class AdReviewController {
 			review_Info.getProduct().setPro_up_folder((review_Info.getProduct().getPro_up_folder().replace("\\", "/")));
 		});
 		
-		PageMaker pageMaker = new PageMaker();
+		PageMaker pageMaker = new PageMaker(); 
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(adReviewService.review_count(cri, rev_content, rev_score));
 		

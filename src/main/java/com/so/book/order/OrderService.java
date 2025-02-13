@@ -87,9 +87,6 @@ public class OrderService {
 		return orderMapper.getCategoryNameByPro_code(pro_code);
 	}
 
-	public List<Map<String, Object>> review_manage(String mem_id, SearchCriteria cri) {
-		return orderMapper.review_manage(mem_id, cri);
-	}
 	
 	public int getReviewCountByUser_id(String mem_id) {
 		return orderMapper.getReviewCountByUser_id(mem_id);
@@ -118,5 +115,9 @@ public class OrderService {
 //	public String getOrderStatus(Integer ord_code) {
 //		return orderMapper.getOrderStatus(ord_code);
 //	}
+	
+	public List<Map<String, Object>> review_manage(String mem_id, SearchCriteria cri) {
+		return orderMapper.review_manage(mem_id, cri);
+	}
 	
 }

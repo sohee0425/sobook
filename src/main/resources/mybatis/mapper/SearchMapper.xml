@@ -33,22 +33,6 @@
 			and  pro_writer like concat('%', #{cri.keyword}, '%')
 		 </if>
 		</if>
-	</sql> 
-	
-<!--	<select id="search_list" resultType="com.so.book.admin.product.ProductVo">
-        SELECT * FROM product_tbl
-        WHERE pro_code > 0
-        <if test="cri.keyword != null and cri.keyword != ''">
-            <if test="cri.searchType == 'name'">
-                AND pro_name LIKE CONCAT('%', #{cri.keyword}, '%')
-            </if>
-            <if test="cri.searchType == 'publisher'">
-                AND pro_publisher LIKE CONCAT('%', #{cri.keyword}, '%')
-            </if>
-            <if test="cri.searchType == 'writer'">
-                AND pro_writer LIKE CONCAT('%', #{cri.keyword}, '%')
-            </if>
-        </if>
-    </select>-->
+	</sql>
 	
 </mapper>

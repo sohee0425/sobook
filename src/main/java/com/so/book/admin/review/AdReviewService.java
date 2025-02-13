@@ -2,7 +2,6 @@ package com.so.book.admin.review;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import com.so.book.common.utils.SearchCriteria;

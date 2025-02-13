@@ -23,8 +23,6 @@ public interface OrderMapper {
 	
 	String getCategoryNameByPro_code(Integer pro_code);
 	
-	List<Map<String, Object>> review_manage(@Param("mem_id") String mem_id, @Param("cri") SearchCriteria cri);
-	
 	int getReviewCountByUser_id(String mem_id);
 	
 	// 주문 상세 페이지
@@ -42,4 +40,5 @@ public interface OrderMapper {
 //	// 주문상태 조회 (배송 준비 까지만 배송지 변경 가능하게 하기 위해서)
 //	String getOrderStatus(Integer ord_code);
 	
+	List<Map<String, Object>> review_manage(@Param("mem_id") String mem_id, @Param("cri") SearchCriteria cri);
 }
