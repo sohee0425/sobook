@@ -5,6 +5,7 @@
 	<select id="qna_list" resultMap="Qna_answer">
 		select 
 			qt.qna_code, qt.mem_id, qt.pro_code, qt.qna_title, qt.qna_content, qt.qna_date, qt.qna_update,
+			pt.pro_name, pt.pro_up_folder, pt.pro_img,
 			qat.ans_code, qat.manager_id, qat.ans_title, qat.ans_content, qat.ans_date, qat.ans_update 
 		from 
 			question_tbl qt 
@@ -12,6 +13,10 @@
 			qna_answer_tbl qat 
 		on 
 			qt.qna_code = qat.qna_code
+		left join
+			product_tbl pt
+		on
+			qt.pro_code = pt.pro_code
 		where 
 			qt.qna_code > 0
 		order by 
@@ -20,7 +25,7 @@
 			#{cri.pageStart}, #{cri.perPageNum}
 	</select>
 	
-	<resultMap type="com.so.book.qna" id="Qna_answer">
+	<resultMap type="com.so.book.qna.QnaVo" id="Qna_answer">
 	<!-- 기본 qna 정보 -->
 	<id property="qna_code" column="qna_code"/>
 	<result property="mem_id" column="mem_id"/>
@@ -47,9 +52,13 @@
 		select
 			count(*)
 		from
-			question_tbl
+			question_tbl q
+		left join
+			product_tbl p
+		on
+			q.pro_code = p.pro_code
 		where
-			qna_code > 0
+			q.qna_code > 0
 	</select>
 	
 	<select id="answer_info" resultType="com.so.book.qna.AnswerVo">

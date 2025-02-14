@@ -66,7 +66,33 @@
           {{#if replies.length}}
           {{#each replies}}
           <tr>
-            <td colspan="6">[관리자] 답변글 : {{reply_content}} 작성일 : {{convertDate reply_date}}</td>></td>
+            <td colspan="6">[관리자] 답변글 : {{reply_content}} 작성일 : {{convertDate reply_date}}</td>
+          </tr>
+            {{/each}}
+            {{/if}}
+            {{/each}}
+        </tbody>
+      </table>
+    </script>
+
+    <script id="templateQna" type="text/x-handlebars-template">
+      <table class="table" id="qnaTable">
+        <tbody>
+          {{#each .}}
+          <tr>
+            <td>{{qna_code}}</td>
+            <td>{{mem_id}}</td>
+            <td>{{qna_title}}</td>
+            <td>{{qna_content}}</td>
+            <td>{{convertDate qna_date}}</td>
+            <td>
+              {{authControlView mem_id qna_code}}
+            </td>
+          </tr>
+          {{#if answer.length}}
+          {{#each answer}}
+          <tr>
+            <td colspan="6">[관리자] 답변글 : {{ans_content}} 작성일 : {{convertDate ans_date}}</td></td>
           </tr>
             {{/each}}
             {{/if}}
@@ -109,7 +135,6 @@
         if(memberVo !== null && loginId == mem_id) {
           str += `<button type="button" name="delete" class="btn btn-outline-danger btn-sm ml-3" data-rev_code="${rev_code}">delete</button>`;
           str += `<button type="button" name="edit" class="btn btn-outline-info btn-sm" data-rev_code="${rev_code}">edit</button>`;
-          str += `<button type="button" name="update" class="btn btn-outline-info btn-sm" data-rev_code="${rev_code}">update</button>`;
 
           return new Handlebars.SafeString(str);
         }else {
@@ -140,6 +165,46 @@
         return star;
       });
  </script>   
+
+<script th:inline="javascript">
+  // 핸들바 템플릿에서 사용자정의 함수 : 후기작성시간 포맷(형식)
+  Handlebars.registerHelper("convertDate", function(qnaDate) {
+    const date = new Date(qnaDate);
+
+    let month = (date.getMonth()+1 < 10 ? "0" + (date.getMonth()+1) : date.getMonth()+1);
+    let day = (date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate());
+    let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+    let minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+    let second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+    return date.getFullYear() + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second;
+  });
+
+  Handlebars.registerHelper("authControlView", function(mem_id, qna_code) {
+    console.log("작성자", mem_id);
+    console.log("문의번호", qna_code)
+    let memberVo = [[${session.login_auth}]];
+
+    let loginId = "";
+
+    if(memberVo !== null) { 
+      loginId = [[${session.login_auth == null? '' : session.login_auth.mem_id}]];
+    }
+
+    console.log("아이디", loginId);
+
+    let str = "";
+
+    if(memberVo !== null && loginId == mem_id) {
+      // str += `<button type="button" id="btnQnaModify" class="btn btn-outline-success btn-sm ml-3" data-qna_code="${qna_code}">수정</button>`;
+      // str += `<button type="button" id="btnQnaDelete" class="btn btn-outline-info btn-sm" data-qna_code="${qna_code}">삭제</button>`;
+      str += `<button type="button" class="btn btn-outline-success btn-sm ml-3 btn-qna-modify" data-qna_code="${qna_code}">수정</button>`;
+      str += `<button type="button" class="btn btn-outline-info btn-sm btn-qna-delete" data-qna_code="${qna_code}">삭제</button>`;
+      return new Handlebars.SafeString(str);
+    }else {
+      return str;
+    }
+  });
+</script> 
 </th:block>
 
 <th:block layout:fragment="content">
@@ -219,10 +284,52 @@
       </div>
 
       <div id="tabs-3">
-        <p>QnA</p>
+        <div class="d-flex justify-content-center">
+          <button type="button" id="btnQnaModal" class="btn btn-sm btn-outline-primary" th:data-pro_code="${productVo.pro_code}">
+            문의 작성하기
+          </button>
+        </div>
+        <div class="row">
+          <!-- 상품문의 목록 출력 위치-->
+        <div class="col" id="qnaList"></div>
+        </div>
+        <div class="row">
+          <!-- 상품문의 페이지 출력 위치-->
+          <div class="col" id="qnaPaging"></div>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- 모달 -->
+		<div class="modal fade" id="qnaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">QnA</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="qna_title" class="col-form-label">제목</label><input type="text" class="form-control" id="qna_title" />
+                <input type="hidden" class="form-control" id="qna_code" th:value="${QnaVo != null ? qna_code : ''}" />
+              </div>
+              <div class="form-group">
+                <label for="qna_content" class="col-form-label">내용</label>
+                <textarea class="form-control" id="qna_content"></textarea>
+              </div>
+            </form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+						<button type="button" id="btnQnaSave" class="btn btn-secondary" th:data-pro_code="${productVo.pro_code}">문의 저장하기</button>
+						<button type="button" id="btnQnaModify" style="display: none;" class="btn btn-secondary" th:data-pro_code="${productVo.pro_code}">문의 수정하기 </button>
+						<button type="button" id="btnQnaDelete" style="display: none;" class="btn btn-secondary" th:data-pro_code="${productVo.pro_code}">문의 삭제하기 </button>
+					</div>
+				</div>
+			</div>
+		</div>
 
   <script>
 
@@ -299,6 +406,9 @@
         location.href = url;
       });
 
+
+      // 상품후기
+
       // 상품후기 요청작업
       let pro_code = [[${productVo.pro_code }]];  // 상품코드.  스프링의 model 에서 productVo 이름으로 참조.
       let reviewPage = 1; // 댓글목록의 첫번째 페이지 의미.
@@ -329,7 +439,7 @@
         // data.pageMaker : 페이징정보데이타, $("div#reviewPaging") : 페이징이 출력될 태그위치
 				fn_displayReViewPaging(data.pageMaker, $("div#reviewPaging"))
 			});
-		}
+		};
 
     // 댓글목록출력함수 : 핸들바 템플릿 사용
 		// replyData : json포맷의 댓글목록데이타
@@ -345,7 +455,7 @@
 
 			// update 버튼 숨기기.
 			$("table#reviewTable button[name=update]").hide();
-		}
+		};
 
 
 		// 페이징출력함수 - 핸들바 템플릿 사용안함.
@@ -595,11 +705,229 @@
             getPage(url);
           }
         }
-      });
-      
-      //getPage(url);
+      }); 
+    }); // 후기 끝
 
+    // QnA
+
+    // Qna 및 페이징 정보 호출 작업
+      let qnaPage = 1;
+      let qnaUrl = "/qna/qna_list/" + [[${productVo.pro_code}]] + "/" + qnaPage;
+
+      getPage(qnaUrl);
+
+    // ajax 문법으로 주소 요청 작업
+      function getPage(qnaUrl) {
+        $.getJSON(qnaUrl, function(data) {
+          console.log(data.qna_list); 
+          console.log(data.pageMaker);
+
+          fn_displayQnaData(data.qna_list, $("div#qnaList"), $("#templateQna"));
+          fn_displayQnaPaging(data.pageMaker, $("div#reviewPaging"))
+        });
+      };
+
+
+		function fn_displayQnaData(qnaData, target, template) {
+			let templateObj = Handlebars.compile(template.html()); //핸들바템플릿 내용을 문법검사
+			let qnaHtml = templateObj(qnaData); 
+
+			target.empty(); // 기존 댓글목록 제거
+			target.append(qnaHtml); // 댓글목록이 출력됨
+
+			// update 버튼 숨기기.
+			$("table#reviewTable button[name=update]").hide();
+		};
+
+    // 페이징출력함수 
+		function fn_displayQnaPaging(pageData, target) {	
+
+    console.log(pageData);
+
+    let pageStr = '<nav aria-label="Page navigation example">';
+      pageStr += '<ul class="pagination">';
+
+
+    if(pageData.prev) {
+      pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.startPage -1)  + '">Previous</a></li>';
+    }
+
+    for(let i=pageData.startPage; i <= pageData.endPage; i++) {
+      let curPageClass = (pageData.cri.page == i) ? 'active' : '';
+      pageStr += '<li class="page-item ' + curPageClass + '"><a class="page-link" href="' + i + '">' + i + '</a></li>';
+    }
+
+
+    if(pageData.next) {
+      pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.endPage + 1) + '">Next</a></li>';
+    }
+
+    pageStr += '</ul>';
+    pageStr += '</nav>';
+
+    console.log(pageStr);
+
+    target.empty();
+    target.append(pageStr);
+    };
+
+     // 페이지 번호 클릭설정
+     $("div#qnaPaging").on("click", "li a", function(e) {
+      e.preventDefault(); // a태그의 링크기능을 제거.
+
+      qnaPage = $(this).attr("href");  // 선택한 페이지 번호 값
+
+      url = "/qna/qna_list/" + pro_code + "/" + qnaPage;
+
+      getPage(url);
     });
+
+    // QnA 모달
+    $("#btnQnaModal").on("click", function() {
+      $("#btnQnaSave").show();
+      $("#btnQnaModify").hide();
+      $("#btnQnaDelete").hide();
+      $("#qna_answer_form").hide();
+      $("#qnaModal").modal("show");
+    });
+
+    // QnA 모달 리셋
+    $("#qnaModal").on("hidden.bs.modal", function() {
+      $("#qna_title").val("");
+      $("#qna_content").val("");
+    });
+
+    // QnA 저장
+    $("#btnQnaSave").on("click", function(){ 
+      let pro_code = $(this).data("pro_code");
+      let qna_title = $("#qna_title").val();
+      let qna_content = $("#qna_content").val();
+
+      // console.log("pro_code", pro_code);
+
+      if (qna_title == "") {
+        alert("제목을 입력하세요.");
+        $("#qna_title").focus();
+        return;
+      }
+
+      if (qna_content == "") {
+        alert("내용을 입력하세요.");
+        $("#qna_content").focus();
+        return;
+      }
+      
+
+      let qna_data = {pro_code : pro_code, qna_title : qna_title, qna_content : qna_content};
+
+      console.log("qna_data", qna_data); 
+      $.ajax({
+        url : '/qna/qna_write',
+        type: 'post',
+        headers: {
+          "Content-Type" : "application/json", "X-HTTP-Method-Overrid" : "POST"
+        },
+        data : JSON.stringify(qna_data), // object문법을 json문자열로 변환
+        dataType: 'text',
+        success: function(result) {
+          if(result == "success") {
+            alert("QnA가 등록되었습니다.");
+            $("#qnaModal").modal("hide");
+            qnaPage = 1;
+            getPage(qnaUrl);
+          }
+        }
+      });    
+    });
+
+    // QnA 수정
+
+    $(document).on("click", ".btn-qna-modify", function() {
+    let qna_code = $(this).data("qna_code");
+    // let pro_code = $(this).data("pro_code");
+    let pro_code = $(this).closest("tr").data("pro_code");
+    let qna_title = $(this).data("qna_title");
+    let qna_content = $(this).data("qna_content");
+
+    console.log("수정 버튼 클릭됨!");
+    console.log("qna_code:", qna_code);
+    console.log("pro_code:", pro_code);
+    console.log("제목:", qna_title);
+    console.log("내용:", qna_content);
+
+    // 모달 내부 값 설정
+    $("#qna_code").val(qna_code);
+    $("#qna_title").val(qna_title);
+    $("#qna_content").val(qna_content);
+
+    // 수정 및 삭제 버튼 표시
+    $("#btnQnaSave").hide();
+    $("#btnQnaModify").show().data("qna_code", qna_code).data("pro_code", pro_code);
+    $("#btnQnaDelete").show().data("qna_code", qna_code);
+
+    // 모달 표시
+    $("#qnaModal").modal("show");
+
+});
+
+    $("#btnQnaModify").on("click", function() {
+      let pro_code = $(this).data("pro_code");
+      let qna_code = $(this).data("qna_code");
+      let qna_title = $("#qna_title").val();
+      let qna_content = $("#qna_content").val();
+
+      if (qna_title.trim() == "") {
+        alert("제목을 입력하세요.");
+        $("#qna_title").focus();
+        return;
+      }
+
+      if (qna_content.trim() == "") {
+        alert("내용을 입력하세요.");
+        $("#qna_content").focus();
+        return;
+      }
+
+      let qna_data = {pro_code : pro_code, qna_code : qna_code, qna_title : qna_title, qna_content : qna_content};
+
+      $.ajax({
+        url: '/qna/qna_modify',
+        type: 'put',
+        headers: {
+          "Content-Type" : "application/json", "X-HTTP-Method-Overrid" : "PUT"
+        },
+        data: JSON.stringify(qna_data),
+        dataType: 'text',
+        success: function(result) {
+          if(result == "success") {
+            alert("QnA가 수정되었습니다.");
+            $("#btnQnaModify").modal("hide");
+            getPage(qnaUrl);
+          }
+        }
+    });
+  });
+
+  // QnA 삭제
+  $(document).on("click", ".btn-qna-delete", function() {
+    if (!confirm("QnA를 삭제하시겠습니까?")) return;
+
+    let qna_code = $(this).data("qna_code");
+
+    $.ajax({
+        url: '/qna/qna_delete/' + qna_code,
+        type: 'DELETE',
+        headers: { "X-HTTP-Method-Overrid": "DELETE" },
+        dataType: 'text',
+        success: function(result) {
+            if (result === "success") {
+                alert("QnA가 삭제되었습니다.");
+                getPage(qnaUrl);  // 리스트 갱신
+            }
+        }
+    });
+});
+
     }); // ready 끝
 
   </script>

@@ -4,8 +4,8 @@
 
 	<select id="rev_list" resultMap="ReviewResultMap">
 		select 
-			rt.rev_code, rt.mem_id, rt.pro_code, rt.rev_content, rt.rev_score, rt.rev_date,
-			rrt.rev_code, rrt.manager_id, rrt.reply_id, rrt.reply_content, rrt.reply_date 
+			rt.rev_code, rt.mem_id, rt.pro_code, rt.rev_title, rt.rev_content, rt.rev_score, rt.rev_date, rt.rev_update,
+			rrt.rev_code, rrt.manager_id, rrt.reply_title, rrt.reply_id, rrt.reply_content, rrt.reply_date, rrt.reply_update
 		from 
 			review_tbl rt 
 		left outer join 
@@ -24,16 +24,20 @@
 		<id property="rev_code" column="rev_code"/> <!-- PK -->
 		<result property="mem_id" column="mem_id"/>
 		<result property="pro_code" column="pro_code"/>
+		<result property="rev_title" column="rev_title"/>
 		<result property="rev_content" column="rev_content"/>
 		<result property="rev_score" column="rev_score"/>
 		<result property="rev_date" column="rev_date"/>
+		<result property="rev_update" column="rev_update"/>
 		
 		<collection property="replies" ofType="com.so.book.review.ReviewReply">
 			<id property="reply_id" column="reply_id"/>
 			<!-- FK 중복작업은 하면 안됨 -->
 			<result property="manager_id" column="manager_id"/>
+			<result property="reply_title" column="reply_title"/>
 			<result property="reply_content" column="reply_content"/>
 			<result property="reply_date" column="reply_date"/>
+			<result property="reply_update" column="reply_update"/>
 		</collection>
 	</resultMap>
 	
@@ -48,14 +52,14 @@
 	
 	<insert id="review_save" parameterType="com.so.book.review.ReviewVo">
 		insert into
-			review_tbl(mem_id, pro_code, rev_content, rev_score)
+			review_tbl(mem_id, pro_code, rev_title, rev_content, rev_score)
 		values
-			(#{mem_id}, #{pro_code}, #{rev_content}, #{rev_score})
+			(#{mem_id}, #{pro_code}, #{rev_title}, #{rev_content}, #{rev_score})
 	</insert>
 	
 	<select id="review_info" resultType="com.so.book.review.ReviewVo" parameterType="Long">
 		select
-			rev_code, mem_id, pro_code, rev_content, rev_score, rev_date
+			rev_code, mem_id, pro_code, rev_title, rev_content, rev_score, rev_date
 		from 
 			review_tbl
 		where 
@@ -66,7 +70,7 @@
 		update 
 			review_tbl
 		set 
-			rev_content = #{rev_content},  rev_score = #{rev_score}, rev_date = now()
+			rev_content = #{rev_content},  rev_title = #{rev_title}, rev_score = #{rev_score}, rev_date = now()
 		where
 			rev_code = #{rev_code} 
 			
@@ -93,8 +97,8 @@
 	
 	<insert id="reply_insert">
 		insert into
-			review_replies_tbl(rev_code, manager_id, reply_content)
-		values(#{rev_code}, #{manager_id}, #{reply_content})
+			review_replies_tbl(rev_code, manager_id, reply_title, reply_content)
+		values(#{rev_code}, #{manager_id}, #{reply_title}, #{reply_content})
 	</insert>
 	
 	

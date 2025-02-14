@@ -37,9 +37,10 @@
 						<div class="col-3">												
 							<select name="searchType" class="form-control">
 								<option value="" th:selected="${''} == ${pageMaker.cri.searchType}">검색종류 선택</option>
-								<option value="n" th:selected="${'n'} == ${pageMaker.cri.searchType}">상품명</option>
+								<option value="n" th:selected="${'n'} == ${pageMaker.cri.searchType}">도서명</option>
 								<option value="c" th:selected="${'c'} == ${pageMaker.cri.searchType}">상품번호</option>
-								<option value="m" th:selected="${'m'} == ${pageMaker.cri.searchType}">작성자</option>							
+								<option value="m" th:selected="${'m'} == ${pageMaker.cri.searchType}">작성자</option>						
+								<option value="t" th:selected="${'t'} == ${pageMaker.cri.searchType}">리뷰 제목</option>						
 							</select>								
 						</div>					
 						<div class="col-5">
@@ -122,17 +123,17 @@
 										</div>										
 									</div>													
 								</div>		
-							  </td>
-							  <td>[[${review_info.mem_id}]]</td>
-							  <td>
+								</td>
+								<td>[[${review_info.mem_id}]]</td>
+								<td>
 								[[${#temporals.format(review_info.rev_date, 'yyyy-MM-dd HH:mm:ss')}]]
-							  
-							  <td>
+								
+								<td>
 								<button type="button" name="openModalBtn" class="btn btn-block btn-sm btn-outline-primary" th:data-rev_code="${review_info.rev_code}">답변하기</button>								
-							  </td>
+								</td>
 							</tr>
 							
-						  </tbody>
+							</tbody>
 						</table>
 					</form>
 					

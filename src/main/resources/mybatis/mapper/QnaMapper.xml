@@ -4,14 +4,14 @@
 
 	<insert id="qna_write" parameterType="com.so.book.qna.QnaVo">
 		insert into
-			question_tbl(mem_id, pro_code, qna_title, qna_content, qna_date, qna_update)
+			question_tbl(mem_id, pro_code, qna_title, qna_content)
 		values
-			(#{mem_id}, #{pro_code}, #{qna_title}, #{qna_content}, #{qna_date}, #{qna_update})
+			(#{mem_id}, #{pro_code}, #{qna_title}, #{qna_content})
 	</insert>
 	
 	<select id="qna_list" resultMap="QnaResultMap">
 		select
-			qt.qna_code ,qt.mem_id, qt.pro_code, qt.qna_title, qt.qna_content, qt.qna_date, qt.qna_update
+			qt.qna_code ,qt.mem_id, qt.pro_code, qt.qna_title, qt.qna_content, qt.qna_date, qt.qna_update,
 			qa.ans_code, qa.qna_code, qa.manager_id, qa.ans_title, qa.ans_content, qa.ans_date, qa.ans_update 
 		from 
 			question_tbl qt 
@@ -69,7 +69,7 @@
 		update
 			question_tbl
 		set
-			qna_title = #{qna_title}, qna_content = #{qna_content}, qna_date = now()
+			qna_title = #{qna_title}, qna_content = #{qna_content}, qna_update = now()
 		where
 			qna_code = #{qna_code}
 	</update>
@@ -81,7 +81,7 @@
 			qna_code = #{qna_code}
 	</delete>
 	
-	<insert id="answer_insert">
+	<insert id="answer_insert" parameterType="com.so.book.qna.AnswerVo">
 		insert into
 			qna_answer_tbl(qna_code, manager_id, ans_title, ans_content)
 		values (#{qna_code}, #{manager_id}, #{ans_title}, #{ans_content})
