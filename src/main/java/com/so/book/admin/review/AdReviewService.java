@@ -24,15 +24,15 @@ public class AdReviewService {
 		return adReviewMapper.review_count(cri, rev_content, rev_score);
 	}
 	
-	public ReviewReply reply_info(Long reply_id) {
+	public ReviewReply reply_info(Integer reply_id) {
 		return adReviewMapper.reply_info(reply_id);
 	}
 	
-	public void reply_modify_save(Long reply_id, String reply_content) {
+	public void reply_modify_save(Integer reply_id, String reply_content) {
 		adReviewMapper.reply_modify_save(reply_id, reply_content);
 	}
 	
-	public void reply_delete(Long reply_id) {
+	public void reply_delete(Integer reply_id) {
 		adReviewMapper.reply_delete(reply_id);
 	}
 }

@@ -1,5 +1,9 @@
 package com.so.book.member;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.so.book.common.constants.Constants;
+import com.so.book.common.utils.FileUtils;
+import com.so.book.common.utils.PageMaker;
+import com.so.book.common.utils.SearchCriteria;
 import com.so.book.mail.EmailDTO;
 import com.so.book.mail.EmailService;
 
@@ -26,16 +34,23 @@ public class MemberController {
 
 	private final EmailService emailService;
 	private final PasswordEncoder passwordEncoder;
-	private final MemberService memberService;
+	private final MemberService memberService;	
+	private final FileUtils fileUtils;
+	
+	@Value("${com.ezen.upload.path}")
+	private String uploadPath;
+	
+	@GetMapping("/image_display")
+	public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
+		
+		return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
+	}
 	
 	// 회원가입 폼
 	@GetMapping("/join")  //  /member/join.html
 	public void join() {
 		
 	}
-	
-	
-	
 	
 	// 회원정보 저장
 	@PostMapping("/join")
@@ -294,20 +309,40 @@ public class MemberController {
 		return "redirect:" + url;
 	}
 
-	// 회원 정보 수정하기 전 비밀번호 확인
-//	@GetMapping("/checkPwd")
-//	public void checkPwd() {
-//		
-//	}
-//	
-//	@PostMapping("/checkPwd")
-//	public String checkPwdOk(String mem_pw, HttpSession session, RedirectAttributes rttr) throws Exception {
-//		
-//		String mem_id = ((MemberVo) session.getAttribute("login_auth")).getMem_id();
-//		
-//		
-//		return "";
-//	}
+	// 내가 작성한 리뷰 목록
+	@GetMapping("/my_review")
+	public void my_reviews(Model model, HttpSession session, SearchCriteria cri) {
+		
+		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
+		cri.setPerPageNum(Constants.REVIEW_LIST_PAGE_SIZE);
+		List<Map<String, Object>> my_review = memberService.my_review(mem_id, cri);
+		
+		model.addAttribute("my_review", my_review);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(memberService.getTotalReviewCountByUserId(mem_id));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+	}
+	
+	// 내가 작성한 문의 목록
+	@GetMapping("/my_qna")
+	public void my_qna(Model model, HttpSession session, SearchCriteria cri) {
+		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
+		cri.setPerPageNum(Constants.QNA_LIST_PAHE_SIZE);
+		List<Map<String, Object>> my_qna = memberService.my_qna(mem_id, cri);
+		
+		model.addAttribute("my_qna", my_qna);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(memberService.getTotalQnaCount(mem_id));
+		
+		model.addAttribute("pageMaker", pageMaker);
+	}
+	
 
 	
 }

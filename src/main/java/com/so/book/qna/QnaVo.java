@@ -3,6 +3,8 @@ package com.so.book.qna;
 import java.util.Date;
 import java.util.List;
 
+import com.so.book.admin.product.ProductVo;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,4 +24,6 @@ public class QnaVo {
 	
 	// qna답변
 	private List<AnswerVo> answer;
+	
+	private ProductVo product;
 }

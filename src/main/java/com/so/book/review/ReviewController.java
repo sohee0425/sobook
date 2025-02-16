@@ -88,7 +88,7 @@ public class ReviewController {
 	
 	// 수정 목적으로 사용할 후기정보를 JSON포맷으로 클라이언트에게 전송
 	@GetMapping(value = "/review_info/{rev_code}")
-	public ResponseEntity<ReviewVo> review_info(@PathVariable("rev_code") Long rev_code) throws Exception {
+	public ResponseEntity<ReviewVo> review_info(@PathVariable("rev_code") Integer rev_code) throws Exception {
 		
 		log.info("후기코드"+ rev_code);
 		
@@ -114,7 +114,7 @@ public class ReviewController {
 	
 	// 삭제
 	@DeleteMapping("/review_delete/{rev_code}")
-	public ResponseEntity<String> review_delete(@PathVariable("rev_code") Long rev_code) throws Exception {
+	public ResponseEntity<String> review_delete(@PathVariable("rev_code") Integer rev_code) throws Exception {
 		
 		ResponseEntity<String> entity = null;
 		

@@ -35,8 +35,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AdQnaController {
 	
-	private AdQnaService adQnaService;
-	private QnaService qnaService;
+	private final AdQnaService adQnaService;
+	private final QnaService qnaService;
 	
 	// 이미지 관련 작업 기능
 	private final FileUtils fileUtils;

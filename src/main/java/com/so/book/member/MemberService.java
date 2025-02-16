@@ -1,6 +1,11 @@
 package com.so.book.member;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
+
+import com.so.book.common.utils.SearchCriteria;
 
 import lombok.RequiredArgsConstructor;
 
@@ -10,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberService {
 
 	private final MemberMapper memberMapper;
+	
 	
 	public String idCheck(String mem_id) {
 		return memberMapper.idCheck(mem_id);
@@ -46,5 +52,21 @@ public class MemberService {
 	
 	public void delete(String mem_id) {
 		memberMapper.delete(mem_id);
+	}
+	
+	public List<Map<String, Object>> my_review(String mem_id, SearchCriteria cri) {
+		return memberMapper.my_review(mem_id, cri);
+	}
+	
+	public int getTotalReviewCountByUserId(String mem_id) {
+		return memberMapper.getTotalReviewCountByUserId(mem_id);
+	}
+	
+	public List<Map<String, Object>> my_qna(String mem_id, SearchCriteria cri) {
+		return memberMapper.my_qna(mem_id, cri);
+	}
+	
+	public int getTotalQnaCount(String mem_id) {
+		return memberMapper.getTotalQnaCount(mem_id);
 	}
 }

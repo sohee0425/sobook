@@ -2,74 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}">
+
+<style>
+  .carousel-inner img {
+    height: 300px; /* 원하는 높이 값 */
+    object-fit: cover; /* 비율 유지하면서 잘림 방지 */
+  }
+</style>
+
 <th:block layout:fragment="content">
-	
-<main>
-
-	<div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
-		<div class="carousel-indicators">
-		  <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="" aria-label="Slide 1"></button>
-		  <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class="active" aria-current="true"></button>
-		  <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>
-		</div>
-	
+	<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
 		<div class="carousel-inner">
-
-		  <div class="carousel-item">
-			<svg class="bd-placeholder-img " width="100%" height="500px" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-				<rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
-			<div class="container">
-			  <div class="carousel-caption text-start">
-				<h1>첫번쨰</h1>
-				<p class="opacity-75">첫번째</p>
-				<p><a class="btn btn-lg btn-primary" href="#">회원가입</a></p>
-			  </div>
+			<div class="carousel-item active">
+				<img src="/image/main_01.jpg" class="d-block w-100" alt="main_img_01">
 			</div>
-		  </div>
-
-
-		  <div class="carousel-item active">
-			<svg class="bd-placeholder-img " width="100%" height="500px" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-				<rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
-			<div class="container">
-			  <div class="carousel-caption">
-				<h1>두번째</h1>
-				<p>두번째</p>
-				<p><a class="btn btn-lg btn-primary" href="#">두번째</a></p>
-			  </div>
+			<div class="carousel-item">
+				<img src="/image/main_02.jpg" class="d-block w-100" alt="main_img_02">
 			</div>
-		  </div>
-
-		  
-		  <div class="carousel-item">
-			<svg class="bd-placeholder-img " width="100%" height="500px" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-				<rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
-			<div class="container">
-			  <div class="carousel-caption text-end">
-				<h1>3</h1>
-				<p>3</p>
-				<p><a class="btn btn-lg btn-primary" href="#">3</a></p>
-			  </div>
-			</div>
-		  </div>
-
+			<!-- <div class="carousel-item">
+				<img src="/image/main_3.jpg" class="d-block w-100" alt="main_img_03">
+			</div> -->
 		</div>
-		<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		  <span class="visually-hidden">Previous</span>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Previous</span>
 		</button>
-		<button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-		  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-		  <span class="visually-hidden">Next</span>
+		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Next</span>
 		</button>
-	  </div>
+	</div>
+	
   
   
 	<!-- Marketing messaging and featurettes
 	================================================== -->
 	<!-- Wrap the rest of the page in another container to center all the content. -->
   
-	<!-- <div class="container marketing">
+	<div class="container marketing">
   
 		<div class="row mb-2">
 			<div class="col-md-6">
@@ -106,12 +76,36 @@
 				</div>
 			  </div>
 			</div>
-		  </div> 카테고리 밑에 있던 거-->
+		  </div>
+		  
+		  <div class="container" style="margin: 64px 0 64px 0;">
+		<div class="row my-4">
+			<h2 class="text-center font-weight-bolder">New Items</h2>
+			<p class="fw-light w-75 mx-auto text-center">새로 들어온 상품을 소개합니다.</p>
+		</div>
+		<div class="owl-carousel owl-theme">
+			<div th:each="product : ${latestProducts}" class="item">
+				<div class="card border-0" style="padding: 0 12px 0 12px;">
+					<div class="ratio ratio-1x1">
+						<a th:href="@{/product/detail(prod_id=${product.prod_id})}">
+							<img class="card-img-top rounded w-100 h-100 object-fit-cover" th:src="@{'/product/image_display?dateFolderName=' + ${product.prod_uploadfolder} + '&fileName=s_' + ${product.prod_img}}">
+						</a>
+					</div>
+					<div class="card-body px-0">
+						<h5 class="card-title fw-bold mb-2" style="font-size: 15px;" th:text="${product.prod_name}"></h5>
+						<p class="text-danger fw-bold mb-2" style="font-size: 17px;" th:text="${#numbers.formatDecimal(product.prod_price, 0, 'COMMA', 0, 'POINT')} + '원'"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
   
   
 	  <!-- START THE FEATURETTES -->
   
-	  <!-- <hr class="featurette-divider">
+	   <hr class="featurette-divider">
   
 	  <div class="row featurette">
 		<div class="col-md-7">
@@ -154,7 +148,7 @@
   
 	<footer class="container">
 	  <p class="float-end"><a href="#">TOP</a></p>
-	</footer> 그 밑에 있던 거  -->
+	</footer> 
   </main>
 </th:block>
 </html>

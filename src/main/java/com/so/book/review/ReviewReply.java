@@ -11,8 +11,8 @@ import lombok.ToString;
 @ToString
 public class ReviewReply {
 
-	private Long reply_id;
-	private Long rev_code;
+	private Integer reply_id;
+	private Integer rev_code;
 	private String manager_id;
 	private String reply_title;
 	private String reply_content;

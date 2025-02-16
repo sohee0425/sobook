@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+  <th:block layout:fragment="css">
+    <style>
+    .card-body {
+      justify-content: space-between; /* 내용과 버튼이 분리되도록 설정 */
+      max-height: 250px;
+      overflow-y: auto;  /* 내용이 넘칠 경우 스크롤 추가 */
+      position: relative;  /* 버튼의 절대 위치를 카드 안에서 설정 */
+}
+
+
+  .card-body .btn {
+    position: absolute;  /* 버튼을 절대 위치로 배치 */
+    bottom: 10px;  /* 카드 하단에서 10px 만큼 여유를 둡니다 */
+    right: 10px;  /* 카드 오른쪽에서 10px 만큼 여유를 둡니다 */
+}
+
+
+
+    </style>
+  </th:block>
+  
+<th:block layout:fragment="content">
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-3">
+        <a class="link-offset-2  link-underline-success" href="/member/mypage">
+          <th:block th:replace= "~{member/mypage_menu :: menu}"></th:block>
+      </div>
+      
+      <div class="col-9">
+        <div class="text-center mb-3">
+          <h3 class="mt-3 mb-4 text-center">리뷰 작성 목록</h3>    
+        </div>
+
+        
+        <div class="row">
+          <div class="col-12 mb-3" th:each="item : ${my_review}">
+            <div class="card">
+              
+              <div class="card-body d-flex align-items-center">
+
+                <div class="me-3">
+                  <a th:href="|/order/pro_perinfo?pro_code=${item.pro_code}|">
+                    <img style="width: 100px; height: 150px; object-fit: cover; border-radius: 10px;" 
+                        th:src="|/order/image_display?dateFolderName=${item.pro_up_folder}&fileName=s_${item.pro_img}|">
+                  </a>
+                </div>
+
+                <div class="d-flex flex-column flex-grow-1">
+                  <h5 class="card-title" th:text="${item.pro_name}"></h5> 
+                  <p class="card-title">⭐ <span th:text="${item.rev_score}"></span> 점</p>
+                  <p class="card-text" th:text="${item.rev_content}"></p>
+                  <small th:text="${#temporals.format(item.rev_date, 'yyyy-MM-dd')}"></small>
+                </div>
+
+                <div class="mt-auto text-end">
+                  <a th:href="|/order/pro_perinfo?pro_code=${item.pro_code}|" class="btn btn-outline-secondary me-2">상품 상세</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer clearfix">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+            <!-- 이전표시여부 Previous  pageMaker.getPrev() -->
+            <th:block th:if="${pageMaker.prev}">
+              <li class="page-item">
+                <a class="page-link" th:href="|/member/my_review${pageMaker.makeSearch(pageMaker.startPage - 1)}|">Previous</a>
+              </li>
+            </th:block>
+              <!--  페이지번호 출력.  1  2  3  4  5 -->
+              <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+              <li class="page-item" th:classappend="${pageMaker.cri.page == num ? 'active' : ''}">
+                <a class="page-link" th:href="|/member/my_review${pageMaker.makeSearch(num)}|" th:text="${num}"></a>
+              </li>        
+              </th:block>
+            
+            <!--  다음표시여부 Next -->
+            <th:block th:if="${pageMaker.next}">
+              <li class="page-item">
+                <a class="page-link" th:href="|/member/my_review${pageMaker.makeSearch(pageMaker.endPage + 1)}|">Next</a>
+              </li>
+            </th:block>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+</div>
+
+</th:block>
+</html>

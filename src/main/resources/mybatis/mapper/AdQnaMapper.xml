@@ -19,6 +19,7 @@
 			qt.pro_code = pt.pro_code
 		where 
 			qt.qna_code > 0
+			<include refid="search"></include>
 		order by 
 			qt.qna_code desc
 		limit
@@ -34,7 +35,11 @@
 	<result property="qna_content" column="qna_content"/>
 	<result property="qna_date" column="qna_date"/>
 	<result property="qna_update" column="qna_update"/>
-	
+	<association property="product" javaType="com.so.book.admin.product.ProductVo">
+	<result property="pro_name" column="pro_name"/>
+	<result property="pro_up_folder" column="pro_up_folder"/>
+	<result property="pro_img" column="pro_img"/>
+	</association>
 	<!-- 답글 정보 -->
 	<collection property="answer" ofType="com.so.book.qna.AnswerVo">
 		<id property="ans_code" column="ans_code"/>
@@ -45,6 +50,8 @@
 		<result property="ans_date" column="ans_date"/>
 		<result property="ans_update" column="ans_update"/>
 	</collection>
+	
+	
 	
 	</resultMap>
 	
@@ -59,6 +66,7 @@
 			q.pro_code = p.pro_code
 		where
 			q.qna_code > 0
+			<include refid="search"></include>
 	</select>
 	
 	<select id="answer_info" resultType="com.so.book.qna.AnswerVo">
@@ -85,4 +93,22 @@
 		where
 			ans_code = #{ans_code}
 	</delete>
+	
+	<!-- 기본 키워드 검색 -->
+	<sql id="search">
+		<if test="cri.searchType != null">
+	   	<if test="cri.searchType == 'n'.toString()">
+	   		and pt.pro_name like concat ('%', #{cri.keyword}, '%')
+	   	</if>
+	   	<if test="cri.searchType == 'c'.toString()">
+	   		and pt.pro_code = #{cri.keyword}
+	   	</if>
+	   	<if test="cri.searchType == 'm'.toString()">
+	   		and qt.mem_id = #{cri.keyword}
+	   	</if>
+	   	<if test="cri.searchType == 'qc'.toString()">
+	   		and qt.qna_code = #{cri.keyword}
+	   	</if>
+	   </if>
+	  </sql>
 </mapper>

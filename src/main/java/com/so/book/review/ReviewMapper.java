@@ -16,11 +16,11 @@ public interface ReviewMapper {
 	
 	void review_save(ReviewVo vo);
 	
-	ReviewVo review_info(Long rev_code);
+	ReviewVo review_info(Integer rev_code);
 	
 	void review_modify(ReviewVo vo);
 	
-	void review_delete(Long rev_code);
+	void review_delete(Integer rev_code);
 	
 	void reply_insert(ReviewReply vo);
 }

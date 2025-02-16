@@ -40,7 +40,7 @@
             </td>
             <td class="text-center">
               <a th:href="|/order/pro_perinfo?pro_code=${item['pro_code']}|">
-              <img style="width: 100px;height: 100px;" th:src="${'/order/image_display?dateFolderName=' + item.pro_up_folder + '&fileName=s_' + item.pro_img}">
+              <img style="width: 100px;height: 150px;" th:src="${'/order/image_display?dateFolderName=' + item.pro_up_folder + '&fileName=s_' + item.pro_img}">
               </a>
             </td>
             <td class="text-center" th:text="${item['pro_name']}"></td>

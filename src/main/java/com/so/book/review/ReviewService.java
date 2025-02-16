@@ -36,7 +36,7 @@ public class ReviewService {
 		
 	}
 	
-	public ReviewVo review_info(Long rev_code) {
+	public ReviewVo review_info(Integer rev_code) {
 		return reviewMapper.review_info(rev_code);
 	}
 	
@@ -44,7 +44,7 @@ public class ReviewService {
 		reviewMapper.review_modify(vo);
 	}
 	
-	public void review_delete(Long rev_code) {
+	public void review_delete(Integer rev_code) {
 		reviewMapper.review_delete(rev_code);
 	}
 	

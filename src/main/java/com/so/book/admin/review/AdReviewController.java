@@ -64,7 +64,7 @@ public class AdReviewController {
 	
 	// 상품후기 정보
 	@GetMapping("/review_info/{rev_code}")
-	public ResponseEntity<ReviewVo> review_info(@PathVariable("rev_code") Long rev_code) throws Exception {
+	public ResponseEntity<ReviewVo> review_info(@PathVariable("rev_code") Integer rev_code) throws Exception {
 		ResponseEntity<ReviewVo> entity = null;
 		
 		entity = new ResponseEntity<ReviewVo>(reviewService.review_info(rev_code), HttpStatus.OK);
@@ -91,7 +91,7 @@ public class AdReviewController {
 	// 답변하기 수정 정보
 	// 리턴 되는 ReviewReply 객체가 json으로 변환하여 클라이언트 (fetch()함수)로 응답된다
 	@GetMapping("/reply_info/{reply_id}")
-	public ResponseEntity<ReviewReply> reply_info(@PathVariable("reply_id") Long reply_id) throws Exception {
+	public ResponseEntity<ReviewReply> reply_info(@PathVariable("reply_id") Integer reply_id) throws Exception {
 		ResponseEntity<ReviewReply> entity = null;
 		
 		entity = new ResponseEntity<ReviewReply>(adReviewService.reply_info(reply_id), HttpStatus.OK);
@@ -113,7 +113,7 @@ public class AdReviewController {
 	
 	// 답변삭제
 	@DeleteMapping("/reply_delete/{reply_id}")
-	public ResponseEntity<String> reply_delete(@PathVariable("reply_id") Long reply_id) throws Exception {
+	public ResponseEntity<String> reply_delete(@PathVariable("reply_id") Integer reply_id) throws Exception {
 		
 		ResponseEntity<String> entity = null;
 		
