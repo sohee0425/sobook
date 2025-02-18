@@ -1,6 +1,6 @@
 package com.so.book.qna;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.so.book.admin.product.ProductVo;
@@ -19,8 +19,8 @@ public class QnaVo {
 	private Integer pro_code;
 	private String qna_title;
 	private String qna_content;
-	private Date qna_date;
-	private Date qna_update;
+	private LocalDateTime qna_date;
+	private LocalDateTime qna_update;
 	
 	// qna답변
 	private List<AnswerVo> answer;

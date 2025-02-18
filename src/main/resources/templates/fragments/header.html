@@ -30,9 +30,6 @@
       </nav>
     </th:block>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/notice/notice_list">공지사항</a>
-        <!-- <a class="link-secondary" href="#" aria-label="Search" >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"></circle><path d="M21 21l-5.2-5.2"></path></svg>
-        </a> -->
         <nav class="navbar bg-body-tertiary">
           <div class="container-fluid">
             <form class="d-flex" role="search">
@@ -40,10 +37,11 @@
             </form>
           </div>
         </nav>
+        
     </div> 
     </div>
     
-  </header>
+  
 
   <!-- <div class="nav-scroller py-1 mt mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-between">
@@ -58,7 +56,7 @@
   </div>  -->
 
  
-   <ul class="nav d-flex align-items-center py-1 mt mb-3 border-bottom nav justify-content-center" id="category_menu">
+   <ul class="nav d-flex align-items-center nav justify-content-center" id="category_menu">
     <li class="nav-item first_category" th:each="menu : ${cate_list}">
       <a class="nav-link link-body-emphasis"aria-current="page" href="#" th:data-cate_code="${menu.cate_code}" th:text="${menu.cate_name}"></a>
     </li>
@@ -66,7 +64,7 @@
     <ul class="nav justify-content-center" id="subCategory_menu">
   </ul>
 
-  
+</header>
   
   <script>
     $(document).ready(function() {

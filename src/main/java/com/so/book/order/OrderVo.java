@@ -1,5 +1,6 @@
 package com.so.book.order;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class OrderVo {
 	private String ord_tel;
 	private String ord_email;
 	private int ord_price;
-	private Date ord_regdate;
+	private LocalDateTime ord_regdate;
 	private String ord_status;
 	private String ord_message;
 }

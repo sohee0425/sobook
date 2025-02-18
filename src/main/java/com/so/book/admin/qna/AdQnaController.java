@@ -46,14 +46,23 @@ public class AdQnaController {
 	
 	// qna 목록
 	@GetMapping("/qna_list")
-	public void qna_list(@ModelAttribute("cri") SearchCriteria cri,@ModelAttribute("qna_title") String qna_title, 
-			@ModelAttribute("qna_content") String qna_content, Model model) throws Exception {
+	public void qna_list(@ModelAttribute("cri") SearchCriteria cri,	@ModelAttribute("period") String period, @ModelAttribute("start_date") String start_date, 
+			@ModelAttribute("end_date") String end_date, Model model) throws Exception {
+		log.info("검색정보:" + cri);
+		log.info("날짜검색: " + period);
+		log.info("날짜검색: " + start_date);
+		log.info("날짜검색: " + end_date);
+		log.info("검색 유형: " + cri.getSearchType());
+		log.info("검색 키워드: " + cri.getKeyword());
+
+		cri.setPerPageNum(5);
 		
-		List<QnaVo> qna_list = adQnaService.qna_list(cri, qna_title, qna_content);
+		List<QnaVo> qna_list = adQnaService.qna_list(cri, end_date, period, start_date);
+		
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(adQnaService.qna_count(cri, qna_title, qna_content));
+		pageMaker.setTotalCount(adQnaService.qna_count(cri, period, start_date, end_date));
 		
 		model.addAttribute("qna_list", qna_list);
 		model.addAttribute("pageMaker", pageMaker);

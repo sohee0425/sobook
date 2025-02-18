@@ -44,11 +44,17 @@ public class AdReviewController {
 	private String uploadPath;
 	
 	@GetMapping("/review_list")
-	public void review_list(@ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("rev_content") String rev_content,  @ModelAttribute("rev_score") String rev_score, Model model) throws Exception {
+	public void review_list(@ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("rev_content") String rev_content,  @ModelAttribute("rev_score") String rev_score, 
+			@ModelAttribute("period") String period, @ModelAttribute("start_date") String start_date, @ModelAttribute("end_date") String end_date, Model model) throws Exception {
 		
 		log.info("검색" + cri.toString());
+		log.info("날짜검색: " + period);
+		log.info("날짜검색: " + start_date);
+		log.info("날짜검색: " + end_date);
 		
-		List<ReviewVo> review_list = adReviewService.review_list(cri, rev_content, rev_score);
+		cri.setPerPageNum(5);
+		
+		List<ReviewVo> review_list = adReviewService.review_list(cri, rev_content, rev_score, period, start_date, end_date);
 		
 		review_list.forEach(review_Info -> {
 			review_Info.getProduct().setPro_up_folder((review_Info.getProduct().getPro_up_folder().replace("\\", "/")));
@@ -56,7 +62,7 @@ public class AdReviewController {
 		
 		PageMaker pageMaker = new PageMaker(); 
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(adReviewService.review_count(cri, rev_content, rev_score));
+		pageMaker.setTotalCount(adReviewService.review_count(cri, rev_content, rev_score, period, start_date, end_date));
 		
 		model.addAttribute("review_list", review_list);
 		model.addAttribute("pageMaker", pageMaker);		

@@ -16,12 +16,12 @@ public class AdReviewService {
 
 	private final AdReviewMapper adReviewMapper;
 	
-	public List<ReviewVo> review_list(SearchCriteria cri, String rev_content, String rev_score) {
-		return adReviewMapper.review_list(cri, rev_content, rev_score);
+	public List<ReviewVo> review_list(SearchCriteria cri, String rev_content, String rev_score, String period, String start_date, String end_date) {
+		return adReviewMapper.review_list(cri, rev_content, rev_score, period, start_date, end_date);
 	}
 	
-	public int review_count(SearchCriteria cri, String rev_content, String rev_score) {
-		return adReviewMapper.review_count(cri, rev_content, rev_score);
+	public int review_count(SearchCriteria cri, String rev_content, String rev_score, String period, String start_date, String end_date) {
+		return adReviewMapper.review_count(cri, rev_content, rev_score, period, start_date, end_date);
 	}
 	
 	public ReviewReply reply_info(Integer reply_id) {

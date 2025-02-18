@@ -8,18 +8,21 @@
 			pt.pro_name, pt.pro_up_folder, pt.pro_img,
 			qat.ans_code, qat.manager_id, qat.ans_title, qat.ans_content, qat.ans_date, qat.ans_update 
 		from 
-			question_tbl qt 
-		left join
-			qna_answer_tbl qat 
-		on 
-			qt.qna_code = qat.qna_code
+			question_tbl qt
 		left join
 			product_tbl pt
-		on
+		on 
 			qt.pro_code = pt.pro_code
+		left join			
+			qna_answer_tbl qat
+		on
+			qt.qna_code = qat.qna_code
 		where 
 			qt.qna_code > 0
-			<include refid="search"></include>
+			
+		<include refid="search"></include>
+		<include refid="period"></include>
+		
 		order by 
 			qt.qna_code desc
 		limit
@@ -35,15 +38,17 @@
 	<result property="qna_content" column="qna_content"/>
 	<result property="qna_date" column="qna_date"/>
 	<result property="qna_update" column="qna_update"/>
+	
+	<!-- 상품 정보 -->
 	<association property="product" javaType="com.so.book.admin.product.ProductVo">
 	<result property="pro_name" column="pro_name"/>
 	<result property="pro_up_folder" column="pro_up_folder"/>
 	<result property="pro_img" column="pro_img"/>
 	</association>
+	
 	<!-- 답글 정보 -->
 	<collection property="answer" ofType="com.so.book.qna.AnswerVo">
 		<id property="ans_code" column="ans_code"/>
-		<result property="qna_code" column="qna_code"/>
 		<result property="manager_id" column="manager_id"/>
 		<result property="ans_title" column="ans_title"/>
 		<result property="ans_content" column="ans_content"/>
@@ -51,22 +56,21 @@
 		<result property="ans_update" column="ans_update"/>
 	</collection>
 	
-	
-	
 	</resultMap>
 	
-	<select id="qna_count">
+	<select id="qna_count" resultType="int">
 		select
 			count(*)
 		from
-			question_tbl q
+			question_tbl qt
 		left join
-			product_tbl p
+			product_tbl pt
 		on
-			q.pro_code = p.pro_code
+			qt.pro_code = pt.pro_code
 		where
-			q.qna_code > 0
-			<include refid="search"></include>
+			qt.qna_code > 0
+		<include refid="search"></include>
+		<include refid="period"></include>
 	</select>
 	
 	<select id="answer_info" resultType="com.so.book.qna.AnswerVo">
@@ -110,5 +114,21 @@
 	   		and qt.qna_code = #{cri.keyword}
 	   	</if>
 	   </if>
-	  </sql>
-</mapper>
+ 	</sql>
+	  
+  	<!-- 날짜검색 -->
+	<sql id="period">
+		<if test="period != null and !period.equals('') and start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
+			<if test="period == 'qna_date'.toString()">
+				<![CDATA[
+				and  qt.qna_date >= date(#{start_date}) and  qt.qna_date < date(#{end_date}) + 1
+				]]>
+			</if>
+			<if test="period == 'qna_update'.toString()">
+				<![CDATA[
+				and  qt.qna_update >= date(#{start_date}) and  qt.qna_update < date(#{end_date}) + 1
+				]]>
+			</if>
+		</if>
+	</sql>
+	</mapper>

@@ -17,6 +17,78 @@
 
 	<th:block layout:fragment="script">
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+		
+	<script>
+		// 날짜 설정 함수
+		function setDateRange(range) {
+		const today = new Date();  // 날짜객체.
+		const startInput = document.getElementById('start_date'); // 시작날짜 태그를 참조
+		const endInput = document.getElementById('end_date'); // 종료날짜 태그를 참조
+		
+		let startDate, endDate;
+
+		switch (range) {
+			case 'today':
+				startDate = new Date(today);
+				endDate = new Date(today);
+				break;
+			case 'week':
+				startDate = new Date(today);
+				startDate.setDate(today.getDate() - 6);
+				endDate = new Date(today);
+				break;
+			case 'month':
+				startDate = new Date(today);
+				startDate.setMonth(today.getMonth() - 1);
+				endDate = new Date(today);
+				break;
+			case '3months':
+				startDate = new Date(today);
+				startDate.setMonth(today.getMonth() - 3);
+				endDate = new Date(today);
+				break;
+			case 'all':
+				startDate = '';
+				endDate = '';
+				break;
+			default:
+				return;
+		}
+
+		// 포맷팅하여 input에 값 설정
+		startInput.value = startDate ? formatDate(startDate) : '';
+		endInput.value = endDate ? formatDate(endDate) : '';
+	}
+
+	// 날짜를 yyyy-MM-dd 형식으로 포맷
+	function formatDate(date) {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	}
+
+	function initializeSearchForm() {
+
+		const searchType = document.querySelector('select[name="searchType"]');
+		const keyword = document.querySelector('input[name="keyword"]');
+		const period = document.querySelector('select[name="period"]');
+		const startDate = document.getElementById('start_date');
+		const endDate = document.getElementById('end_date');
+
+		// 드롭다운 초기화
+		if (searchType) searchType.value = '';
+		if (period) period.value = 'qna_date';
+
+		// 텍스트 초기화
+		if(keyword) keyword.value = '';
+		if(startDate) startDate.value = '';
+		if(endDate) endDate.value = '';
+
+	}
+	
+
+</script>
 	</th:block>
 
 	<th:block layout:fragment="content">
@@ -40,32 +112,55 @@
 								<option value="n" th:selected="${'n'} == ${pageMaker.cri.searchType}">도서명</option>
 								<option value="c" th:selected="${'c'} == ${pageMaker.cri.searchType}">상품번호</option>
 								<option value="m" th:selected="${'m'} == ${pageMaker.cri.searchType}">작성자</option>						
-								<option value="t" th:selected="${'qt'} == ${pageMaker.cri.searchType}">문의번호</option>						
+								<option value="qc" th:selected="${'qc'} == ${pageMaker.cri.searchType}">문의번호</option>						
 							</select>								
 						</div>					
 						<div class="col-5">
 							<input type="text" name="keyword" class="form-control" th:value="${pageMaker.cri.keyword}" placeholder="검색어를 입력하세요.">
 						</div>
 					</div>
-																
-				
-				
+
+					<div class="row mt-3">
+						<div class="col-2">날짜</div>
+						<div class="col-2">
+							<div class="form-group">
+								<select class="form-control" name="period">
+									<option value="rev_date" th:selected= "${'qna_date'} == ${qna_date}">등록일</option>
+									<option value="rev_update" th:selected= "${'qna_update'} == ${qna_update}">수정일</option>
+								</select>
+							</div>
+						</div>
+					
+					<div class="col-3">
+						<input type="date" name="start_date" id="start_date" style="width: auto;" th:value="${start_date}">
+						<input type="date" name="end_date" id="end_date" style="width: auto;" th:value="${end_date}">
+					</div>
+					<div class="col-5">
+						<button type="button" class="btn btn-sm btn-outline-dark" onclick="setDateRange('today')">오늘</button>
+						<button type="button" class="btn btn-sm btn-outline-dark" onclick="setDateRange('week')">일주일</button>
+						<button type="button" class="btn btn-sm btn-outline-dark" onclick="setDateRange('month')">1개월</button>
+						<button type="button" class="btn btn-sm btn-outline-dark" onclick="setDateRange('3months')">3개월</button>
+						<button type="button" class="btn btn-sm btn-outline-dark" onclick="setDateRange('all')">전체</button>
+					</div>
+				</div>
+					
 				<div class="row mt-3">
 					<div class="col text-center">
 						<button type="submit" class="btn btn-secondary">검색</button>
 						<button type="button" class="btn btn-secondary" id="btn_search_init">초기화</button>
 					</div>
 				</div>
-			</form>	
+			</form>
+
 				<div class="row mt-4">
 					<div class="col">
-					<form name="frm_pro_list" id="frm_pro_list" method="post" action="/admin/product/pro_sel_delete_2">
 						<table class="table table-bordered">
 							<thead>
 								<tr>
 									<th style="width: 10%;">번호</th>
-									<th style="width: 10%;">답변</th>
+									<th style="width: 10%;">답변상태</th>
 									<th style="width: 20%;">상품정보</th>
+									<th style="width: 20%;">문의 제목</th>
 									<th style="width: 30%;">문의 내용</th>
 									<th style="width: 10%">작성자</th>
 									<th style="width: 10%">작성일</th>
@@ -73,97 +168,91 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each= "item : ${qna_list}">
-									<td>[[${item.qna_code}]]</td>
+								<tr th:each= "qna_info : ${qna_list}">
+									<td>[[${qna_info.qna_code}]]</td>
 									<td>
-										<div class="alert alert-success" role="alert" th:if="${#lists.size(item.answer) > 0}">답변완료</div>
-										<div class="alert alert-warning" role="alert" th:unless="${#lists.size(item.answer) > 0}">답변대기</div>
+										<div class="alert alert-success" role="alert" th:if="${#lists.size(qna_info.answer) > 0}">답변완료</div>
+										<div class="alert alert-warning" role="alert" th:unless="${#lists.size(qna_info.answer) > 0}">답변대기</div>
 									</td>
 									<td>
-									<!-- <img style="width: 100px;height: 100px;" th:src="${'/admin/qna/image_display?dateFolderName=' + item.product.pro_up_folder + '&fileName=s_' + item.product.pro_img}"> -->
-									[[${item.product.pro_code}]]<br>
-									[[${item.product.pro_name}]]
-									
+									<img style="width: 100px;height: 100px;" th:src="${'/admin/qna/image_display?dateFolderName=' + qna_info.product.pro_up_folder + '&fileName=s_' + qna_info.product.pro_img}">
+									[[${qna_info.pro_code}]]<br>
+									[[${qna_info.product.pro_name}]]
+
+									<td>[[${qna_info.qna_title}]]</td>
 								</td>
-								<td>	
-								
-								[[${item.qna_content}]]
-								<div th:each= "answer : ${qna_info.answer}" style="border: 1px; border-style: solid; border-radius: 10px; border-color: black; padding: 10px;margin-top: 20px;">
-									<div class="row">
-										<div class="col">관리자</div>	
-										<div class="col"><span th:text="${#temporals.format(answer.ans_date 'yyyy-MM-dd HH:mm:ss')}"></span></div>	
+
+								<td>
+									[[${qna_info.qna_content}]]
+									<div  th:each= "answer:${qna_info.answer}" style="border: 1px; border-style: solid; border-radius: 10px; border-color: black; padding: 10px;margin-top: 20px;">
+										<div class="row">
+											<div class="col">관리자</div>	
+											<div class="col"><span th:text="${#temporals.format(answer.ans_date, 'yyyy-MM-dd')}"></span></div>	
+										</div>
+										<div class="row">
+											<div class="col"><span th:text="|제목 : ${answer.ans_title}|"></span></div>
+											
+										</div>
+										<div class="row">
+											<div class="col"><span th:text="|내용 : ${answer.ans_content}|"></span></div>
+										</div>
+										<div class="row">
+											<div class="col">
+												<button type="button" class="btn btn-outline-success" name="btn_answer_edit" th:data-ans_code="${answer.ans_code}">답변수정</button>
+												<button type="button" class="btn btn-outline-danger" name="btn_answer_del" th:data-ans_code="${answer.ans_code}">답변삭제</button>
+											</div>										
+										</div>
 									</div>
-									<div class="row">
-										<div class="col"><span th:text="${answer.ans_title}"></span></div>
-									</div>
-									<div class="row">
-										<div class="col"><span th:text="${answer.ans_content}"></span></div>
-									</div>
-									<div class="row">
-										<div class="col">
-											<button type="button" class="btn btn-outline-success" name="btn_answer_edit" th:data-ans_code="${answer.ans_code}">답변수정</button>
-											<button type="button" class="btn btn-outline-danger" name="btn_answer_del" th:data-ans_code="${answer.ans_code}">답변삭제</button>
-										</div>										
-									</div>													
-								</div>		
 								</td>
-								<td>[[${item.mem_id}]]</td>
+								<td>[[${qna_info.mem_id}]]</td>
+								<td>[[${#temporals.format(qna_info.qna_date, 'yyyy-MM-dd HH:mm:ss')}]]</td>
 								<td>
-								[[${#temporals.format(item.qna_date, 'yyyy-MM-dd HH:mm:ss')}]]
-								
-								<td>
-								<button type="button" name="openModalBtn" class="btn btn-block btn-sm btn-outline-primary" th:data-qna_code="${item.qna_code}">답변하기</button>								
+									<button type="button" name="openModalBtn" class="btn btn-block btn-sm btn-outline-secondary" th:data-qna_code="${qna_info.qna_code}">답변하기</button>
 								</td>
 							</tr>
-							
 							</tbody>
 						</table>
-					</form>
 					
 					<form id="criteriaForm" action="/admin/qna/qna_list" method="get">
-						<!-- 4개은 페이징,검색파라미터 -->
 						
 						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
 						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
 						<input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}">
 						<input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}">
 
-
-						<!-- 상품후기 내용 -->
-						<input type="hidden" name="qna_content" id="qna_content" th:value="${qna_content}">
-						
-						<!-- 제목 -->
-						<input type="hidden" name="qna_title" id="qna_title" th:value="${qna_title}">
+						<!-- 날짜 검색 -->
+						<input type="hidden" name="period" id="period" th:value="${period}">
+						<input type="hidden" name="start_date" id="start_date" th:value="${start_date}">
+						<input type="hidden" name="end_date" id="end_date" th:value="${end_date}">
 					</form>
 				</div>
 				</div>	 
-			</div>
+			
 
 					<div class="card-footer clearfix">
 						<nav aria-label="Page navigation example">
 							<ul class="pagination">
 							<!-- 이전표시여부 Previous  pageMaker.getPrev() -->
 							<th:block th:if="${pageMaker.prev}">
-								<li class="page-item"><a class="page-link movepage" th:href="${pageMaker.startPage - 1}">Previous</a></li>
+								<li class="page-item"><a class="page-link movepage" th:href="|/admin/qna/qna_list${pageMaker.makeSearch(pageMaker.startPage - 1)}|">Previous</a></li>
 							</th:block>
 								<!--  페이지번호 출력.  1  2  3  4  5 -->
 								<th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
 								<li class="page-item" th:classappend="${pageMaker.cri.page == num ? 'active' : ''}">
-									<a class="page-link movepage" th:href="${num}" th:text="${num}"></a>
+									<a class="page-link movepage"th:href="|/admin/qna/qna_list${pageMaker.makeSearch(num)}|"  th:text="${num}"></a>
 								</li>        
 								</th:block>
 							
 							<!--  다음표시여부 Next -->
 							<th:block th:if="${pageMaker.next}">
-								<li class="page-item"><a class="page-link movepage" th:href="${pageMaker.endPage + 1}">Next</a></li>
+								<li class="page-item"><a class="page-link movepage" th:href="|/admin/qna/qna_list${pageMaker.makeSearch(pageMaker.endPage + 1)}|">Next</a></li>
 							</th:block>
 							</ul>
 						</nav>
 					</div>
-				 </div>
-			</div>
+				</div>
 		</div>
-	  </div>
+	</div>
 
 	  <!-- 모달 -->
 		<div class="modal fade" id="qna_answer_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -192,24 +281,6 @@
 
 	<th:block layout:fragment="script2">
 		<script>
-			function displayStars() {
-				const spans = document.querySelectorAll(".star");
-
-				const totalStars = 5;
-
-				spans.forEach(span => {
-					const number = parseInt(span.textContent, 10);
-					if (!isNaN(number) && number > 0 && number <= totalStars) {
-						span.textContent = "★".repeat(number) + "☆".repeat(totalStars - number);
-					} else {
-						span.textContent = "Invalid number";
-					}
-				});
-			}
-
-			displayStars();
-
-
 			// 초기화 버튼 클릭
 			const resetButton = document.getElementById('btn_search_init'); 
 			resetButton.addEventListener('click', () => {
@@ -261,8 +332,8 @@
 				const modalBody = document.querySelector(".modal-body");
 
 				// 상품후기 답변하기, 상품후기 답변 수정하기 버튼 태그 참조
-				const btnReplySave = document.querySelector("#btn_answer_save");
-				const btnReplyModify = document.querySelector("#btn_answer_modify");
+				const btnAnswerSave = document.querySelector("#btn_answer_save");
+				const btnAnswerModify = document.querySelector("#btn_answer_modify");
 
 
 				// fetchAPI : 사용자 정의함수 선언
@@ -284,17 +355,19 @@
 							.then(data => {
 								modalTitle.textContent = `문의 번호: ${qnaCode}`;
 								modalBody.innerHTML = `
-									<p><strong>문의 제목:</strong> ${data.qna_title}</p>
-									<p><strong>문의 내용:</strong> ${data.qna_content}</p>
-									<p><strong>작성일:</strong> ${data.qna_date}</p>
-									<label>문의 답변:</label>
-									<input type="text" name="ans_content" id="ans_content">
+									<p><strong>QnA 제목 :</strong> ${data.qna_title}</p>
+									<p><strong>QnA 내용 :</strong> ${data.qna_content}</p>
+									<p><strong>QnA 작성일:</strong> ${data.qna_date}</p>
+									<label>QnA 답변 제목:</label>
+									<textarea class="form-control" id="ans_title"></textarea>
+									<label>QnA 답변 내용:</label>
+									<textarea class="form-control" id="ans_content"></textarea>
 								`;
 
 								toggleButtons(true); // true : 상품후기 답변 show, 상품후기 수정 버튼 숨기기
 
 								// 상품후기 답변 저장 클릭 이벤트
-								btnReplySave.onclick = () => handleReplySave(qnaCode);
+								btnAnswerSave.onclick = () => handleReplySave(qnaCode);
 								// 모달대화상자 화면 띄우기
 								modalInstance.show();
 							})
@@ -306,15 +379,16 @@
 				const handleReplySave = (qnaCode) => {
 					
 					// 관리자 : 상품후기 보고 답변하는 내용
-					const answerContent = document.querySelector("#ans_content").value.trim();
+					const ansContent = document.querySelector("#ans_content").value.trim();
+					const ansTitle = document.querySelector("#ans_title").value.trim();
 					
 					// 자바스크립트 변수가 조건식에서 사용 시, 값이 공백이거나 null 또는 0 이외의 숫자이면 true해석, 그 반대면 false 해석  
-					if (!answerContent) return alert("상품후기 답변내용을 입력하세요.");
+					if (!ansContent) return alert("QnA 답변내용을 입력하세요.");
 
 					fetchAPI(`/admin/qna/answer_insert`, {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify({ ans_content: ansContent, qna_code: qnaCode })
+						body: JSON.stringify({ ans_content: ansContent, qna_code: qnaCode, ans_title : ansTitle})
 					}, 'text') 
 						.then(data => {
 							if (data === "success") {
@@ -326,7 +400,7 @@
 								criteriaForm.submit();
 							}
 						})
-						.catch(error => alert(`상품후기 답변저장시 에러발생: ${error.message}`));
+						.catch(error => alert(`QnA 답변저장시 에러발생: ${error.message}`));
 				};
 
 				// 답변 수정 및 삭제 이벤트
@@ -343,17 +417,21 @@
 				const handleReplyEdit = (ans_code) => {
 					fetchAPI(`/admin/qna/answer_info/${ans_code}`)
 						.then(data => {
-							modalTitle.textContent = `상품후기 답변번호: ${ans_code}`;
+							modalTitle.textContent = `QnA 답변번호: ${ans_code}`;
 							modalBody.innerHTML = `
-								<label>상품후기 답변:</label>
-								<input type="text" name="ans_content" id="ans_contentt2" value="${data.ans_content}">
+								<label>QnA 답변 제목:</label>
+								<textarea class="form-control" name="ans_title" id="ans_title2">${data.ans_title}</textarea>
+								<label>QnA 답변 내용:</label>
+								<textarea class="form-control" name="ans_content" id="ans_contentt2">${data.ans_content}</textarea>
+								
+								
 							`;
 
 							// 상품후기 답변수정하기 버튼 표시.
 							toggleButtons(false);
 
 							// 상품후기 답변수정 버튼 클릭이벤트
-							btnReplyModify.onclick = () => handleReplyModify(ans_code);
+							btnAnswerModify.onclick = () => handleReplyModify(ans_code);
 							
 							// 모달대화상 표시.
 							modalInstance.show();
@@ -362,28 +440,29 @@
 
 				// 답변 수정 저장
 				const handleReplyModify = (ansCode) => {
-					const replyContent = document.querySelector("#reply_content2").value.trim();
-					if (!replyContent) return alert("상품후기 답변 수정내용을 입력하세요");
+					const ansTitle = document.querySelector("#ans_title2").value.trim();
+					const ansContent = document.querySelector("#ans_contentt2").value.trim();
+					if (!ansContent) return alert("QnA 답변 수정내용을 입력하세요");
 
 					fetchAPI(`/admin/qna/answer_modify_save`, {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify({ ans_content : ansContent, ans_code: ansCode })
+						body: JSON.stringify({ ans_content : ansContent , ans_code: ansCode, ans_title : ansTitle })
 					}, 'text')
 						.then(data => {
 							if (data === "success") {
-								alert("답변이 수정되었습니다.");
+								alert("QnA 답변이 수정되었습니다.");
 								modalInstance.hide();
 								criteriaForm.submit();
 							}
 						})
-						.catch(error => alert(`상품후기 답변 수정시 에러발생: ${error.message}`));
+						.catch(error => alert(`QnA 답변 수정시 에러발생: ${error.message}`));
 				};
 
 
 				// 답변 삭제
 				const handleReplyDelete = (ansCode) => {
-					if (!confirm(`답변을 삭제하시겠습니까? 리뷰 답글 번호=${ansCode}`)) return;
+					if (!confirm(`QnA 답변을 삭제하시겠습니까? 리뷰 답글 번호=${ansCode}`)) return;
 
 					fetchAPI(`/admin/qna/answer_delete/${ansCode}`, { 
 						method: 'DELETE' }, 'text')
@@ -393,15 +472,15 @@
 								criteriaForm.submit();
 							}
 						})
-						.catch(error => alert(`답변 삭제시 에러발생: ${error.message}`));
+						.catch(error => alert(`QnA 답변 삭제시 에러발생: ${error.message}`));
 				};
 
 				// 버튼 표시 토글 : 상품후기 답변, 수정 버튼 제어
 				const toggleButtons = (isSaveVisible) => {
 					// 상품후기 답변하기 버튼
-					btnReplySave.style.display = isSaveVisible ? 'inline-block' : 'none';
+					btnAnswerSave.style.display = isSaveVisible ? 'inline-block' : 'none';
 					// 상품후기 수정하기 버튼
-					btnReplyModify.style.display = isSaveVisible ? 'none' : 'inline-block';
+					btnAnswerModify.style.display = isSaveVisible ? 'none' : 'inline-block';
 				};
 			});
 		</script>

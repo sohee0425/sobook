@@ -62,6 +62,8 @@ public class QnaController {
 		
 		List<QnaVo> qna_list = qnaService.qna_list(pro_code, cri);
 		
+		
+		
 		// 페이징
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);

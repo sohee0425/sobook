@@ -10,9 +10,9 @@ import com.so.book.qna.QnaVo;
 
 public interface AdQnaMapper {
 	
-	List<QnaVo> qna_list(@Param("cri") SearchCriteria cri, @Param("qna_title") String qna_title, @Param("qna_content") String qna_content);
+	List<QnaVo> qna_list(@Param("cri") SearchCriteria cri,  @Param("period") String period, @Param("start_date") String start_date, @Param("end_date") String end_date);
 
-	int qna_count(@Param("cri") SearchCriteria cri, @Param("qna_title") String qna_title, @Param("qna_content") String qna_content);
+	int qna_count(@Param("cri") SearchCriteria cri,  @Param("period") String period, @Param("start_date") String start_date, @Param("end_date") String end_date );
 
 	AnswerVo answer_info(Integer ans_code);
 	

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.so.book.admin.statistics.StatisticsMapper">
+
+	<select id="monthlysales_statistics" resultType="com.so.book.admin.statistics.OrderAmount">
+		select
+			date_format(ord_regdate, '%Y-%m') as month,
+			sum(ord_price) as amount
+		from
+			order_tbl
+		where
+			year(ord_regdate) = #{year}
+		group by
+			date_format(ord_regdate, '%Y-%m')
+		order by
+			month
+	</select>
+</mapper>

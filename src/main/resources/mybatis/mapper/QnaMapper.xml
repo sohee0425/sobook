@@ -38,7 +38,6 @@
 		
 		<collection property="answer" ofType="com.so.book.qna.AnswerVo">
 			<id property="ans_code" column="ans_code"/>
-			<result property="qna_code" column="qna_code"/>
 			<result property="manager_id" column="manager_id"/>
 			<result property="ans_title" column="ans_title"/>
 			<result property="ans_content" column="ans_content"/>
@@ -81,7 +80,7 @@
 			qna_code = #{qna_code}
 	</delete>
 	
-	<insert id="answer_insert" parameterType="com.so.book.qna.AnswerVo">
+	<insert id="answer_insert">
 		insert into
 			qna_answer_tbl(qna_code, manager_id, ans_title, ans_content)
 		values (#{qna_code}, #{manager_id}, #{ans_title}, #{ans_content})

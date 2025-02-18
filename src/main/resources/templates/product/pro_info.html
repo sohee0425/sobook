@@ -40,8 +40,6 @@
 </th:block>
 
 <th:block layout:fragment="script">
-
-
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
   <script>
     $( function() {
@@ -56,7 +54,6 @@
           <tr>
             <td>{{rev_code}}</td>
             <td>{{mem_id}}</td>
-            <td>{{rev_title}}</td>
             <td>{{rev_content}}</td>
             <td>{{displayStar rev_score}}</td>
             <td>{{convertDate rev_date}}</td>
@@ -76,31 +73,46 @@
       </table>
     </script>
 
+
     <script id="templateQna" type="text/x-handlebars-template">
       <table class="table" id="qnaTable">
-        <tbody>
-          {{#each .}}
-          <tr>
-            <td>{{qna_code}}</td>
-            <td>{{mem_id}}</td>
-            <td>{{qna_title}}</td>
-            <td>{{qna_content}}</td>
-            <td>{{convertDate qna_date}}</td>
-            <td>
-              {{authControlView mem_id qna_code}}
-            </td>
-          </tr>
-          {{#if answer.length}}
-          {{#each answer}}
-          <tr>
-            <td colspan="6">[관리자] 답변글 : {{ans_content}} 작성일 : {{convertDate ans_date}}</td></td>
-          </tr>
-            {{/each}}
-            {{/if}}
-            {{/each}}
-        </tbody>
+        {{#each .}}
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+          <div class="accordion-item">
+            <p class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-{{qna_code}}" aria-expanded="false" aria-controls="flush-collapseOne">
+                QnA {{qna_code}} : {{qna_title}}
+              </button>
+            </p>
+            <div id="flush-collapseOne-{{qna_code}}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                <hr> 작성자 : {{mem_id}} <br>
+                문의 내용 : {{qna_content}} <hr>
+                문의 작성일 :  {{convertDate qna_date}} <hr>
+                비고 :  {{authControlView mem_id qna_code}} <hr>
+              </div>
+    
+              <!-- 답변이 있을 때만 출력하는 부분 -->
+              {{#if answer.length}} 
+                {{#each answer}} 
+                  <div class="accordion-body">
+                    <strong>QnA 답변</strong> <br>
+                    작성자 : {{manager_id}} <br>
+                    답변 제목 : {{ans_title}} <br>
+                    답변 내용 : {{ans_content}} <hr>
+                    답변 작성일 :  {{convertDate ans_date}} <hr>
+                  </div>
+                {{/each}} <!-- answer 반복문 끝 -->
+              {{else}} 
+              <p><em>아직 답변이 없습니다.</em></p>
+              {{/if}} 
+            </div>
+          </div>
+        </div>
+        {{/each}} <!-- qna 반복문 끝 -->
       </table>
     </script>
+    
 
     <script th:inline="javascript">
       // 핸들바 템플릿에서 사용자정의 함수 : 후기작성시간 포맷(형식)
@@ -169,16 +181,16 @@
 
 <script th:inline="javascript">
   // 핸들바 템플릿에서 사용자정의 함수 : QnA작성시간 포맷(형식)
-  Handlebars.registerHelper("convertDate", function(qnaDate) {
-    const date = new Date(qnaDate);
+  // Handlebars.registerHelper("convertQnaDate", function(qnaDate) {
+  //   const date = new Date(qnaDate);
 
-    let month = (date.getMonth()+1 < 10 ? "0" + (date.getMonth()+1) : date.getMonth()+1);
-    let day = (date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate());
-    let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-    let minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-    let second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-    return date.getFullYear() + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second;
-  });
+  //   let month = (date.getMonth()+1 < 10 ? "0" + (date.getMonth()+1) : date.getMonth()+1);
+  //   let day = (date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate());
+  //   let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+  //   let minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+  //   let second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+  //   return date.getFullYear() + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second;
+  // });
 
   Handlebars.registerHelper("authControlView", function(mem_id, qna_code) {
     console.log("작성자", mem_id);
@@ -266,7 +278,7 @@
       </div>
 
           <div id="tabs-2">
-            <div class="row mt-3 mb-3">
+            <div class="row mt-3 mb-3">              
               <div class="col-10">
                 <textarea class="form-control" id="rev_content" rows="3"></textarea>
               </div>
@@ -281,6 +293,7 @@
                 <button type="button" class="btn btn-secondary mb-2" id="btn_rev_save" th:data-pro_code="${productVo.pro_code}">후기 작성</button>
               </div>
             </div>
+            
             <div class="row">
               <!-- 상품후기 목록 출력 위치-->
               <div class="col" id="reviewList"></div>
@@ -310,6 +323,7 @@
   </div>
 
 
+
   <!--QnA 모달 -->
 		<div class="modal fade" id="qnaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -334,7 +348,6 @@
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 						<button type="button" id="btnQnaSave" class="btn btn-secondary" th:data-pro_code="${productVo.pro_code}">문의 저장하기</button>
 						<button type="button" id="btnQnaModify" style="display: none;" class="btn btn-secondary" th:data-pro_code="${productVo.pro_code}">문의 수정하기 </button>
-						<button type="button" id="btnQnaDelete" style="display: none;" class="btn btn-secondary" th:data-pro_code="${productVo.pro_code}">문의 삭제하기 </button>
 					</div>
 				</div>
 			</div>
@@ -416,33 +429,32 @@
       });
 
 
-      // 상품후기
+        // 상품후기
 
       // 상품후기 요청작업
       let pro_code = [[${productVo.pro_code }]];  // 상품코드.  스프링의 model 에서 productVo 이름으로 참조.
       let reviewPage = 1; // 댓글목록의 첫번째 페이지 의미.
 
       // 댓글목록 불러올 주소
-      let url = "/review/rev_list/" + pro_code + "/" + reviewPage;
+      let Reviewurl = "/review/rev_list/" + pro_code + "/" + reviewPage;
 
-      console.log("url", url);  // /rev_list/pages/20/1
+      console.log("Reviewurl", Reviewurl);  // /rev_list/pages/20/1
 
-      getPage(url);
+      getPage(Reviewurl);
 
       // 스프링에서 댓글목록과 페이징정보를 ajax기능으로 호출하는 함수
-		function getPage(url) {
+		function getPage(Reviewurl) {
 			
       $("#rev_content").val(""); // 후기평을 지우기
       $("p#star_rev_score a.rev_score").removeClass("on"); // 별평점 초기화
 
       
       // data : 스프링에서 json포맷으로 보낸 댓글목록과페이징정보데이타 받게된다
-			$.getJSON(url, function(data) {
+			$.getJSON(Reviewurl, function(data) {
 				console.log(data.rev_list); // 상품후기와 답변 목록데이터
 				console.log(data.pageMaker); // 댓글 페이징
 
 				// 상품후기와 답변 목록출력함수
-				// data.rev_list : 상품후기목록데이타, $("div#reviewList") : 상품후기가 출력될 태그위치  $("#templateReview") : 상품후기 핸들바템플릿
 				fn_displayReViewData(data.rev_list, $("div#reviewList"), $("#templateReview"));
 				// 페이징출력함수
         // data.pageMaker : 페이징정보데이타, $("div#reviewPaging") : 페이징이 출력될 태그위치
@@ -451,8 +463,6 @@
 		};
 
     // 댓글목록출력함수 : 핸들바 템플릿 사용
-		// replyData : json포맷의 댓글목록데이타
-		// target : 댓글목록 데이타가 출력될 위치
     // UI작업
 		// template : 핸들바 템플릿 
 		function fn_displayReViewData(reviewData, target, template) {
@@ -505,22 +515,16 @@
       // $(this) : 선택한 a태그를 참조.
       reviewPage = $(this).attr("href");  // 페이지번호 읽기.
 
-      //console.log("선택한 페이지: ", replyPage); // 3
-
-      //console.log("url", url); //  /replies/pages/3510/1
-
       url = "/review/rev_list/" + pro_code + "/" + reviewPage;
 
-      getPage(url);
+      getPage(Reviewurl);
     });
 
     // 별평점 클릭 이벤트일때 스타일 효과
     $("p#star_rev_score a.rev_score").on("click", function(e) {
      
       e.preventDefault();
-      // 기존에 적용했던 a태그(별)들의 on 클래스선택자 제거
       $(this).parent().children().removeClass("on");
-      // 선택한 a태그 자신에 on 클래스선택자 적용하고, 이전 a태그(이전 별들)에게도 on 클래스선택자 적용
       $(this).addClass("on").prevAll("a").addClass("on");
     })
 
@@ -530,7 +534,7 @@
       let rev_content = $("#rev_content").val(); // 상품평
       let rev_score = 0; // 별평점
 
-      // <a class="rev_score on">★</a> 태그에 class="rev_score on" 이 개수가 몇개인지 체크
+      // <a class="rev_score on">★</a> 개수가 몇개인지 체크
       $("p#star_rev_score a.rev_score").each(function() {
         if($(this).attr("class") == "rev_score on") {
           rev_score += 1;
@@ -546,8 +550,8 @@
         alert("별 평점을 선택하세요.");
         return;
       }
-      // REST API 개발방법론 : 서버와클라이언트가 데이타를 JSON포맷으로 주고 받는 특징. https://junvelee.tistory.com/107
-      // 데이타 : 자바스크립트 object문법
+
+      // 자바스크립트 object문법
       let review_data = {pro_code : pro_code, rev_content : rev_content, rev_score : rev_score};
 
       $.ajax({
@@ -567,7 +571,7 @@
 
 
             reviewPage = 1;
-            getPage(url);
+            getPage(Reviewurl);
           }
         }
       });
@@ -595,8 +599,7 @@
           let str_mbsp_id = $(`<td>${result.mbsp_id}</td>`);
           let str_rev_content = $(`<td><input type="text" name="rev_content" value="${result.rev_content}"></td>`);
           let star_rate = result.rev_score;
-         
-         
+        
           let tempStr = '<p id="star_rev_score">';
           for(let i=1; i<=5; i++) {
             if(i <= star_rate) {
@@ -672,7 +675,7 @@
           if(result == "success") {
             alert("상품후기가 수정되었습니다.");
             
-            getPage(url);
+            getPage(Reviewurl);
           }
         }
       });
@@ -681,12 +684,11 @@
 
       rev_score = 0;
 
-      //getPage(url);
     });
 
     // 취소
     $("div#reviewList").on("click", "button[name='cancel']", function() {
-      getPage(url);
+      getPage(Reviewurl);
 
     });
 
@@ -711,11 +713,12 @@
           if(result == "success") {
             alert("상품후기 삭제되었습니다.");
             
-            getPage(url);
+            getPage(Reviewurl);
           }
         }
       }); 
-    }); // 후기 끝
+    });
+     // 후기 끝
       
 
     // QnA
@@ -746,7 +749,7 @@
 			target.append(qnaHtml); // 댓글목록이 출력됨
 
 			// update 버튼 숨기기.
-			$("table#reviewTable button[name=update]").hide();
+			// $("table#reviewTable button[name=update]").hide();
 		};
 
     // 페이징출력함수 
@@ -946,6 +949,8 @@ $(document).on("click", ".btn-qna-modify", function() {
         }
     });
 });
+
+
 
 });// ready 끝
   </script>

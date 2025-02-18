@@ -1,5 +1,6 @@
 package com.so.book.qna;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.Getter;
@@ -16,6 +17,6 @@ public class AnswerVo {
 	private String manager_id;
 	private String ans_title;
 	private String ans_content;
-	private Date ans_date;
-	private Date ans_update;
+	private LocalDateTime ans_date;
+	private LocalDateTime ans_update;
 }

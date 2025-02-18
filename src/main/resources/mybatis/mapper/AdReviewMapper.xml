@@ -4,16 +4,16 @@
 
 	<select id="review_list" resultMap="Review_Relies_Map">
 		select 
-			rt.rev_code, rt.mem_id , rt.pro_code, rt.rev_title, rt.rev_content, rt.rev_score , rt.rev_date, rt.rev_update,
+			rt.rev_code, rt.mem_id , rt.pro_code,  rt.rev_content, rt.rev_score , rt.rev_date, rt.rev_update,
 			pt.pro_name, pt.pro_up_folder, pt.pro_img,
-			rrt.reply_id, rrt.manager_id, rrt.reply_title ,rrt.reply_content , rrt.reply_date, rrt.reply_update
+			rrt.reply_id, rrt.manager_id, rrt.reply_content , rrt.reply_date, rrt.reply_update
 		from 
-		 	review_tbl rt 	
+		 	review_tbl rt
 		left join 
 		 	product_tbl pt
 		on 
 			rt.pro_code  = pt.pro_code
-		left outer join 
+		left join 
 			review_replies_tbl rrt 
 		on 
 			rt.rev_code = rrt.rev_code
@@ -22,6 +22,8 @@
 			
 		<include refid="search"></include>
 		<include refid="rev_score"></include>
+		<include refid="rev_content"></include>
+		<include refid="period"></include>
 			
 		order by rt.rev_code desc
 		
@@ -34,7 +36,6 @@
 	<id property="rev_code" column="rev_code"/> <!-- 리뷰 PK -->
 	<result property="mem_id" column="mem_id" />
 	<result property="pro_code" column="pro_code" />
-	<result property="rev_title" column="rev_title" />
 	<result property="rev_content" column="rev_content" />
 	<result property="rev_score" column="rev_score" />
 	<result property="rev_date" column="rev_date" />
@@ -51,7 +52,6 @@
 	<collection property="replies" ofType="com.so.book.review.ReviewReply">
 		<id property="reply_id" column="reply_id"/> <!-- pk -->
 		<result property="manager_id" column="manager_id"/>
-		<result property="reply_title" column="reply_title"/>
 		<result property="reply_content" column="reply_content"/>
 		<result property="reply_date" column="reply_date"/>
 		<result property="reply_update" column="reply_update"/>
@@ -64,20 +64,21 @@
 		from
 			review_tbl rt
 		left join
-			product_tbl p
-		on rt.pro_code = p.pro_code
+			product_tbl pt
+		on rt.pro_code = pt.pro_code
 		where
 			rt.rev_code > 0
 			
 		<include refid="search"></include>
 		<include refid="rev_score"></include>
 		<include refid="rev_content"></include>
+		<include refid="period"></include>
 	</select>
 	
 	<select id="reply_info" resultType="com.so.book.review.ReviewReply">
 		
 		select
-			reply_id, rev_code, manager_id, reply_title, reply_content, reply_date, reply_update
+			reply_id, rev_code, manager_id, reply_content, reply_date, reply_update
 		from 
 			review_replies_tbl
 		where
@@ -88,7 +89,7 @@
 		update
 			review_replies_tbl
 		set
-			reply_content = #{reply_content}, reply_title = #{reply_title}, reply_update = now()
+			reply_content = #{reply_content}, reply_update = now()
 		where
 			reply_id = #{reply_id}
 	</update>
@@ -113,9 +114,6 @@
 	   	<if test="cri.searchType == 'm'.toString()">
 	   		and rt.mem_id = #{cri.keyword}
 	   	</if>
-	   	<if test="cri.searchType == 't'.toString()">
-	   		and rt.rev_title = #{cri.keyword}
-	   	</if>
 	   </if>
 	  </sql>
 	   
@@ -132,5 +130,21 @@
 			and rt.rev_score = #{rev_score}
 		</if>
 	</sql>
+	
+	<!-- 날짜 -->
+ 	<sql id="period">
+ 		<if test="period != null and !period.equals('') and start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
+ 			<if test="period == 'rev_date'.toString()">
+ 				<![CDATA[
+ 				and rt.rev_date >= date(#{start_date}) and rt.rev_date < date(#{end_date}) + 1
+ 				]]>
+ 			</if>
+ 			<if test="period == 'rev_update'.toString()">
+ 				<![CDATA[
+ 				and rt.rev_update >= date(#{start_date}) and rt.rev_update < date(#{end_date}) + 1
+ 				]]>
+ 			</if>
+ 		</if>
+ 	</sql>
 	
 </mapper>

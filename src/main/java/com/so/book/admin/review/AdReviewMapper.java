@@ -10,9 +10,11 @@ import com.so.book.review.ReviewVo;
 
 public interface AdReviewMapper {
 	
-	List<ReviewVo> review_list(@Param("cri") SearchCriteria cri, @Param("rev_content") String rev_content, @Param("rev_score") String rev_score) ;
+	List<ReviewVo> review_list(@Param("cri") SearchCriteria cri, @Param("rev_content") String rev_content, @Param("rev_score") String rev_score, @Param("period") String period, @Param("start_date") String start_date, 
+			@Param("end_date") String end_date) ;
 
-	int review_count(@Param("cri") SearchCriteria cri, @Param("rev_content") String rev_content, @Param("rev_score") String rev_score);
+	int review_count(@Param("cri") SearchCriteria cri, @Param("rev_content") String rev_content, @Param("rev_score") String rev_score, @Param("period") String period, @Param("start_date") String start_date, 
+			@Param("end_date") String end_date);
 	
 	ReviewReply reply_info(Integer reply_id);
 	
