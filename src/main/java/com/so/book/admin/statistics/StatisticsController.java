@@ -43,5 +43,57 @@ public class StatisticsController {
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping("/monthlysales2")
+	public ResponseEntity<List<Map<String, Object>>> monthlysales2(Integer year) throws Exception {
+		
+		// 차트에 필요한 데이터포맷 작업을 자바스크립트에서 처리
+		
+		/*
+		ResponseEntity<List<Map<String, Object>>> entity =  null;
+		
+		entity = new ResponseEntity<List<Map<String,Object>>>(statisticsService.monthlysales_statistics2(year), HttpStatus.OK);
+		
+		return entity;
+		*/
+		
+		return ResponseEntity.ok(statisticsService.monthlysales_statistics2(year));
+	}
+	
+	// 전체주문통계
+	@GetMapping("/static_sale_all")
+	public void static_sale_all() throws Exception {
+				
+	}
+	
+	@GetMapping("/daily")
+	public ResponseEntity<List<Map<String, Object>>> getDailyStatistics(String date) throws Exception {
+		
+		log.info("날짜:" + date);
+//		int year = Integer.parseInt(date.substring(0, 4));
+//		int month = Integer.parseInt(date.substring(4));
+				
+		return ResponseEntity.ok(statisticsService.getDailyStatistics(date));
+	}
+	
+	@GetMapping("/hourly")
+	public ResponseEntity<List<Map<String, Object>>> getHourlyStatistics(String start_date, String end_date) throws Exception {
+		
+		log.info("날짜:" + start_date + "~" + end_date);
+		
+		return ResponseEntity.ok(statisticsService.getHourlyStatistics(start_date, end_date));
+	}
+	
+	@GetMapping("/weekly")
+	public ResponseEntity<List<Map<String, Object>>> getWeeklyStatistics(String start_date, String end_date) throws Exception {
+		
+		return ResponseEntity.ok(statisticsService.getWeeklyStatistics(start_date, end_date));
+	}
+	
+	@GetMapping("/monthly")
+	public ResponseEntity<List<Map<String, Object>>> getMonthlyStatistics(String year) throws Exception {
+		
+		return ResponseEntity.ok(statisticsService.getMonthlyStatistics(year));
+	}
 
 }

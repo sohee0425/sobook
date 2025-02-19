@@ -47,10 +47,12 @@
     } );
     </script>
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+   
+
     <script id="templateReview" type="text/x-handlebars-template">
       <table class="table" id="reviewTable">
         <tbody>
-          {{#each .}}
+          {{#each this}}
           <tr>
             <td>{{rev_code}}</td>
             <td>{{mem_id}}</td>
@@ -62,16 +64,17 @@
             </td>
           </tr>
           {{#if replies.length}}
-          {{#each replies}}
-          <tr>
-            <td colspan="6">[관리자] 답변글 : {{reply_content}} 작성일 : {{convertDate reply_date}}</td>
-          </tr>
+            {{#each replies}}
+            <tr>
+              <td colspan="6">[관리자] 답변글 : {{reply_content}} 작성일 : {{convertDate reply_date}}</td>
+            </tr>
             {{/each}}
-            {{/if}}
-            {{/each}}
+          {{/if}}
+          {{/each}}
         </tbody>
       </table>
     </script>
+    
 
 
     <script id="templateQna" type="text/x-handlebars-template">
@@ -144,7 +147,7 @@
 
         let str = "";
 
-        // 로그인상태이며 로그인=후기아이디 일치 시
+      //   // 로그인상태이며 로그인=후기아이디 일치 시
         if(memberVo !== null && loginId == mem_id) {
           str += `<button type="button" name="delete" class="btn btn-outline-danger btn-sm ml-3" data-rev_code="${rev_code}">delete</button>`;
           str += `<button type="button" name="edit" class="btn btn-outline-info btn-sm" data-rev_code="${rev_code}">edit</button>`;
@@ -210,11 +213,11 @@
     if(memberVo !== null && loginId == mem_id) {
       str += `<button type="button" class="btn btn-outline-secondary btn-sm mr-3 btn-qna-delete" data-qna_code="${qna_code}">삭제</button>`;
       str += `<button type="button" class="btn btn-outline-secondary btn-sm ml-3 btn-qna-modify" 
-         data-qna_code="${qna_code}" 
-         data-qna_title="${qna_title}" 
-         data-qna_content="${qna_content}">
-         수정
-       </button>`;
+        data-qna_code="${qna_code}" 
+        data-qna_title="${qna_title}" 
+        data-qna_content="${qna_content}">
+        수정
+      </button>`;
 
 
 
@@ -325,7 +328,7 @@
 
 
   <!--QnA 모달 -->
-		<div class="modal fade" id="qnaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="qnaModal" tabindex="-1" aria-labelledby="exampleModalLabel">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -466,6 +469,7 @@
     // UI작업
 		// template : 핸들바 템플릿 
 		function fn_displayReViewData(reviewData, target, template) {
+
 			let templateObj = Handlebars.compile(template.html()); //댓글 핸들바템플릿 내용을 문법검사
 			let reviewHtml = templateObj(reviewData); // 데이타 + 핸들바템플릿 결합된 결과의 html코드
 
@@ -515,7 +519,7 @@
       // $(this) : 선택한 a태그를 참조.
       reviewPage = $(this).attr("href");  // 페이지번호 읽기.
 
-      url = "/review/rev_list/" + pro_code + "/" + reviewPage;
+      Reviewurl = "/review/rev_list/" + pro_code + "/" + reviewPage;
 
       getPage(Reviewurl);
     });
@@ -571,7 +575,8 @@
 
 
             reviewPage = 1;
-            getPage(Reviewurl);
+            location.reload();
+            // getPage(Reviewurl);
           }
         }
       });
@@ -784,16 +789,18 @@
     target.append(pageStr);
     };
 
-     // 페이지 번호 클릭설정
-     $("div#qnaPaging").on("click", "li a", function(e) {
-      e.preventDefault(); // a태그의 링크기능을 제거.
+    // 페이지 번호 클릭 설정
+$("div#qnaPaging").on("click", "li a", function(e) {
+  e.preventDefault(); // a태그의 링크 기능을 제거.
 
-      qnaPage = $(this).attr("href");  // 선택한 페이지 번호 값
+  qnaPage = $(this).attr("href");  // 선택한 페이지 번호 값
 
-      url = "/qna/qna_list/" + pro_code + "/" + qnaPage;
+  let url = "/qna/qna_list/" + [[${productVo.pro_code}]] + "/" + qnaPage; // url을 다시 정의
 
-      getPage(url);
-    });
+  getPage(url);
+});
+
+
 
     // QnA 모달
     $("#btnQnaModal").on("click", function() {
@@ -847,7 +854,8 @@
             alert("QnA가 등록되었습니다.");
             $("#qnaModal").modal("hide");
             qnaPage = 1;
-            getPage(qnaUrl);
+            let qnaUrl = "/qna/qna_list/" + [[${productVo.pro_code}]] + "/" + qnaPage;  // 새로운 URL 생성
+        getPage(qnaUrl);
           }
         }
       });    
@@ -922,7 +930,7 @@ $(document).on("click", ".btn-qna-modify", function() {
           if(result == "success") {
             alert("QnA가 수정되었습니다.");
             $("#btnQnaModify").modal("hide");
-            getPage(qnaUrl);
+            getPage(url);
           }
         }
     });
@@ -944,7 +952,7 @@ $(document).on("click", ".btn-qna-modify", function() {
         success: function(result) {
             if (result === "success") {
                 alert("QnA가 삭제되었습니다.");
-                getPage(qnaUrl);  // 리스트 갱신
+                getPage(url);  // 리스트 갱신
             }
         }
     });
