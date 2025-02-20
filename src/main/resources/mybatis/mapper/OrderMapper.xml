@@ -168,48 +168,16 @@
 		
 	</select>
 	
-	<update id="order_info_edit">
+	<!-- <update id="order_info_edit"  parameterType="OrderVo">
 		update
  			 order_tbl
 		set 
 			ord_name = #{ord_name}, ord_tel = #{ord_tel}, ord_email = #{ord_email}, ord_zipcode = #{ord_zipcode}, ord_addr = #{ord_addr}, ord_addr_detail = #{ord_addr_detail}
 		where 
 			ord_code = #{ord_code}
-	</update>
+	</update> -->
 	
-	<!-- 주문 상태 조회
-    <select id="getOrderStatus" resultType="Integer">
-        SELECT ord_status
-        FROM order_tbl
-        WHERE ord_code = #{ord_code}
-    </select> -->
+	
+	
     
-  <select id="review_manage" resultType="HashMap" parameterType="Map">
-	
-		select 
-			o.ord_code, o.ord_regdate,  pt.pro_up_folder, pt.pro_img, pt.pro_name, odt.pro_code, dt.delivery_date, pt.cate_code 
-		from 
-			order_tbl o 
-		inner join 
-			ordetail_tbl odt 
-		on 
-			o.ord_code = odt.ord_code 
-		inner join 
-			product_tbl pt 
-		on 
-			odt.pro_code  = pt.pro_code
-		inner join
-			delivery_tbl dt
-		on
-			o.ord_code = dt.ord_code
-		where 
-			o.mem_id = #{mem_id}
-		and 
-			dt.delivery_status = '배송완료'
-		order by
-			o.ord_code desc
-		limit 
-			#{cri.pageStart}, #{cri.perPageNum}	
-		
-	</select>
 </mapper>

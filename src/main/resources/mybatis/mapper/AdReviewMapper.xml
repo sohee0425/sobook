@@ -4,9 +4,9 @@
 
 	<select id="review_list" resultMap="Review_Relies_Map">
 		select 
-			rt.rev_code, rt.mem_id , rt.pro_code,  rt.rev_content, rt.rev_score , rt.rev_date, rt.rev_update,
+			rt.rev_code, rt.mem_id , rt.pro_code, rt.rev_title, rt.rev_content, rt.rev_score , rt.rev_date, rt.rev_update,
 			pt.pro_name, pt.pro_up_folder, pt.pro_img,
-			rrt.reply_id, rrt.manager_id, rrt.reply_content , rrt.reply_date, rrt.reply_update
+			rrt.reply_id, rrt.manager_id, rrt.reply_title, rrt.reply_content , rrt.reply_date, rrt.reply_update
 		from 
 		 	review_tbl rt
 		left join 
@@ -22,7 +22,6 @@
 			
 		<include refid="search"></include>
 		<include refid="rev_score"></include>
-		<include refid="rev_content"></include>
 		<include refid="period"></include>
 			
 		order by rt.rev_code desc
@@ -36,6 +35,7 @@
 	<id property="rev_code" column="rev_code"/> <!-- 리뷰 PK -->
 	<result property="mem_id" column="mem_id" />
 	<result property="pro_code" column="pro_code" />
+	<result property="rev_title" column="rev_title" />
 	<result property="rev_content" column="rev_content" />
 	<result property="rev_score" column="rev_score" />
 	<result property="rev_date" column="rev_date" />
@@ -52,6 +52,7 @@
 	<collection property="replies" ofType="com.so.book.review.ReviewReply">
 		<id property="reply_id" column="reply_id"/> <!-- pk -->
 		<result property="manager_id" column="manager_id"/>
+		<result property="reply_title" column="reply_title"/>
 		<result property="reply_content" column="reply_content"/>
 		<result property="reply_date" column="reply_date"/>
 		<result property="reply_update" column="reply_update"/>
@@ -71,14 +72,13 @@
 			
 		<include refid="search"></include>
 		<include refid="rev_score"></include>
-		<include refid="rev_content"></include>
 		<include refid="period"></include>
 	</select>
 	
 	<select id="reply_info" resultType="com.so.book.review.ReviewReply">
 		
 		select
-			reply_id, rev_code, manager_id, reply_content, reply_date, reply_update
+			reply_id, rev_code, manager_id, reply_title, reply_content, reply_date, reply_update
 		from 
 			review_replies_tbl
 		where
@@ -89,7 +89,7 @@
 		update
 			review_replies_tbl
 		set
-			reply_content = #{reply_content}, reply_update = now()
+			reply_title = #{reply_title}, reply_content = #{reply_content}, reply_update = now()
 		where
 			reply_id = #{reply_id}
 	</update>
@@ -117,13 +117,6 @@
 	   </if>
 	  </sql>
 	   
-	  <!-- 후기 내용 -->
-	  <sql id="rev_content">
-		<if test="rev_content != null and  !rev_content.equals('')">
-			and rt.rev_content like concat('%', #{rev_content}, '%')
-		</if>
-	  </sql>
-	
 	<!-- 후기 평점 -->
 	<sql id="rev_score">
 		<if test="rev_score != null and  !rev_score.equals('')">

@@ -51,8 +51,9 @@
                 </div>
 
                 <div class="d-flex flex-column flex-grow-1">
-                  <h5 class="card-title" th:text="${item.pro_name}"></h5> 
+                  <h5 class="card-title" th:text="${item.pro_name}|"></h5>
                   <p class="card-title">⭐ <span th:text="${item.rev_score}"></span> 점</p>
+                  <p class="card-title" th:text="|제목 : ${item.rev_title}|"></p>
                   <p class="card-text" th:text="${item.rev_content}"></p>
                   <small th:text="${#temporals.format(item.rev_date, 'yyyy-MM-dd')}"></small>
                 </div>

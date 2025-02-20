@@ -57,7 +57,7 @@ public class QnaController {
 		
 		// ans 목록
 		SearchCriteria cri = new SearchCriteria();
-		cri.setPerPageNum(10);
+		cri.setPerPageNum(5);
 		cri.setPage(page);
 		
 		List<QnaVo> qna_list = qnaService.qna_list(pro_code, cri);

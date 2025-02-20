@@ -52,7 +52,7 @@
 
                 <div class="d-flex flex-column flex-grow-1">
                   <h5 class="card-title" th:text="${item.pro_name}"></h5> 
-                  <p class="card-title" th:text="${item.qna_title}"></p>
+                  <p class="card-title" th:text="|제목 : ${item.qna_title}|"></p>
                   <p class="card-text" th:text="${item.qna_content}"></p>
                   <small th:text="${#temporals.format(item.qna_date, 'yyyy-MM-dd')}"></small>
                 </div>

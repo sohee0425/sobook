@@ -17,7 +17,7 @@ public class ReviewVo {
 	private Integer rev_code;
 	private String mem_id;
 	private Integer pro_code;
-//	private String rev_title;
+	private String rev_title;
 	private String rev_content;
 	private int rev_score;
 	private LocalDateTime rev_date;

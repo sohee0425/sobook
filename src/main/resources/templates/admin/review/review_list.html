@@ -138,11 +138,8 @@
 							</select>
 							</div>
 						</div>
-						
-						<div class="col-5">
-							<input type="text" name="rev_content" class="form-control" th:value="${rev_content}" placeholder="내용 작성">
-						</div>
 					</div>
+
 
 					<div class="row mt-3">
 						<div class="col-2">날짜</div>
@@ -209,11 +206,15 @@
 								[[${review_info.rev_content}]]
 								<div th:each= "reply : ${review_info.replies}" style="border: 1px; border-style: solid; border-radius: 10px; border-color: black; padding: 10px;margin-top: 20px;">
 									<div class="row">
-										<div class="col">관리자</div>	
+										<div class="col">[[${review_info.manager_id}]]</div>	
 										<div class="col"><span th:text="${#temporals.format(reply.reply_date, 'yyyy-MM-dd HH:mm:ss')}"></span></div>	
 									</div>
 									<div class="row">
-										<div class="col"><span th:text="${reply.reply_content}"></span></div>
+										<div class="col"><span th:text="|제목 : ${reply.reply_title}|"></span></div>
+										
+									</div>
+									<div class="row">
+										<div class="col"><span th:text="|내용 : ${reply.reply_content}|"></span></div>
 									</div>
 									<div class="row">
 										<div class="col">
@@ -402,10 +403,13 @@
 							.then(data => {
 								modalTitle.textContent = `상품후기 번호: ${revCode}`;
 								modalBody.innerHTML = `
-									<p><strong>상품후기내용:</strong> ${data.rev_content}</p>
-									<p><strong>평점:</strong> ${data.rev_score}</p>
-									<p><strong>작성일:</strong> ${data.rev_date}</p>
-									<label>상품후기 답변:</label>
+									<p><strong>리뷰 제목 :</strong> ${data.rev_title}</p>
+									<p><strong>리뷰 내용 :</strong> ${data.rev_content}</p>
+									<p><strong>상품 평점:</strong> ${data.rev_score}</p>
+									<p><strong>리뷰 작성일:</strong> ${data.rev_date}</p>
+									<label>리뷰 답변 제목:</label>
+									<textarea class="form-control" id="reply_title"></textarea>
+									<label>리뷰 답변 내용:</label>
 									<textarea class="form-control" id="reply_content"></textarea>
 								`;
 
@@ -424,19 +428,21 @@
 				const handleReplySave = (revCode) => {
 					
 					// 관리자 : 상품후기 보고 답변하는 내용
+					const reblyTitle = document.querySelector("#reply_title").value.trim();
 					const replyContent = document.querySelector("#reply_content").value.trim();
-					
+										
 					// 자바스크립트 변수가 조건식에서 사용 시, 값이 공백이거나 null 또는 0 이외의 숫자이면 true해석, 그 반대면 false 해석  
-					if (!replyContent) return alert("상품후기 답변내용을 입력하세요.");
+					if (!reblyTitle) return alert("리뷰 답변제목을 입력하세요.");
+					if (!replyContent) return alert("리뷰 답변내용을 입력하세요.");
 
 					fetchAPI(`/admin/review/reply_insert`, {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify({ reply_content: replyContent, rev_code: revCode })
+						body: JSON.stringify({ reply_title : replyTitle, reply_content: replyContent, rev_code: revCode })
 					}, 'text') 
 						.then(data => {
 							if (data === "success") {
-								alert("답변이 저장되었습니다.");
+								alert("리뷰 답변이 저장되었습니다.");
 								
 								// 모달대화상자 숨기기
 								modalInstance.hide();
@@ -444,7 +450,7 @@
 								criteriaForm.submit();
 							}
 						})
-						.catch(error => alert(`상품후기 답변저장시 에러발생: ${error.message}`));
+						.catch(error => alert(`리뷰 답변저장시 에러발생: ${error.message}`));
 				};
 
 				// 답변 수정 및 삭제 이벤트
@@ -461,9 +467,11 @@
 				const handleReplyEdit = (reply_id) => {
 					fetchAPI(`/admin/review/reply_info/${reply_id}`)
 						.then(data => {
-							modalTitle.textContent = `상품후기 답변번호: ${reply_id}`;
+							modalTitle.textContent = `리뷰 답변번호: ${reply_id}`;
 							modalBody.innerHTML = `
-								<label>상품후기 답변:</label>
+								<label>리뷰 답변 제목:</label>
+								<textarea class="form-control" name="reply_title" id="reply_title2">${data.reply_title}</textarea>
+								<label>리뷰 답변 내용:</label>
 								<textarea class="form-control" name="reply_content" id="reply_content2">${data.reply_content}</textarea>
 							`;
 
@@ -482,37 +490,37 @@
 				// 답변 수정 저장
 				const handleReplyModify = (replyId) => {
 					const replyContent = document.querySelector("#reply_content2").value.trim();
-					if (!replyContent) return alert("상품후기 답변 수정내용을 입력하세요");
+					if (!replyContent) return alert("리뷰 답변 수정내용을 입력하세요");
 
 					fetchAPI(`/admin/review/reply_modify_save`, {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify({ reply_content : replyContent, reply_id: replyId })
+						body: JSON.stringify({ reply_content : replyContent, reply_id: replyId, reply_title : reply_Title })
 					}, 'text')
 						.then(data => {
 							if (data === "success") {
-								alert("답변이 수정되었습니다.");
+								alert("리뷰 답변이 수정되었습니다.");
 								modalInstance.hide();
 								criteriaForm.submit();
 							}
 						})
-						.catch(error => alert(`상품후기 답변 수정시 에러발생: ${error.message}`));
+						.catch(error => alert(`리뷰 답변 수정시 에러발생: ${error.message}`));
 				};
 
 
 				// 답변 삭제
 				const handleReplyDelete = (replyId) => {
-					if (!confirm(`답변을 삭제하시겠습니까? 리뷰 답글 번호=${replyId}`)) return;
+					if (!confirm(`리뷰 답변을 삭제하시겠습니까? 리뷰 답글 번호=${replyId}`)) return;
 
 					fetchAPI(`/admin/review/reply_delete/${replyId}`, { 
 						method: 'DELETE' }, 'text')
 						.then(data => {
 							if (data === "success") {
-								alert("삭제 완료");
+								alert("리뷰 답변 삭제 완료");
 								criteriaForm.submit();
 							}
 						})
-						.catch(error => alert(`답변 삭제시 에러발생: ${error.message}`));
+						.catch(error => alert(`리뷰 답변 삭제시 에러발생: ${error.message}`));
 				};
 
 				// 버튼 표시 토글 : 상품후기 답변, 수정 버튼 제어

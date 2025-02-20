@@ -37,8 +37,7 @@ public interface OrderMapper {
 	// 주문 상세내역 배송지 수정
 	void order_info_edit(OrderVo vo);
 	
-//	// 주문상태 조회 (배송 준비 까지만 배송지 변경 가능하게 하기 위해서)
-//	String getOrderStatus(Integer ord_code);
-	
-	List<Map<String, Object>> review_manage(@Param("mem_id") String mem_id, @Param("cri") SearchCriteria cri);
+	/* 주문상태 조회 (배송 준비 까지만 배송지 변경 가능하게 하기 위해서)
+	String getOrderStatus(Integer ord_code);
+	*/
 }

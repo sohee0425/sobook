@@ -101,7 +101,7 @@
 
 	<select id="my_review">
 		select
-			r.rev_code, r.mem_id, r.pro_code, r.rev_content, r.rev_score, r.rev_date,p.pro_name, p.pro_up_folder, p.pro_img
+			r.rev_code, r.mem_id, r.pro_code, r.rev_title, r.rev_content, r.rev_score, r.rev_date,p.pro_name, p.pro_up_folder, p.pro_img
 		from 
 			review_tbl r
 		inner join 

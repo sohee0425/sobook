@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -143,7 +144,7 @@ public class OrderController {
 	
 	// 주문목록
 	@GetMapping("/order_list")
-	public void order_list(SearchCriteria cri, HttpSession session, Model model) throws Exception {
+	public void order_list(@ModelAttribute("cri") SearchCriteria cri, HttpSession session, Model model, @ModelAttribute("period") String period, @ModelAttribute("start_date") String start_date, @ModelAttribute("end_date") String end_date) throws Exception {
 		
 		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
 		
@@ -189,50 +190,33 @@ public class OrderController {
 		
 	}
 	
+	
+	
 	// 배송지 변경
 	@PostMapping("/order_info_edit")
 	public ResponseEntity<String> order_info_edit(OrderVo vo) throws Exception {
 		ResponseEntity<String> entity = null;
 		
-		// 주문 상태 확인해서 배송 중 전까지만 배송지 변경하게 하고싶다
-//	    String delyStatus = orderService.getOrderStatus(vo.getOrd_code());  // 주문 상태 조회
-//	    
-//	    if ("배송준비".equals(delyStatus)) {  // 배송준비중 상태일 때만 수정 가능
-//	        orderService.order_info_edit(vo);  // 배송지 정보 수정
-//	        entity = new ResponseEntity<String>("success", HttpStatus.OK);  // 성공 응답
-//	    } else {
-//	        // 배송준비중 상태가 아니면 수정 불가
-//	        entity = new ResponseEntity<String>("배송지 변경은 배송준비 상태에서만 가능합니다.", HttpStatus.BAD_REQUEST);
-//	    }
-//	    
-//	    return entity;
-		orderService.order_info_edit(vo);
+		/* 주문 상태 확인해서 배송 중 전까지만 배송지 변경하게 하고싶다...
+	    String delyStatus = orderService.getOrderStatus(vo.getOrd_code());  // 주문 상태 조회
+	    
+	 // 배송준비 상태일 때만 수정 가능
+	    if ("배송준비".equals(delyStatus)) {  
+	        orderService.order_info_edit(vo);  // 배송지 정보 수정
+	        entity = new ResponseEntity<String>("success", HttpStatus.OK);  // 성공 응답
+	    } else {
+	        // 배송준비중 상태가 아니면 수정 불가
+	        entity = new ResponseEntity<String>("배송지 변경은 배송준비 상태에서만 가능합니다.", HttpStatus.BAD_REQUEST);
+	    }
+
+	    return entity;
+		orderService.order_info_edit(vo);*/
 		
 		entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		
 		return entity;
 	}
-	
-	@GetMapping("/review_manage")
-	public void review_manage (SearchCriteria cri, HttpSession session, Model model) throws Exception {
 		
-		// 상품테이블, 주문, 주문상세테이블, 배송테이블
-		// 상품코드, 상품이미지, 상품명, 배송일, 리뷰작성하기 버튼
-		String mem_id = ((MemberVo)session.getAttribute("login_auth")).getMem_id();
-		
-		
-		List<Map<String, Object>> review_list = orderService.review_manage(mem_id, cri);
-		
-		// 날짜폴더의 역슬래쉬 \ 를 / 로 변환작업
-		review_list.forEach(r_Info -> {
-			r_Info.put("pro_up_folder", r_Info.get("pro_up_folder").toString().replace("\\", "/"));			
-		});
-		
-		model.addAttribute("review_list", review_list);
-		
-	}
-	
-	
 	@GetMapping("/image_display")
 	public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
 		

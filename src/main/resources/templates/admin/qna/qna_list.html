@@ -379,9 +379,9 @@
 				const handleReplySave = (qnaCode) => {
 					
 					// 관리자 : 상품후기 보고 답변하는 내용
-					const ansContent = document.querySelector("#ans_content").value.trim();
 					const ansTitle = document.querySelector("#ans_title").value.trim();
-					
+					const ansContent = document.querySelector("#ans_content").value.trim();
+										
 					// 자바스크립트 변수가 조건식에서 사용 시, 값이 공백이거나 null 또는 0 이외의 숫자이면 true해석, 그 반대면 false 해석  
 					if (!ansContent) return alert("QnA 답변내용을 입력하세요.");
 
@@ -392,7 +392,7 @@
 					}, 'text') 
 						.then(data => {
 							if (data === "success") {
-								alert("답변이 저장되었습니다.");
+								alert("QnA 답변이 저장되었습니다.");
 								
 								// 모달대화상자 숨기기
 								modalInstance.hide();

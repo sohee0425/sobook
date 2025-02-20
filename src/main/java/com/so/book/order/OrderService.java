@@ -112,12 +112,11 @@ public class OrderService {
 		orderMapper.order_info_edit(vo);
 	}
 	
-//	public String getOrderStatus(Integer ord_code) {
-//		return orderMapper.getOrderStatus(ord_code);
-//	}
-	
-	public List<Map<String, Object>> review_manage(String mem_id, SearchCriteria cri) {
-		return orderMapper.review_manage(mem_id, cri);
+	/*
+	public String getOrderStatus(Integer ord_code) {
+		return orderMapper.getOrderStatus(ord_code);
 	}
+	*/
+	
 	
 }
