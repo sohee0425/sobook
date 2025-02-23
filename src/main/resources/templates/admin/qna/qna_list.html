@@ -125,8 +125,8 @@
 						<div class="col-2">
 							<div class="form-group">
 								<select class="form-control" name="period">
-									<option value="rev_date" th:selected= "${'qna_date'} == ${qna_date}">등록일</option>
-									<option value="rev_update" th:selected= "${'qna_update'} == ${qna_update}">수정일</option>
+									<option value="qna_date" th:selected= "${'qna_date'} == ${qna_date}">등록일</option>
+									<option value="qna_update" th:selected= "${'qna_update'} == ${qna_update}">수정일</option>
 								</select>
 							</div>
 						</div>
@@ -213,8 +213,9 @@
 							</tbody>
 						</table>
 					
+						<!-- 페이징 -->
 					<form id="criteriaForm" action="/admin/qna/qna_list" method="get">
-						
+						<!-- 검색파라미터 -->
 						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}">
 						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}">
 						<input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}">
@@ -331,7 +332,7 @@
 				const modalTitle = document.querySelector("#exampleModalLabel");
 				const modalBody = document.querySelector(".modal-body");
 
-				// 상품후기 답변하기, 상품후기 답변 수정하기 버튼 태그 참조
+				// 문의 답변하기, 문의 답변 수정하기 버튼 태그 참조
 				const btnAnswerSave = document.querySelector("#btn_answer_save");
 				const btnAnswerModify = document.querySelector("#btn_answer_modify");
 
@@ -347,7 +348,7 @@
 				// 모달 열기 이벤트. 답변하기 버튼을 클릭시 동작하는 이벤트 구문.
 				document.querySelectorAll("button[name='openModalBtn']").forEach(button => {
 					button.addEventListener("click", () => {
-						// 답변하기 버튼에 숨겨둔 상품후기 코드
+						// 답변하기 버튼에 숨겨둔 문의 코드
 						const qnaCode = button.getAttribute("data-qna_code");
 
 						// fetchAPI 사용자정의 함수 호출
@@ -364,24 +365,24 @@
 									<textarea class="form-control" id="ans_content"></textarea>
 								`;
 
-								toggleButtons(true); // true : 상품후기 답변 show, 상품후기 수정 버튼 숨기기
+								toggleButtons(true); // true : 문의 답변 show, 문의 수정 버튼 숨기기
 
-								// 상품후기 답변 저장 클릭 이벤트
+								// 문의 답변 저장 클릭 이벤트
 								btnAnswerSave.onclick = () => handleReplySave(qnaCode);
 								// 모달대화상자 화면 띄우기
 								modalInstance.show();
 							})
-							.catch(error => alert(`Failed to load review details: ${error.message}`));
+							.catch(error => alert(`Failed to load qna details: ${error.message}`));
 					});
 				});
 
 				// 답변 저장 처리
 				const handleReplySave = (qnaCode) => {
 					
-					// 관리자 : 상품후기 보고 답변하는 내용
+					// 관리자 : 문의 보고 답변하는 내용
 					const ansTitle = document.querySelector("#ans_title").value.trim();
 					const ansContent = document.querySelector("#ans_content").value.trim();
-										
+					
 					// 자바스크립트 변수가 조건식에서 사용 시, 값이 공백이거나 null 또는 0 이외의 숫자이면 true해석, 그 반대면 false 해석  
 					if (!ansContent) return alert("QnA 답변내용을 입력하세요.");
 
@@ -427,10 +428,10 @@
 								
 							`;
 
-							// 상품후기 답변수정하기 버튼 표시.
+							// 문의 답변수정하기 버튼 표시.
 							toggleButtons(false);
 
-							// 상품후기 답변수정 버튼 클릭이벤트
+							// 문의 답변수정 버튼 클릭이벤트
 							btnAnswerModify.onclick = () => handleReplyModify(ans_code);
 							
 							// 모달대화상 표시.
@@ -475,11 +476,11 @@
 						.catch(error => alert(`QnA 답변 삭제시 에러발생: ${error.message}`));
 				};
 
-				// 버튼 표시 토글 : 상품후기 답변, 수정 버튼 제어
+				// 버튼 표시 토글 : 문의 답변, 수정 버튼 제어
 				const toggleButtons = (isSaveVisible) => {
-					// 상품후기 답변하기 버튼
+					// 문의 답변하기 버튼
 					btnAnswerSave.style.display = isSaveVisible ? 'inline-block' : 'none';
-					// 상품후기 수정하기 버튼
+					// 문의 수정하기 버튼
 					btnAnswerModify.style.display = isSaveVisible ? 'none' : 'inline-block';
 				};
 			});
