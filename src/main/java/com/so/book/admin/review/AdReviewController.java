@@ -110,7 +110,7 @@ public class AdReviewController {
 	public ResponseEntity<String> reply_modify_save(@RequestBody ReviewReply vo) throws Exception {
 		ResponseEntity<String> entity = null;
 		
-		adReviewService.reply_modify_save(vo.getReply_id(), vo.getReply_content());
+		adReviewService.reply_modify_save(vo.getReply_id(), vo.getReply_content(), vo.getReply_title());
 		
 		entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		

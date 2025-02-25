@@ -443,6 +443,7 @@
 				const handleReplyModify = (ansCode) => {
 					const ansTitle = document.querySelector("#ans_title2").value.trim();
 					const ansContent = document.querySelector("#ans_contentt2").value.trim();
+					if (!ansTitle) return alert("QnA 답변 수정제목을 입력하세요");
 					if (!ansContent) return alert("QnA 답변 수정내용을 입력하세요");
 
 					fetchAPI(`/admin/qna/answer_modify_save`, {

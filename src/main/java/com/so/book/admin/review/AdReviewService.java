@@ -28,8 +28,8 @@ public class AdReviewService {
 		return adReviewMapper.reply_info(reply_id);
 	}
 	
-	public void reply_modify_save(Integer reply_id, String reply_content) {
-		adReviewMapper.reply_modify_save(reply_id, reply_content);
+	public void reply_modify_save(Integer reply_id, String reply_content, String reply_title) {
+		adReviewMapper.reply_modify_save(reply_id, reply_content, reply_title);
 	}
 	
 	public void reply_delete(Integer reply_id) {
