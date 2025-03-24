@@ -1,15 +1,67 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="header">
-<header>
+<header class="border-bottom lh-1 py-3">
   <style>
       @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
   </style>
   <div class="container">
-  <header class="border-bottom lh-1 py-3">
-    <div class="row flex-nowrap justify-content-between align-items-center">
-    <!-- </div>  -->
+  
+    
+    
     <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom "> 
+    
+    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0" style="margin-left: 20px;">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle px-3 link-body-emphasis" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              소설
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/product/pro_list?cate_code=5">추리&미스테리</a></li>
+              <li><a class="dropdown-item" href="/product/pro_list?cate_code=6">판타지</a></li>
+              <li><a class="dropdown-item" href="/product/pro_list?cate_code=7">역사</a></li>
+              <li><a class="dropdown-item" href="/product/pro_list?cate_code=8">로맨스</a></li>
+              <li><a class="dropdown-item" href="/product/pro_list?cate_code=9">세계문학전집</a></li>
+            </ul>
+          </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle px-3 link-body-emphasis" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              시/에세이
+            </a>
+            <ul class="dropdown-menu">
+            	<li><a class="dropdown-item" href="/product/pro_list?cate_code=10">현대시</a></li>
+            	<li><a class="dropdown-item" href="/product/pro_list?cate_code=11">청소년 시</a></li>
+            	<li><a class="dropdown-item" href="/product/pro_list?cate_code=12">청소년 에세이</a></li>
+            </ul>
+          </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle px-3 link-body-emphasis" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              자기계발
+            </a>
+            <ul class="dropdown-menu">
+            	<li><a class="dropdown-item" href="/product/pro_list?cate_code=13">성공</a></li>
+            	<li><a class="dropdown-item" href="/product/pro_list?cate_code=14">자기능력계발</a></li>
+            	<li><a class="dropdown-item" href="/product/pro_list?cate_code=15">비즈니스능력계발</a></li>
+            	<li><a class="dropdown-item" href="/product/pro_list?cate_code=16">인간관계</a></li>
+            </ul>
+          </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle px-3 link-body-emphasis" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              유아
+            </a>
+            <ul class="dropdown-menu">
+           		<li><a class="dropdown-item" href="/product/pro_list?cate_code=17">유아놀이</a></li>
+           		<li><a class="dropdown-item" href="/product/pro_list?cate_code=18">유아그림책</a></li>
+           		<li><a class="dropdown-item" href="/product/pro_list?cate_code=19">유아학습</a></li>
+            </ul>
+          </li>
+        </ul>
+        
+            
+        
       <a href="/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
         <span class="fs-4">SO BOOK</span>
       </a>
@@ -28,7 +80,7 @@
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/member/mypage">마이페이지</a>
         
       </nav>
-    </th:block>
+   	 </th:block>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/notice/notice_list">공지사항</a>
         <nav class="navbar bg-body-tertiary">
           <div class="container-fluid">
@@ -39,94 +91,7 @@
         </nav>
         
     </div> 
-    </div>
-    
-  
-
-  <!-- <div class="nav-scroller py-1 mt mb-3 border-bottom">
-    <nav class="nav nav-underline justify-content-between">
-      <a class="nav-item nav-link link-body-emphasis" href="#">ALL</a>
-      <a class="nav-item nav-link link-body-emphasis" href="#">베스트 셀러</a>
-      <a class="nav-item nav-link link-body-emphasis" href="#">소설</a>
-      <a class="nav-item nav-link link-body-emphasis" href="#">시/에세이</a>
-      <a class="nav-item nav-link link-body-emphasis" href="#">자기계발</a>
-      <a class="nav-item nav-link link-body-emphasis" href="#">유아</a>
-     
-    </nav>
-  </div>  -->
-
- 
-   <ul class="nav d-flex align-items-center nav justify-content-center" id="category_menu">
-    <li class="nav-item first_category" th:each="menu : ${cate_list}">
-      <a class="nav-link link-body-emphasis"aria-current="page" href="#" th:data-cate_code="${menu.cate_code}" th:text="${menu.cate_name}"></a>
-    </li>
-  </ul>
-    <ul class="nav justify-content-center" id="subCategory_menu">
-  </ul>
-
-</header>
-  
-  <script>
-    $(document).ready(function() {
-  
-      //1차 카테고리 
-      $("ul#category_menu li.first_category").on("click", function() {
-        // console.log("1차카테고리 선택");
-        let current = $(this);
-        let first_category = current.find("a.nav-link").data("cate_code"); // 클릭한 카테고리 코드참조
-  
-        console.log("선택한 1차코드", first_category);
-  
-        $.ajax({
-          url: '/admin/category/secondcategory/' + first_category,
-          type: 'get',
-          // data: {first_category : first_category}, 위에 first_category가 있어서 없앰
-          dataType: 'json',
-          success : function(subCategoryList) {
-            // console.log(subCategoryList);
-  
-            $("ul#subCategory_menu").empty();
-  
-            for(let i=0; i<subCategoryList.length; i++) {
-            let subCategoryStr = `<li class="nav-item">`;
-                subCategoryStr += `<a class="nav-link active" aria-current="page" href="#" data-cate_code="${subCategoryList[i].cate_code}">${subCategoryList[i].cate_name}</a>`;
-                subCategoryStr += `</li>`;
-            
-              $("ul#subCategory_menu").append(subCategoryStr);
-            }
-
-            // $("ul#subCategory_menu").show();
-          }
-        });
-      });
-  
-      // $("ul#category_menu").on("click", function() {
-      //       // 하위 카테고리 숨기기
-      //       $("ul#subCategory_menu").hide();
-      //   });
-
-      // 2차카테고리 클릭
-      $("ul#subCategory_menu").on("click", "li.nav-item a.nav-link", function() {
-        
-        // let cate_name = $(this).html();
-        let cate_name = encodeURIComponent($(this).html());
-        let cate_code = $(this).data("cate_code");
-        // 상품리스트 주소로 이동(2차 카테고리 이름, 코드와 함께 이동)
-        // $("#selectedSubCategory").text(cate_name);
-
-        location.href = `/product/pro_list?cate_name=${cate_name}&cate_code=${cate_code}`;
-      });
-      // $("ul#subCategory_menu").hide();
-  
-    }); // ready end
-  </script>
-
 </div>
 </header>
 
-</th:block>
-
-<th:block layout:fragment="css">
-  
-</th:block>
 </html>

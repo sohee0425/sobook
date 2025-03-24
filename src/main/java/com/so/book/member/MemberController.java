@@ -167,7 +167,7 @@ public class MemberController {
 	
 	// 비밀번호 변경하기
 	@PostMapping("/pwchange")
-	public String pwchange(@RequestParam("cur_pw") String mem_pw, String new_pw, 
+	public String pwchange(@RequestParam("cur_pw") String mem_pw, @RequestParam("new_pw") String new_pw, 
 										HttpSession session, RedirectAttributes rttr) throws Exception {
 		String url = "";
 		String msg = "";

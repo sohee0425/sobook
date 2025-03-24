@@ -29,6 +29,8 @@
 			</div>
 			<div class="card-footer text-center">
 				<button type="submit" class="btn btn-secondary">비밀번호 변경하기</button>
+				<button type="button" id="btn_pwchange" class="btn btn-secondary">비밀번호 변경하기</button>
+				
 			</div>
 		</form>
 	</div>
@@ -56,7 +58,7 @@
 			let new_pwConfirm = $("#new_pwConfirm").val()	// 새 비번끼리 일치하는지 확인
 			
 			// 새 비번끼리 일치하는지 확인
-			if ($("#new_pw") !== $("#new_pwConfirm")) {
+			if (new_pw !== new_pwConfirm) {
 				alert("비밀번호가 일치하지 않습니다.");
 				return;
 			}
@@ -64,9 +66,9 @@
 			$.ajax({
 				url : '/member/pwchange',
 				type: 'post',
-				data : {cur_pw: $("#cur_pw") ,
-						new_pw : $("#new_pw"),
-						new_pwConfirm : $("#new_pwConfirm")},
+				data : {cur_pw: $("#cur_pw").val() ,
+						new_pw : $("#new_pw").val()
+						},
 				dataType: 'text',
 				success : function(result) {
 					if(result == "success") {

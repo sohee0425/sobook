@@ -173,7 +173,7 @@
  	
  	</update>
  	
- 	<select id="order_total_price" resultType="int">
+ 	<select id="order_total_price" resultType="Integer">
  		select
  			sum(dt_price * dt_amount) as ord_total_price
  		from

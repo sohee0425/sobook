@@ -109,7 +109,6 @@
 						radio.checked = index === 0;
 					});
 				}
-				console.log('검색 삭제');
 			}
 		</script>
 	</th:block>
@@ -250,7 +249,6 @@
 			
 			<div class="row mt-4">
 				<div class="col">
-					<form name="frm_pro_list" id="frm_pro_list" method="post" action="/admin/product/pro_sel_delete_">
 						<table class="table table-bordered">
 							<thead>
 								<tr>
@@ -283,12 +281,13 @@
 									
 									<td>
 										<select name="delivery_status">
-											<option th:selected= "${order_info.delivery_status == '입금대기'}" value="입금대기">입금대기</option>
 											<option th:selected= "${order_info.delivery_status == '배송준비'}" value="배송준비">배송준비</option>
 											<option th:selected= "${order_info.delivery_status == '배송중'}" value="배송중">배송중</option>
 											<option th:selected= "${order_info.delivery_status == '배송완료'}" value="배송완료">배송완료</option>
 											<option th:selected= "${order_info.delivery_status == '취소'}" value="취소">취소</option>
 											<option th:selected= "${order_info.delivery_status == '환불'}" value="환불">환불</option>
+											<option th:selected= "${order_info.delivery_status == '반품'}" value="반품">반품</option>
+											<option th:selected= "${order_info.delivery_status == '교환'}" value="교환">교환</option>
 										</select>
 										<button type="button" class="mt-2" name="btn_delivery_status_change" th:data-ord_code="${order_info.ord_code}">변경</button>
 									</td>
@@ -299,7 +298,6 @@
 								</tr>
 							</tbody>
 						</table>
-					</form>
 				</div>
 			</div>
 
@@ -367,7 +365,7 @@
 
 			let criteriaForm = $("#criteriaForm");
 
-			// 페이지 번호 출력
+			// 페이지 번호 
 			$("a.movePage").on("click", function(e) {
 				e.preventDefault();
 

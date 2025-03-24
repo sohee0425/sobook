@@ -14,10 +14,10 @@
 	<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
 		<div class="carousel-inner">
 			<div class="carousel-item active">
-				<a href="/notice/notice_read?ntc_bno=16"><img src="/image/main_01.jpg" class="d-block w-100" alt="main_img_01"></a>
+				<a href="/notice/notice_read?ntc_bno=2"><img src="/image/main_01.jpg" class="d-block w-100" alt="main_img_01"></a>
 			</div>
 			<div class="carousel-item">
-				<a href="/product/pro_info?pro_code=3"><img src="/image/main_02.jpg" class="d-block w-100" alt="main_img_02"></a>
+				<a href="/product/pro_info?pro_code=2"><img src="/image/main_02.jpg" class="d-block w-100" alt="main_img_02"></a>
 			</div>
 		</div>
 		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
@@ -30,108 +30,9 @@
 		</button>
 	</div>
 	
-  
-  
-  <!--
-	<div class="container marketing">
-  
-		<div class="row mb-2">
-			<div class="col-md-6">
-			  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-				<div class="col p-4 d-flex flex-column position-static">
-				  <strong class="d-inline-block mb-2 text-primary-emphasis">World</strong>
-				  <h3 class="mb-0">Featured post</h3>
-				  <div class="mb-1 text-body-secondary">Nov 12</div>
-				  <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-				  <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
-					Continue reading
-					<svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-				  </a>
-				</div>
-				<div class="col-auto d-none d-lg-block">
-				  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-				</div>
-			  </div>
-			</div>
-			<div class="col-md-6">
-			  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-				<div class="col p-4 d-flex flex-column position-static">
-				  <strong class="d-inline-block mb-2 text-success-emphasis">Design</strong>
-				  <h3 class="mb-0">Post title</h3>
-				  <div class="mb-1 text-body-secondary">Nov 11</div>
-				  <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-				  <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
-					Continue reading
-					<svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-				  </a>
-				</div>
-				<div class="col-auto d-none d-lg-block">
-				  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		  
-		  <div class="container" style="margin: 64px 0 64px 0;">
-		<div class="row my-4">
-			<h2 class="text-center font-weight-bolder">2</h2>
-			<p class="fw-light w-75 mx-auto text-center">소개합니다</p>
-		</div>
-		<div class="owl-carousel owl-theme">
-			<div th:each="product : ${latestProducts}" class="item">
-				<div class="card border-0" style="padding: 0 12px 0 12px;">
-					<div class="ratio ratio-1x1">
-						<a th:href="@{/product/detail(prod_id=${product.prod_id})}">
-							<img class="card-img-top rounded w-100 h-100 object-fit-cover" th:src="@{'/product/image_display?dateFolderName=' + ${product.prod_uploadfolder} + '&fileName=s_' + ${product.prod_img}}">
-						</a>
-					</div>
-					<div class="card-body px-0">
-						<h5 class="card-title fw-bold mb-2" style="font-size: 15px;" th:text="${product.prod_name}"></h5>
-						<p class="text-danger fw-bold mb-2" style="font-size: 17px;" th:text="${#numbers.formatDecimal(product.prod_price, 0, 'COMMA', 0, 'POINT')} + '원'"></p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>-->
-	
-
-  
-  
-	  <!-- START THE FEATURETTES -->
+ 
   
 	   <hr class="featurette-divider">
   
-	  <div class="row featurette">
-		<div class="col-md-7">
-		  <h2 class="featurette-heading fw-normal lh-1">상품 추가예정 <span class="text-body-secondary"></span></h2>
-		  <p class="lead"></p>
-		</div>
-		<div class="col-md-5">
-		  <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"></rect><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text></svg>
-		</div>
-	  </div>
-  
-	  <hr class="featurette-divider">
-  
-	  <div class="row featurette">
-		<div class="col-md-7 order-md-2">
-		  <h2 class="featurette-heading fw-normal lh-1">추가예정<span class="text-body-secondary"></span></h2>
-		  <p class="lead"></p>
-		</div>
-		<div class="col-md-5 order-md-1">
-		  <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"></rect><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text></svg>
-		</div>
-	  </div>
-  
-	  
-	  <hr class="featurette-divider">
-  
-  
-	</div>
-  
-	<footer class="container">
-	  <p class="float-end"><a href="#">TOP</a></p>
-	</footer> 
-  </main>
 </th:block>
 </html>
